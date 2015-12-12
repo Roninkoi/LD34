@@ -92,13 +92,13 @@ class Game {
 
       print(game.player.pos);
     }*/
-
+/*
     game.renderer.draw(new Sprite(tex, new Vector4(0.0, 0.0, 16.0, 16.0), new Vector4(1.0, 1.0, 1.0, 1.0)), new Vector3(0.0, 0.0, 0.0), new Vector2(2.0, 2.0), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
 
 
     game.renderer.draw(new Sprite(tex, new Vector4(0.0, 0.0, 16.0, 16.0), new Vector4(1.0, 1.0, 1.0, 1.0)), new Vector3(0.0, 0.0, -8.0), new Vector2(2.0, 2.0), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
 
-
+*/
     //renderer.render();
 
     renderer.flushBatch();

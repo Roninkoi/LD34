@@ -15,19 +15,21 @@ part "Render.dart";
 part "Shader.dart";
 part "Texture.dart";
 part "Sprite.dart";
-part "Quads.dart";
 part "Input.dart";
 part "Phys.dart";
 part "Screen.dart";
+part "Text.dart";
 
 part "game/Obj.dart";
 part "game/Player.dart";
 part "game/Wall.dart";
 part "game/Floor.dart";
 part "game/Map.dart";
+part "game/GUI.dart";
 
 part "util/Parsers.dart";
 part "util/Random.dart";
+part "util/Collisions.dart";
 
 Game game;
 

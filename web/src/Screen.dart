@@ -5,6 +5,13 @@ class Screen {
   int w = 1024;
   int h = 600;
 
+  GUI gui;
+
+  void drawGUI()
+  {
+
+  }
+
   void Resize() {
 
   }

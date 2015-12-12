@@ -8,7 +8,13 @@ uniform float u_a;
 
 void main()
 {
-    gl_FragColor = texture2D(u_texture, vec2(v_texpos.x, v_texpos.y))*v_col;
+    vec4 col = texture2D(u_texture, vec2(v_texpos.x, v_texpos.y))*v_col;
+    if (col.a != 0.0) {
+    gl_FragColor = col;
+    }
+    else {
+    discard;
+    }
      //  gl_FragColor = vec4(vec3(gl_FragCoord.z), 1.0);
 
 }

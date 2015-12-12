@@ -29,16 +29,30 @@ class Player {
   void collisions()
   {
     if (!flying) {
+      int collides = -1;
+      for (int i = 0; i < game.map.walls.length; ++i) {
+        if (game.map.walls[i].collision(phys.pos, phys.pos_old) == 1 && collides == -1) {
+          collides = 1;
+        }
+        if (game.map.walls[i].collision(phys.pos,phys.pos_old ) == 0 && collides == -1) {
+          collides = 0;
+        }
+        if (game.map.walls[i].collision(phys.pos,phys.pos_old ) != -1 && collides != game.map.walls[i].collision(phys.pos,phys.pos_old)) {
+          collides = 2;
+        }
+      }
+
+
       phys.v.y += 0.008;
       if (phys.pos.y > 0.15 && !jumping) {
         phys.pos.y = phys.pos_old.y;
         phys.v.y = 0.0;
       }
-      /*if (phys.pos.x > -0.6 || phys.pos.x < -79.4) {//some simple collisions for testing
+      /*if (collides == 0 || collides == 2) {//some simple collisions for testing
         phys.pos.x = phys.pos_old.x;
         phys.v.x = 0.0;
       }
-      if (phys.pos.z < 0.6 || phys.pos.z > 79.4) {
+      if (collides == 1 || collides == 2) {
         phys.pos.z = phys.pos_old.z;
         phys.v.z = 0.0;
       }*/
@@ -50,6 +64,6 @@ class Player {
 
   Player()
   {
-    phys.pos = new Vector3(-8.0, 0.0, 8.0);
+    phys.pos = new Vector3(-6.0, 0.0, -2.0);
   }
 }

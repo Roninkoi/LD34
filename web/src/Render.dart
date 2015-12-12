@@ -67,9 +67,11 @@ class Render {
     (rot.x != oldrot.x || rot.y != oldrot.y || rot.z != oldrot.z) ||
     (col.r != oldcol.r || col.g != oldcol.g || col.b != oldcol.b || col.a != oldcol.a))
     || flush)) {
-      gl.depthMask(true);
-        gl.disable(BLEND);
+
+        gl.enable(BLEND);
         gl.enable(DEPTH_TEST);
+
+      gl.depthMask(true);
       gl.depthFunc(LESS);
 
 
