@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectTasksOptions">
+    <TaskOptions isEnabled="true">
+      <option name="arguments" value="--out=Main.dart.js Main.dart" />
+      <option name="checkSyntaxErrors" value="true" />
+      <option name="description" value="Compiles .dart files into .js files" />
+      <option name="exitCodeBehavior" value="ALWAYS" />
+      <option name="fileExtension" value="dart" />
+      <option name="immediateSync" value="false" />
+      <option name="name" value="Dart2JS" />
+      <option name="output" value="$FileName$.js:$FileName$.js.map:$FileName$.js.deps" />
+      <option name="outputFilters">
+        <array />
+      </option>
+      <option name="outputFromStdout" value="false" />
+      <option name="passParentEnvs" value="true" />
+      <option name="program" value="$PROJECT_DIR$/../dartsdk-windows-ia32-release/dart-sdk/bin/dart2js.bat" />
+      <option name="scopeName" value="Project Files" />
+      <option name="trackOnlyRoot" value="true" />
+      <option name="workingDir" value="C:\Users\Roni A. Koitermaa\Documents\Projects\webgl renderer\web\Src" />
+      <envs />
+    </TaskOptions>
+  </component>
+</project>

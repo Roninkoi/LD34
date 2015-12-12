@@ -1,0 +1,5 @@
+name: LD34
+dependencies:
+  browser: any
+  vector_math: any
+  io: any
