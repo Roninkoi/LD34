@@ -28,7 +28,7 @@ class Entity {
       attacking = true;
       if (game.player.attacking) {
         health -= 50.0;
-        print("damage");
+       // print("damage");
         damageticks = 100.0;
         game.aud.damage.PlaySound();
       }

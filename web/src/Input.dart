@@ -165,6 +165,7 @@ void getInput()
           game.gameOver = false;
           game.gameWin = false;
           game.heart_attacks = 0;
+          game.max_heartRate = 60.0;
           game.start_time = new DateTime.now().millisecondsSinceEpoch;
           game.gameRestart();
         }

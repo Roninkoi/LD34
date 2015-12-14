@@ -510,7 +510,7 @@ var dart = [
   main: [function() {
     var e, t1, exception;
     try {
-      t1 = new M.Game(null, null, null, null, null, null, null, 1, 0, 0, 0, 0, false, 0, 0, 0, "null", false, false, false);
+      t1 = new M.Game(null, null, null, null, null, null, null, 1, 0, 0, 0, 0, false, 0, 0, 0, "null", false, false, false, false);
       t1.start$0(0);
       $.game = t1;
     } catch (exception) {
@@ -793,10 +793,10 @@ var dart = [
     }
   },
   Sfx: {
-    "^": "Object;muted,hurt,beat,swing,damage"
+    "^": "Object;muted,hurt,beat,swing,damage,funk"
   },
   Game: {
-    "^": "Object;canvas,renderer,input,player,screen,aud,map,currentMap,fps,fps_ticks,fps_time,ticks,audio_inited,start_time,max_heartRate,heart_attacks,deathCause,gameOver,gameStarted,gameWin",
+    "^": "Object;canvas,renderer,input,player,screen,aud,map,currentMap,fps,fps_ticks,fps_time,ticks,audio_inited,start_time,max_heartRate,heart_attacks,deathCause,gameOver,gameStarted,gameWin,music_playing",
     start$1: function(_, restarting) {
       var t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39;
       t1 = !restarting;
@@ -845,7 +845,13 @@ var dart = [
         t6 = new M.Sound("../sfx/damage.wav", null, null, false, false, null);
         t6.InitAudio$0();
         t6.LoadSound$0();
-        this.aud = new M.Sfx(false, t9, t8, t7, t6);
+        t6 = new M.Sfx(false, t9, t8, t7, t6, null);
+        t7 = new M.Sound("../sfx/Funky_Chunk.ogg", null, null, false, false, null);
+        t7.InitAudio$0();
+        t7.LoadSound$0();
+        t6.funk = t7;
+        this.aud = t6;
+        this.music_playing = false;
       }
       t2 = new T.Vector3(new Float32Array(H._checkLength(3)));
       t2.setValues$3(0, 0, -1);
@@ -985,6 +991,10 @@ var dart = [
         this.fps_ticks = 0;
         this.fps_time = Date.now();
         P.print("FPS: " + C.JSInt_methods.toString$0(this.fps) + ", render count: " + C.JSInt_methods.toString$0(this.renderer.render_count) + ", batches: " + C.JSInt_methods.toString$0(this.renderer.batchespercycle) + ", batch size: " + C.JSInt_methods.toString$0(this.renderer.batch_size) + ", render time: " + C.JSInt_methods.toString$0(this.renderer.render_time) + " ms");
+      }
+      if (!this.music_playing && $.game.ticks > 100) {
+        this.aud.funk.PlaySound$0();
+        this.music_playing = true;
       }
       if (this.screen.beat === 2)
         $.game.aud.beat.PlaySound$0();
@@ -1169,6 +1179,7 @@ var dart = [
               t3.gameOver = false;
               t3.gameWin = false;
               t3.heart_attacks = 0;
+              t3.max_heartRate = 60;
               t3.start_time = Date.now();
               $.game.start$1(0, true);
             }
@@ -1556,10 +1567,26 @@ var dart = [
         t3 = "Heart attacks: " + C.JSInt_methods.toString$0($.game.heart_attacks);
         t4 = "Heart attack" + C.JSInt_methods.toString$0($.game.heart_attacks);
         t1 = new T.Vector3(new Float32Array(H._checkLength(3)));
-        t1.setValues$3(0 - t4.length * 0.020833333333333336 / 5 - 0.15, 0.04999999999999999, -0.5);
+        t1.setValues$3(0 - t4.length * 0.020833333333333336 / 5 - 0.15, 0.03, -0.5);
         t4 = new T.Vector4(new Float32Array(H._checkLength(4)));
         t4.setValues$4(1, 1, 1, 1);
         M.renderText(t3, t1, 0.025, t4);
+        t1 = $.game.max_heartRate;
+        if (t1 < 600) {
+          t1 = "Max BPM: " + C.JSInt_methods.toString$0(C.JSNumber_methods.toInt$0(Math.floor(t1)));
+          t3 = C.JSInt_methods.toString$0(C.JSNumber_methods.toInt$0(Math.floor($.game.max_heartRate)));
+          t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
+          t4.setValues$3(0 - t3.length * 0.020833333333333336 / 5 - 0.15, 0.09, -0.5);
+          t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+          t3.setValues$4(1, 1, 1, 1);
+          M.renderText(t1, t4, 0.025, t3);
+        } else {
+          t1 = new T.Vector3(new Float32Array(H._checkLength(3)));
+          t1.setValues$3(-0.20833333333333331, 0.09, -0.5);
+          t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+          t3.setValues$4(1, 1, 1, 1);
+          M.renderText("Max BPM: NaNananananana", t1, 0.025, t3);
+        }
         if (C.JSInt_methods.$mod($.game.ticks, 30) >= 15) {
           t1 = Math.sin(H.checkNum(t2.barOffs));
           t3 = new T.Vector3(new Float32Array(H._checkLength(3)));
@@ -2217,11 +2244,11 @@ var dart = [
           t4 = Math.pow(t4 - t5, 2);
           if (Math.sqrt(t3 + t4) < 8) {
             t2.attacking = true;
-            if ($.game.player.attacking) {
+            t3 = $.game;
+            if (t3.player.attacking) {
               t2.health -= 50;
-              H.printString("damage");
               t2.damageticks = 100;
-              $.game.aud.damage.PlaySound$0();
+              t3.aud.damage.PlaySound$0();
             }
           } else
             t2.attacking = false;

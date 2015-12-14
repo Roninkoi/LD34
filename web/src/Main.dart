@@ -42,7 +42,6 @@ int main()
   }
   catch (e) {
     throw e;
-
   }
 }
 

@@ -154,7 +154,13 @@ class Screen {
 
       renderText("You did it in: " + (gameTime - game.start_time).toString() +" milliseconds", new Vector3(0.0 - textLength("You did it in: millisec" + (gameTime - game.start_time).toString() +" se", (0.05) / 2.0)/5.0 - 0.25, 0.1 + 0.08 - 0.22, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
 
-      renderText("Heart attacks: " + (game.heart_attacks).toString(), new Vector3(0.0 - textLength("Heart attack" + (game.heart_attacks).toString(), (0.05) / 2.0)/5.0 - 0.15, 0.1 + 0.08 - 0.13, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
+      renderText("Heart attacks: " + (game.heart_attacks).toString(), new Vector3(0.0 - textLength("Heart attack" + (game.heart_attacks).toString(), (0.05) / 2.0)/5.0 - 0.15, 0.1 + 0.08 - 0.15, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
+
+      if (game.max_heartRate < 600.0) {renderText("Max BPM: " + (game.max_heartRate.floor()).toString(), new Vector3(0.0 - textLength("" + (game.max_heartRate.floor()).toString(), (0.05) / 2.0)/5.0 - 0.15, 0.1 + 0.08 - 0.09, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
+      }
+      else {
+        renderText("Max BPM: NaNananananana", new Vector3(0.0 - textLength("NaNananananana", (0.05) / 2.0)/5.0 - 0.15, 0.1 + 0.08 - 0.09, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
+      }
 
       if (game.ticks%30.0 >= 15.0) renderText("Press right or left arrow to restart.", new Vector3(0.0 - textLength("You're having a heart attack!asdasd  ", (0.05) / 2.0 + sin(barOffs) * 0.05)/5.0 - 0.25, 0.1 + 0.08, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
     }

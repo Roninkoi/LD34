@@ -38,6 +38,8 @@ class Game {
   bool gameStarted = false;
   bool gameWin = false;
 
+  bool music_playing = false;
+
   void start([bool restarting = false])
   {
     if (!restarting) {
@@ -53,6 +55,9 @@ class Game {
       input.keys();
 
       aud = new Sfx();
+      music_playing = false;
+
+      //aud.funk.PlaySoundLoop(239000);
     }
 
       player = new Player();
@@ -61,6 +66,7 @@ class Game {
       loadMap();
 
       start_time = new DateTime.now().millisecondsSinceEpoch;
+
 
       if (!restarting) window.requestAnimationFrame(gameLoop);
   }
@@ -77,8 +83,12 @@ class Game {
 
       print("FPS: " + fps.toString() + ", render count: " + renderer.render_count.toString() + ", batches: " + renderer.batchespercycle.toString() + ", batch size: " + renderer.batch_size.toString() + ", render time: " + renderer.render_time.toString() + " ms");
     }
-
     //screen.gui.fonts.LoadFonts();
+
+    if (!music_playing && game.ticks > 100) {
+      aud.funk.PlaySound();
+      music_playing = true;
+    }
 
     if (screen.beat == 2) {
       game.aud.beat.PlaySound();
