@@ -12,4 +12,4 @@ Music by Kevin MacLeod
 
 PLAY HERE:
 
-https://cdn.rawgit.com/Ronin748/LD34/17a251d7c693ed4959c0b39c39423566d2210d8c/web/src/index.html
+https://cdn.rawgit.com/Ronin748/LD34/71593b35f90f86c1752a601e4cae3a4377ddb892/web/src/index.html
