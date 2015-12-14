@@ -843,7 +843,8 @@ var dart = [
       }
       if (!this.music_playing && $.game.ticks > 120) {
         this.aud.funk.PlaySound$0();
-        this.music_playing = true;
+        if (this.aud.funk.loaded)
+          this.music_playing = true;
       }
       if (this.screen.beat === 2)
         $.game.aud.beat.PlaySound$0();
