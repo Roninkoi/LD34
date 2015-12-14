@@ -3269,7 +3269,7 @@ var dart = [
       req = new XMLHttpRequest();
       t2 = H.setRuntimeTypeInfo(new W._EventStream(req, "load", false), [null]);
       H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new M.Obj_load_closure(t1, req)), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)])._tryResume$0();
-      C.HttpRequest_methods.open$3$async(req, "GET", "Game/Objects.o", false);
+      C.HttpRequest_methods.open$3$async(req, "GET", "game/Objects.o", false);
       req.send();
       new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
       new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
