@@ -11112,7 +11112,7 @@ $.Device__isWebKit = null;
     Isolate.$lazy(fieldName, getterName, lazyValue, staticName);
   }
 })(["tex", "get$tex", function() {
-  return M.Txtr$("../Gfx/Sprites.png");
+  return M.Txtr$("../gfx/Sprites.png");
 }, "tex", "IsolateNatives_thisScript", "get$IsolateNatives_thisScript", function() {
   return H.IsolateNatives_computeThisScript();
 }, "thisScript", "IsolateNatives_workerIds", "get$IsolateNatives_workerIds", function() {
