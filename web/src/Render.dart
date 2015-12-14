@@ -135,7 +135,7 @@ class Render {
       (vertices.x), (vertices.y + vertices.w), pos.z,
       (vertices.x + vertices.z), (vertices.y + vertices.w), pos.z,
       (vertices.x + vertices.z), vertices.y, pos.z,
-      vertices.x, vertices.y, pos.z
+      vertices.x, vertices.y, pos.zasd
     ]);*/
     vertexData.setRange(0 * 3 + 12 * batches, 3 * 4 + 12 * batches, [
       (pos.x), (-(pos.y + s.y) + s.y), pos.z,
