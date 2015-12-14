@@ -616,11 +616,26 @@ var dart = [
         t1.connect($.Sound_gn, 0, 0);
         t1 = this.sourceNode;
         t1.buffer = this.aud_buf;
-        t1.toString;
-        if (!!t1.start)
-          t1.start(0);
-        else
-          t1.noteOn(0);
+        (t1 && C.AudioBufferSourceNode_methods).start$1(t1, 0);
+      } catch (exception) {
+        t1 = H.unwrapException(exception);
+        e = t1;
+        P.print(e);
+      }
+    },
+    PlaySoundLoop$1: function(ms) {
+      var e, t1, exception;
+      if (!this.loaded || $.game.aud.muted || this.started)
+        return;
+      try {
+        t1 = $.Sound_aud_cntxt.createBufferSource();
+        this.sourceNode = t1;
+        t1.connect($.Sound_gn, 0, 0);
+        t1 = this.sourceNode;
+        t1.buffer = this.aud_buf;
+        t1.loop = true;
+        this.started = true;
+        (t1 && C.AudioBufferSourceNode_methods).start$1(t1, 0);
       } catch (exception) {
         t1 = H.unwrapException(exception);
         e = t1;
@@ -842,7 +857,7 @@ var dart = [
         P.print("FPS: " + C.JSInt_methods.toString$0(this.fps) + ", render count: " + C.JSInt_methods.toString$0(this.renderer.render_count) + ", batches: " + C.JSInt_methods.toString$0(this.renderer.batchespercycle) + ", batch size: " + C.JSInt_methods.toString$0(this.renderer.batch_size) + ", render time: " + C.JSInt_methods.toString$0(this.renderer.render_time) + " ms");
       }
       if (!this.music_playing && $.game.ticks > 120) {
-        this.aud.funk.PlaySound$0();
+        this.aud.funk.PlaySoundLoop$1(239999);
         if (this.aud.funk.loaded)
           this.music_playing = true;
       }
@@ -8934,7 +8949,7 @@ var dart = [
     _removeEventListener$3: function(receiver, type, listener, useCapture) {
       return receiver.removeEventListener(type, H.convertDartClosureToJS(listener, 1), useCapture);
     },
-    "%": "AudioBufferSourceNode|AudioDestinationNode|AudioGainNode|AudioNode|AudioSourceNode|GainNode|MediaStream;EventTarget"
+    "%": "MediaStream;EventTarget"
   },
   FormElement: {
     "^": "HtmlElement;length=",
@@ -9427,6 +9442,19 @@ var dart = [
     $isObject: 1,
     "%": "AudioBuffer"
   },
+  AudioBufferSourceNode: {
+    "^": "AudioSourceNode;",
+    start$3: function(receiver, when, grainOffset, grainDuration) {
+      if (!!receiver.start)
+        receiver.start(when);
+      else
+        receiver.noteOn(when);
+    },
+    start$1: function($receiver, when) {
+      return this.start$3($receiver, when, null, null);
+    },
+    "%": "AudioBufferSourceNode"
+  },
   AudioContext: {
     "^": "EventTarget;",
     _decodeAudioData$3: function(receiver, audioData, successCallback, errorCallback) {
@@ -9462,6 +9490,14 @@ var dart = [
       else
         t1.completeError$1(error);
     }
+  },
+  AudioNode: {
+    "^": "EventTarget;",
+    "%": "AudioDestinationNode|AudioGainNode|GainNode;AudioNode"
+  },
+  AudioSourceNode: {
+    "^": "AudioNode;",
+    "%": ";AudioSourceNode"
   }
 }],
 ["dart.dom.web_gl", "dart:web_gl", , P, {
@@ -10663,6 +10699,7 @@ J.vertexAttribPointer$6$x = function(receiver, a0, a1, a2, a3, a4, a5) {
 J.viewport$4$x = function(receiver, a0, a1, a2, a3) {
   return J.getInterceptor$x(receiver).viewport$4(receiver, a0, a1, a2, a3);
 };
+C.AudioBufferSourceNode_methods = P.AudioBufferSourceNode.prototype;
 C.HttpRequest_methods = W.HttpRequest.prototype;
 C.JSArray_methods = J.JSArray.prototype;
 C.JSDouble_methods = J.JSDouble.prototype;

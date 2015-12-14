@@ -85,7 +85,7 @@ class Game {
     }
 
     if (!music_playing && game.ticks > 120) {
-      aud.funk.PlaySound();
+      aud.funk.PlaySoundLoop(239999);
       if (aud.funk.loaded) music_playing = true;
     }
 
