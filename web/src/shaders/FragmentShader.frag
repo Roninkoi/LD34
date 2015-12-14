@@ -9,8 +9,8 @@ uniform float u_a;
 void main()
 {
     vec4 col = texture2D(u_texture, vec2(v_texpos.x, v_texpos.y))*v_col;
-    if (col.a != 0.0) {
-    gl_FragColor = col;
+    if (col.a >= 0.2) {
+    gl_FragColor = col*vec4(1.0, 0.8, 0.6, 1.0);
     }
     else {
     discard;

@@ -13,6 +13,8 @@ class Game {
 
   Screen screen;
 
+  Sfx aud;
+
   Map map;
   int currentMap = 1;
 
@@ -21,6 +23,8 @@ class Game {
   int fps_time = 0;
 
   int ticks = 0;
+
+  bool audio_inited = false;
 
   void start([bool restarting = false])
   {
@@ -40,6 +44,8 @@ class Game {
       player = new Player();
       screen = new Screen();
 
+      aud = new Sfx();
+
       loadMap();
 
       if (!restarting) window.requestAnimationFrame(gameLoop);
@@ -58,6 +64,12 @@ class Game {
       print("FPS: " + fps.toString() + ", render count: " + renderer.render_count.toString() + ", batches: " + renderer.batchespercycle.toString() + ", batch size: " + renderer.batch_size.toString() + ", render time: " + renderer.render_time.toString() + " ms");
     }
 
+    //screen.gui.fonts.LoadFonts();
+
+    if (screen.beat == 2) {
+      game.aud.beat.PlaySound();
+    }
+
     getInput();
 
     gameRender();
@@ -73,6 +85,7 @@ class Game {
     renderer.render_count = 0;
 
     renderer.render_ticks = new DateTime.now().millisecondsSinceEpoch;
+    game.renderer.disableViewTrans = false;
 
     map.draw();
     /*
@@ -99,7 +112,14 @@ class Game {
     game.renderer.draw(new Sprite(tex, new Vector4(0.0, 0.0, 16.0, 16.0), new Vector4(1.0, 1.0, 1.0, 1.0)), new Vector3(0.0, 0.0, -8.0), new Vector2(2.0, 2.0), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
 
 */
+    if (game.ticks%30.0 == 0) {
+      game.renderer.screenshake = 0.0;
+    }
+
     //renderer.render();
+
+    screen.drawGUI();
+
 
     renderer.flushBatch();
 

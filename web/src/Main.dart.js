@@ -499,6 +499,2818 @@ function setupProgram(programData) {
   finishClasses(processedClasses);
 }
 var dart = [
+["LD34", "Main.dart", , M, {
+  "^": "",
+  boolToInt: function(b) {
+    if (b)
+      return 1;
+    else
+      return 0;
+  },
+  main: [function() {
+    var e, t1, exception;
+    try {
+      t1 = new M.Game(null, null, null, null, null, null, null, 1, 0, 0, 0, 0, false);
+      t1.start$0(0);
+      $.game = t1;
+    } catch (exception) {
+      t1 = H.unwrapException(exception);
+      e = t1;
+      throw H.wrapException(e);
+    }
+  }, "call$0", "main$closure", 0, 0, 21],
+  renderText: function(s, pos, size, col) {
+    var t1, t2, t3, t4, i, t5, t6, t7, t8, t9, t10, t11;
+    for (t1 = s.length, t2 = size * 1.5, t3 = pos.storage, t4 = size / 1.2, i = 0; i < t1; ++i) {
+      t5 = C.JSNumber_methods.toInt$0(Math.floor((C.JSString_methods.codeUnitAt$1(s, i) - 32) / 16));
+      t6 = C.JSInt_methods.$mod(C.JSString_methods.codeUnitAt$1(s, i) - 32, 16);
+      t7 = $.game.renderer;
+      t8 = $.get$tex();
+      t9 = new Float32Array(4);
+      t9[3] = 9;
+      t9[2] = 6;
+      t9[1] = t5 * 9;
+      t9[0] = t6 * 6 + 160;
+      t5 = new Float32Array(4);
+      t5[3] = 0;
+      t5[2] = 0;
+      t5[1] = 0;
+      t5[0] = 0;
+      t5 = new Float32Array(4);
+      t5[3] = 1;
+      t5[2] = 1;
+      t5[1] = 1;
+      t5[0] = 1;
+      t5 = t3[0];
+      t6 = t3[1];
+      t10 = t3[2];
+      t11 = new Float32Array(3);
+      t11[0] = t5 + i * t4;
+      t11[1] = t6;
+      t11[2] = t10;
+      t5 = new Float32Array(2);
+      t5[0] = size;
+      t5[1] = t2;
+      t6 = new Float32Array(3);
+      t6[0] = 0;
+      t6[1] = 0;
+      t6[2] = 0;
+      t10 = new Float32Array(3);
+      t10[0] = 0;
+      t10[1] = 0;
+      t10[2] = 0;
+      t7._batch$7(t8, new T.Vector3(t11), new T.Vector2(t5), new T.Vector4(t9), new T.Vector3(t6), new T.Vector3(t10), col);
+    }
+  },
+  collision2d: function(rect1, rect2) {
+    var t1, t2, t3, t4;
+    t1 = rect1.storage;
+    t2 = t1[0];
+    t3 = t1[2];
+    rect2 = rect2.storage;
+    t4 = rect2[0];
+    if (t2 + t3 >= t4 && t2 <= t4 + rect2[2]) {
+      t2 = t1[1];
+      t1 = t1[3];
+      t3 = rect2[1];
+      t1 = t2 + t1 >= t3 && t2 <= t3 + rect2[3];
+    } else
+      t1 = false;
+    if (t1)
+      return true;
+    else
+      return false;
+  },
+  parseId: function(s, id) {
+    var t1, b, r, done, i, t2;
+    t1 = s.length;
+    b = "";
+    r = false;
+    done = false;
+    i = 0;
+    while (true) {
+      if (!(i < t1 && !done))
+        break;
+      if (i >= t1)
+        return H.ioore(s, i);
+      t2 = s[i];
+      if (t2 === ">")
+        r = false;
+      if (r)
+        b += t2;
+      if (t2 === "<")
+        r = true;
+      if (M.stringToInt(b) === id)
+        done = true;
+      else if (!r)
+        b = "";
+      ++i;
+    }
+    return done ? i : -1;
+  },
+  parseString: function(s, i) {
+    var t1, done, r, b, t2;
+    t1 = s.length;
+    done = false;
+    r = false;
+    b = "";
+    while (true) {
+      if (!(i < t1 && !done))
+        break;
+      if (i < 0 || i >= t1)
+        return H.ioore(s, i);
+      t2 = s[i];
+      if (t2 === "]") {
+        done = true;
+        r = false;
+      }
+      if (r)
+        b += t2;
+      if (t2 === "[")
+        r = true;
+      ++i;
+    }
+    return new M.ParseReturn(i, b);
+  },
+  parseVec4: function(s) {
+    var t1, returns, t2, t3, i, r, done, b, vec_i, t4, t5;
+    t1 = new Float32Array(H._checkLength(4));
+    returns = new T.Vector4(t1);
+    returns.setValues$4(0, 0, 0, 0);
+    for (t2 = s.length, t3 = t2 - 1, i = 0, r = false, done = false, b = "", vec_i = 0; i < t2; ++i) {
+      t4 = s[i];
+      t5 = t4 !== " ";
+      if ((!t5 || t4 === ",") && r) {
+        r = false;
+        done = true;
+      }
+      if (t5 && t4 !== ",")
+        r = true;
+      if (r)
+        b += t4;
+      t4 = !r;
+      if (t4 && done || t3 === i) {
+        t5 = M.parseDouble(b);
+        if (vec_i >= 4)
+          return H.ioore(t1, vec_i);
+        t1[vec_i] = t5;
+        ++vec_i;
+      }
+      if (t4) {
+        done = false;
+        b = "";
+      }
+    }
+    return returns;
+  },
+  parseDouble: function(s) {
+    var t1, d, num, neg, j, t2, n, end;
+    for (t1 = s.length, d = 0, num = "", neg = false, j = 0; j < t1; ++j) {
+      if (j < 0)
+        return H.ioore(s, j);
+      t2 = s[j];
+      if (t2 === "-")
+        neg = true;
+      if (t2 !== ".")
+        num += t2;
+      d = M.stringToInt(num);
+      if (s[j] === ".") {
+        d = M.stringToInt(num);
+        ++j;
+        for (num = "", n = 0, end = false; j < t1; ++j) {
+          t2 = s[j];
+          end = t2 !== "0" || end;
+          num += t2;
+          ++n;
+        }
+        t2 = M.stringToInt(num);
+        d += t2 / Math.pow(10, n);
+      }
+    }
+    return neg ? -d : d;
+  },
+  stringToInt: function(s) {
+    var t1, t2, returns, n, number;
+    for (t1 = s.length, t2 = t1 - 1, returns = 0, n = 0; n < t1; ++n) {
+      switch (s[n]) {
+        case "0":
+          number = 0;
+          break;
+        case "1":
+          number = 1;
+          break;
+        case "2":
+          number = 2;
+          break;
+        case "3":
+          number = 3;
+          break;
+        case "4":
+          number = 4;
+          break;
+        case "5":
+          number = 5;
+          break;
+        case "6":
+          number = 6;
+          break;
+        case "7":
+          number = 7;
+          break;
+        case "8":
+          number = 8;
+          break;
+        case "9":
+          number = 9;
+          break;
+        default:
+          number = 0;
+      }
+      returns += Math.pow(10, t2 - n) * number;
+    }
+    return returns;
+  },
+  random_interval: function(min, max) {
+    return C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), max - min + 1) + min);
+  },
+  Sound: {
+    "^": "Object;path,rq,aud_buf,loaded,started,sourceNode",
+    LoadSound$0: function() {
+      var e, t1, exception;
+      try {
+        t1 = new XMLHttpRequest();
+        this.rq = t1;
+        t1.responseType = "arraybuffer";
+        t1 = H.setRuntimeTypeInfo(new W._EventStream(t1, "load", false), [null]);
+        H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(this.get$sampleLoaded()), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
+        t1 = this.rq;
+        (t1 && C.HttpRequest_methods).open$3$async(t1, "GET", this.path, true);
+        this.rq.send();
+      } catch (exception) {
+        t1 = H.unwrapException(exception);
+        e = t1;
+        P.print(e);
+      }
+    },
+    sampleLoaded$1: [function(e) {
+      J.decodeAudioData$1$x($.Sound_aud_cntxt, W._convertNativeToDart_XHR_Response(this.rq.response)).then$1(new M.Sound_sampleLoaded_closure(this));
+    }, "call$1", "get$sampleLoaded", 2, 0, 0],
+    PlaySound$0: function() {
+      var e, t1, exception;
+      if (!this.loaded || $.game.aud.muted)
+        return;
+      try {
+        t1 = $.Sound_aud_cntxt.createBufferSource();
+        this.sourceNode = t1;
+        t1.connect($.Sound_gn, 0, 0);
+        t1 = this.sourceNode;
+        t1.buffer = this.aud_buf;
+        t1.toString;
+        if (!!t1.start)
+          t1.start(0);
+        else
+          t1.noteOn(0);
+      } catch (exception) {
+        t1 = H.unwrapException(exception);
+        e = t1;
+        P.print(e);
+      }
+    },
+    InitAudio$0: function() {
+      var t1 = new (window.AudioContext || window.webkitAudioContext)();
+      $.Sound_aud_cntxt = t1;
+      t1 = J.createGain$0$x(t1);
+      $.Sound_gn = t1;
+      t1.connect($.Sound_aud_cntxt.destination, 0, 0);
+    }
+  },
+  Sound_sampleLoaded_closure: {
+    "^": "Closure:1;_LD34$_captured_this_0",
+    call$1: function(e) {
+      var t1 = this._LD34$_captured_this_0;
+      t1.aud_buf = e;
+      t1.loaded = true;
+    }
+  },
+  Sfx: {
+    "^": "Object;muted,hurt,beat"
+  },
+  Game: {
+    "^": "Object;canvas,renderer,input,player,screen,aud,map,currentMap,fps,fps_ticks,fps_time,ticks,audio_inited",
+    start$1: function(_, restarting) {
+      var t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36;
+      t1 = !restarting;
+      if (t1) {
+        t2 = document.querySelector("#game");
+        this.canvas = t2;
+        t2 = J.getContext$2$x(t2, "webgl", P.LinkedHashMap_LinkedHashMap$_literal(["antialias", false, "depth", true], null, null));
+        $.gl = t2;
+        J.viewport$4$x(t2, 0, 0, J.get$width$x(this.canvas), J.get$height$x(this.canvas));
+        J.clearColor$4$x($.gl, 0, 0, 0, 1);
+        J.clear$1$ax($.gl, 16640);
+        t2 = new T.Matrix4(new Float32Array(H._checkLength(16)));
+        t2.setIdentity$0();
+        t3 = new T.Matrix4(new Float32Array(H._checkLength(16)));
+        t3.setIdentity$0();
+        t4 = new T.Matrix4(new Float32Array(H._checkLength(16)));
+        t4.setIdentity$0();
+        t5 = M.Txtr$("");
+        t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t6.setValues$3(0, 0, 0);
+        t7 = new T.Vector4(new Float32Array(H._checkLength(4)));
+        t7.setValues$4(0, 0, 0, 0);
+        t8 = new T.Vector4(new Float32Array(H._checkLength(4)));
+        t8.setValues$4(0, 0, 0, 0);
+        t9 = new Float32Array(H._checkLength(2));
+        t9[0] = 0;
+        t9[1] = 0;
+        t9 = new M.Render(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, t2, t3, t4, null, null, null, null, 1024, 0, false, 1.5, 0, 0, 0, 0, t5, t6, t7, t8, 0, new T.Vector2(t9), false);
+        t8 = new M.GameShader(null);
+        t8.ShaderFromFile$2("shaders/VertexShader.vert", "shaders/FragmentShader.frag");
+        t9.shader = t8;
+        t9.initQuad$0();
+        this.renderer = t9;
+        t9 = new M.Input(P.List_List$filled(256, false, null), P.List_List$filled(256, false, null), false, false, false, false, false, false);
+        this.input = t9;
+        t9.keys$0();
+      }
+      t2 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t2.setValues$3(0, 0, -1);
+      t3 = new Float32Array(H._checkLength(2));
+      t3[0] = 0;
+      t3[1] = 0;
+      t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t4.setValues$3(0, 0, 0);
+      t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t5.setValues$3(0, 0, 0);
+      t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t6.setValues$3(0, 0, 0);
+      t7 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t7.setValues$3(0, 0, 0);
+      t8 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t8.setValues$3(0, 0, 0);
+      t9 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t9.setValues$3(0, 0, 0);
+      t9 = new M.Phys(t4, t5, false, false, false, t6, t7, t8, t9, 1);
+      t3 = new M.Player(t2, new T.Vector2(t3), t9, 0.9, false, false, false, false, 0, 100, 100, 60);
+      t2 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t2.setValues$3(-6, 0, -2);
+      t9.pos = t2;
+      t2 = new Float32Array(H._checkLength(2));
+      t2[0] = 0;
+      t2[1] = 3.9269908169872414;
+      t3.rot = new T.Vector2(t2);
+      this.player = t3;
+      t3 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t3.setValues$3(0, 0, 0);
+      t2 = $.get$tex();
+      t9 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t9.setValues$4(0, 36, 1, 1);
+      t8 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t8.setValues$4(1, 1, 1, 1);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+      t7 = $.get$tex();
+      t6 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t6.setValues$4(0, 39, 29, 11);
+      t5 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t5.setValues$4(1, 1, 1, 1);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+      t4 = $.get$tex();
+      t10 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t10.setValues$4(1, 53, 35, 7);
+      t11 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t11.setValues$4(1, 1, 1, 1);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+      t12 = $.get$tex();
+      t13 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t13.setValues$4(3, 62, 31, 3);
+      t14 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t14.setValues$4(1, 1, 1, 1);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+      t15 = $.get$tex();
+      t16 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t16.setValues$4(123, 2, 9, 53);
+      t17 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t17.setValues$4(1, 1, 1, 1);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+      t18 = $.get$tex();
+      t19 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t19.setValues$4(135, 5, 3, 47);
+      t20 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t20.setValues$4(1, 1, 1, 1);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+      t21 = $.get$tex();
+      t22 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t22.setValues$4(150, 2, 9, 53);
+      t23 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t23.setValues$4(1, 1, 1, 1);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+      t24 = $.get$tex();
+      t25 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t25.setValues$4(142, 5, 3, 47);
+      t26 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t26.setValues$4(1, 1, 1, 1);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+      t27 = $.get$tex();
+      t28 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t28.setValues$4(7, 81, 128, 75);
+      t29 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t29.setValues$4(1, 1, 1, 1);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+      t30 = $.get$tex();
+      t31 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t31.setValues$4(79, 31, 1, 1);
+      t32 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t32.setValues$4(0.2, 0.3, 0.49999999999999994, 0.9);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+      t33 = $.get$tex();
+      t34 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t34.setValues$4(42, 41, 9, 8);
+      t35 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t35.setValues$4(1, 1, 1, 1);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+      t36 = new Float32Array(H._checkLength(2));
+      t36[0] = 0;
+      t36[1] = 0;
+      this.screen = new M.Screen(t3, 1024, 600, new M.GUI(new M.Sprite(t2, t9, t8), new M.Sprite(t7, t6, t5), new M.Sprite(t4, t10, t11), new M.Sprite(t12, t13, t14), new M.Sprite(t15, t16, t17), new M.Sprite(t18, t19, t20), new M.Sprite(t21, t22, t23), new M.Sprite(t24, t25, t26), new M.Sprite(t27, t28, t29), new M.Sprite(t30, t31, t32), new M.Sprite(t33, t34, t35), new M.Text()), 0, new T.Vector2(t36), false, 0, 0, false, false, 0, 0, 0, 0, 0, 60);
+      t36 = new M.Sound("../sfx/hurt.wav", null, null, false, false, null);
+      t36.InitAudio$0();
+      t36.LoadSound$0();
+      t35 = new M.Sound("../sfx/beat.wav", null, null, false, false, null);
+      t35.InitAudio$0();
+      t35.LoadSound$0();
+      this.aud = new M.Sfx(false, t36, t35);
+      this.map = M.Map$("Map" + C.JSInt_methods.toString$0(this.currentMap) + ".m");
+      if (t1) {
+        t1 = window;
+        t2 = this.get$gameLoop();
+        C.Window_methods._ensureRequestAnimationFrame$0(t1);
+        C.Window_methods._requestAnimationFrame$1(t1, W._wrapZone(t2));
+      }
+    },
+    start$0: function($receiver) {
+      return this.start$1($receiver, false);
+    },
+    gameLoop$1: [function(time) {
+      var t1, t2, t3, t4, t5, t6, t7, t8;
+      ++this.ticks;
+      ++this.fps_ticks;
+      if (Date.now() - this.fps_time >= 1000) {
+        this.fps = this.fps_ticks;
+        this.fps_ticks = 0;
+        this.fps_time = Date.now();
+        P.print("FPS: " + C.JSInt_methods.toString$0(this.fps) + ", render count: " + C.JSInt_methods.toString$0(this.renderer.render_count) + ", batches: " + C.JSInt_methods.toString$0(this.renderer.batchespercycle) + ", batch size: " + C.JSInt_methods.toString$0(this.renderer.batch_size) + ", render time: " + C.JSInt_methods.toString$0(this.renderer.render_time) + " ms");
+      }
+      if (this.screen.beat === 2)
+        $.game.aud.beat.PlaySound$0();
+      t1 = $.game;
+      t2 = t1.input;
+      t2.x_input = false;
+      t2.y_input = false;
+      t2.z_input = false;
+      t3 = t1.player;
+      t3.moving = false;
+      t3.attacking = false;
+      t2 = t2.keydown;
+      if (t2[32] === true)
+        if (!t3.jumping) {
+          t3.jumping = true;
+          t3.phys.v.storage[1] = -0.14;
+        }
+      t4 = t2[39] === true;
+      if (!(t4 && t2[37] === true)) {
+        if (t4) {
+          t1 = t3.rot.storage;
+          t1[1] = t1[1] + 0.01;
+          t3.moving = true;
+          t3 = t3.phys.v.storage;
+          t2 = t3[2];
+          t1 = Math.cos(H.checkNum(t1[1]));
+          t4 = $.game.player;
+          t3[2] = t2 + 0.03 * t1 * (1 + M.boolToInt(t4.jumping));
+          t1 = t4.phys.v.storage;
+          t2 = t1[0];
+          t4 = Math.sin(H.checkNum(t4.rot.storage[1]));
+          t3 = $.game;
+          t1[0] = t2 + 0.03 * t4 * (1 + M.boolToInt(t3.player.jumping));
+          t1 = t3;
+        }
+        if (t1.input.keydown[37] === true) {
+          t1 = t1.player;
+          t2 = t1.rot.storage;
+          t2[1] = t2[1] - 0.01;
+          t1.moving = true;
+          t1 = t1.phys.v.storage;
+          t3 = t1[2];
+          t2 = Math.cos(H.checkNum(t2[1]));
+          t4 = $.game.player;
+          t1[2] = t3 + 0.03 * t2 * (1 + M.boolToInt(t4.jumping));
+          t2 = t4.phys.v.storage;
+          t3 = t2[0];
+          t4 = Math.sin(H.checkNum(t4.rot.storage[1]));
+          t1 = $.game;
+          t2[0] = t3 + 0.03 * t4 * (1 + M.boolToInt(t1.player.jumping));
+        }
+      }
+      t2 = t1.input;
+      t3 = t2.keydown;
+      if (t3[39] === true && t3[37] === true) {
+        t1 = t1.player;
+        t1.swingcharge = P.min(t1.swingcharge + 0.02, 1);
+        t1 = $.game;
+        t2 = t1.input;
+        if (t2.swing && t1.player.swingcharge === 1) {
+          t2.swing = false;
+          t1.player.attacking = true;
+        }
+      } else {
+        t2.swing = true;
+        t1.player.swingcharge = 0;
+      }
+      t2 = t1.input.keydown;
+      if (t2[38] === true && t1.player.rot.storage[0] > -0.5235987755982988) {
+        t3 = t1.player.rot.storage;
+        t3[0] = t3[0] - 0.05;
+      }
+      if (t2[40] === true && t1.player.rot.storage[0] < 0.5235987755982988) {
+        t3 = t1.player.rot.storage;
+        t3[0] = t3[0] + 0.05;
+      }
+      if (t2[68] === true) {
+        t1 = t1.player;
+        t1.moving = true;
+        t2 = t1.phys.v.storage;
+        t3 = t2[2];
+        t1 = Math.cos(H.checkNum(t1.rot.storage[1] + 1.5707963267948966));
+        t4 = $.game.player;
+        t2[2] = t3 + 0.03 * t1 * (1 + M.boolToInt(t4.jumping));
+        t1 = t4.phys.v.storage;
+        t3 = t1[0];
+        t4 = Math.sin(H.checkNum(t4.rot.storage[1] + 1.5707963267948966));
+        t2 = $.game;
+        t1[0] = t3 + 0.03 * t4 * (1 + M.boolToInt(t2.player.jumping));
+        t1 = t2;
+      }
+      if (t1.input.keydown[65] === true) {
+        t1 = t1.player;
+        t1.moving = true;
+        t2 = t1.phys.v.storage;
+        t3 = t2[2];
+        t1 = Math.cos(H.checkNum(t1.rot.storage[1] + 1.5707963267948966));
+        t4 = $.game.player;
+        t2[2] = t3 + -0.03 * t1 * (1 + M.boolToInt(t4.jumping));
+        t1 = t4.phys.v.storage;
+        t3 = t1[0];
+        t4 = Math.sin(H.checkNum(t4.rot.storage[1] + 1.5707963267948966));
+        t2 = $.game;
+        t1[0] = t3 + -0.03 * t4 * (1 + M.boolToInt(t2.player.jumping));
+        t1 = t2;
+      }
+      if (t1.input.keydown[87] === true) {
+        t1 = t1.player;
+        t1.moving = true;
+        t2 = t1.phys.v.storage;
+        t3 = t2[2];
+        t1 = Math.cos(H.checkNum(t1.rot.storage[1]));
+        t4 = $.game.player;
+        t2[2] = t3 + 0.03 * t1 * (1 + M.boolToInt(t4.jumping));
+        t1 = t4.phys.v.storage;
+        t3 = t1[0];
+        t4 = Math.sin(H.checkNum(t4.rot.storage[1]));
+        t2 = $.game;
+        t1[0] = t3 + 0.03 * t4 * (1 + M.boolToInt(t2.player.jumping));
+        t1 = t2;
+      }
+      if (t1.input.keydown[83] === true) {
+        t1 = t1.player;
+        t1.moving = true;
+        t2 = t1.phys.v.storage;
+        t3 = t2[2];
+        t1 = Math.cos(H.checkNum(t1.rot.storage[1]));
+        t4 = $.game.player;
+        t2[2] = t3 + -0.03 * t1 * (1 + M.boolToInt(t4.jumping));
+        t1 = t4.phys.v.storage;
+        t3 = t1[0];
+        t4 = Math.sin(H.checkNum(t4.rot.storage[1]));
+        t2 = $.game;
+        t1[0] = t3 + -0.03 * t4 * (1 + M.boolToInt(t2.player.jumping));
+        t1 = t2;
+      }
+      t2 = t1.input.keydown;
+      if (t2[16] === true) {
+        t3 = t1.player;
+        t4 = t3.phys.v.storage;
+        t4[1] = t4[1] - 0.02;
+        t3.flying = true;
+      }
+      if (t2[17] === true) {
+        t3 = t1.player;
+        t4 = t3.phys.pos.storage;
+        t4[1] = t4[1] + 0.05;
+        t3.flying = true;
+      }
+      if (t2[82] === true)
+        t1.start$1(0, true);
+      t1 = $.game.player;
+      t1.collisions$0();
+      t2 = 60 / P.max(0.1, t1.stamina / 100);
+      t1.bpm = t2;
+      if (t2 > 200)
+        $.game.renderer.screenshake = 0.2;
+      t3 = t1.stamina;
+      if (t3 < 100) {
+        t3 += 0.1;
+        t1.stamina = t3;
+      }
+      if (t1.moving) {
+        t3 -= 0.15;
+        t1.stamina = t3;
+      }
+      if (t1.attacking)
+        t1.stamina = t3 - 14;
+      t2 = t1.health - P.max(0, t2 / 200 - 1);
+      t1.health = t2;
+      if (t2 < 100)
+        t1.health = t2 + 0.05;
+      t2 = t1.phys;
+      t3 = t1.spd;
+      t4 = t2.v.storage;
+      t4[0] = t3 * t4[0] * P.max(0.8, t1.stamina / 100);
+      t4[2] = t3 * t4[2] * P.max(0.8, t1.stamina / 100);
+      t2.x_mov = false;
+      t2.y_mov = false;
+      t2.z_mov = false;
+      t3 = t2.pos.storage;
+      t5 = t3[0];
+      t6 = t3[1];
+      t3 = t3[2];
+      t7 = new Float32Array(H._checkLength(3));
+      t8 = new T.Vector3(t7);
+      t8.setValues$3(t5, t6, t3);
+      t2.pos_old = t8;
+      t8 = t2.a.storage;
+      t4[0] = t4[0] + t8[0];
+      t4[1] = t4[1] + t8[1];
+      t4[2] = t4[2] + t8[2];
+      t8 = t2.pos.storage;
+      t8[0] = t8[0] + t4[0];
+      t8[1] = t8[1] + t4[1];
+      t8[2] = t8[2] + t4[2];
+      if (t8[0] !== t7[0])
+        t2.x_mov = true;
+      if (t8[1] !== t7[1])
+        t2.y_mov = true;
+      if (t8[2] !== t7[2])
+        t2.z_mov = true;
+      t3 = t4[0];
+      t5 = t4[1];
+      t4 = t4[2];
+      t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t6.setValues$3(t3, t5, t4);
+      t2.v_old = t6;
+      t1.pos = t2.pos_old;
+      t1.health = P.max(0, t1.health);
+      t1.stamina = P.max(0, t1.stamina);
+      J.clear$1$ax($.gl, 16640);
+      t1 = this.renderer;
+      t1.flush = true;
+      t1.batchespercycle = 0;
+      t1.render_count = 0;
+      t1.render_ticks = Date.now();
+      $.game.renderer.disableViewTrans = false;
+      this.map.draw$0();
+      t1 = $.game;
+      if (C.JSInt_methods.$mod(t1.ticks, 30) === 0)
+        t1.renderer.screenshake = 0;
+      t2 = this.screen;
+      t2.toString;
+      t1.renderer.flushBatch$0();
+      $.game.renderer.disableViewTrans = true;
+      t1 = -Math.abs(Math.sin(H.checkNum(++t2.walkerticks / 10)) * 0.2);
+      t2.walkerbop = t1;
+      t3 = $.game.player;
+      t4 = t3.moving;
+      if (t4)
+        t2.moving = true;
+      if ((!t4 || t3.attacking) && t1 < 0.01 && t1 > -0.01)
+        t2.moving = false;
+      if (!t2.moving) {
+        t2.walkerbop = 0;
+        t2.walkerticks = 0;
+      }
+      t1 = t2.swingticks;
+      t3 = t1 > 3.141592653589793;
+      if (t3) {
+        t4 = t2.walkerswing.storage[0];
+        t4 = t4 < 0.05 && t4 > -0.05;
+      } else
+        t4 = false;
+      if (t4)
+        t2.walkerswing.storage[0] = 0;
+      if (t3) {
+        t3 = t2.walkerswing.storage[1];
+        t3 = t3 < 0.05 && t3 > -0.05;
+      } else
+        t3 = false;
+      if (t3)
+        t2.walkerswing.storage[1] = 0;
+      t3 = t2.walkerswing.storage;
+      t4 = t3[0];
+      if (t4 === 0 && t3[1] === 0) {
+        t2.swingticks = 0.16666666666666666;
+        t2.swinging = false;
+        t1 = 0.16666666666666666;
+      }
+      t1 += 0.16666666666666666;
+      t2.swingticks = t1;
+      if (t1 <= 3.141592653589793 || t4 !== 0)
+        t3[0] = Math.cos(H.checkNum(t1));
+      t1 = t2.swingticks;
+      if (t1 <= 3.141592653589793 || t2.walkerswing.storage[1] !== 0)
+        t2.walkerswing.storage[1] = -Math.abs(Math.sin(H.checkNum(t1)) * 0.5);
+      t1 = $.game;
+      t3 = t1.player;
+      if (t3.swingcharge === 1) {
+        t2.swinging = true;
+        t1.input.swing = true;
+        t3.swingcharge = 0;
+      }
+      if (!t2.swinging) {
+        t1 = new Float32Array(H._checkLength(2));
+        t1[0] = 0;
+        t1[1] = 0;
+        t2.walkerswing = new T.Vector2(t1);
+      }
+      t1 = $.game.renderer;
+      t3 = t2.gui;
+      t4 = t3.target;
+      t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t5.setValues$3(0, 0, -1);
+      t6 = new Float32Array(H._checkLength(2));
+      t6[0] = 0.01;
+      t6[1] = 0.01;
+      t7 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t7.setValues$3(0, 0, 0);
+      t8 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t8.setValues$3(0, 0, 0);
+      t1._batch$7(t4.tex, t5, new T.Vector2(t6), t4.sprite, t7, t8, t4.col);
+      t4 = $.game.renderer;
+      t8 = t3.walker;
+      t7 = t2.walkerswing.storage;
+      t6 = t7[0];
+      t5 = t2.walkerbop;
+      t7 = t7[1];
+      t1 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t1.setValues$3(-1 + t6, 0.7 + t5 + t7, -2);
+      t7 = new Float32Array(H._checkLength(2));
+      t7[0] = 2;
+      t7[1] = 1;
+      t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t5.setValues$3(0, 0, 0);
+      t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t6.setValues$3(0, 0, 0);
+      t4._batch$7(t8.tex, t1, new T.Vector2(t7), t8.sprite, t5, t6, t8.col);
+      t1 = $.game;
+      t4 = t1.input.keydown;
+      t5 = t4[39];
+      if (t5 === true && t2.barOffs > -1.5707963267948966)
+        t2.barOffs -= 0.1;
+      t4 = t4[37];
+      if (t4 === true && t2.barOffs < 1.5707963267948966)
+        t2.barOffs += 0.1;
+      if (t4 !== true && t5 !== true) {
+        t4 = t2.barOffs;
+        if (t4 < 0) {
+          t4 += 0.1;
+          t2.barOffs = t4;
+        }
+        if (t4 > 0)
+          t2.barOffs = t4 - 0.1;
+      }
+      if (t1.player.swingcharge > 0.1) {
+        t1 = t1.renderer;
+        t4 = t3.swingometer;
+        t5 = Math.sin(H.checkNum(t2.barOffs));
+        t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t6.setValues$3(-0.4 + t5 * 0.05, -0.3, -1);
+        t5 = new Float32Array(H._checkLength(2));
+        t5[0] = 0.8;
+        t5[1] = 0.15;
+        t7 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t7.setValues$3(0, 0, 0);
+        t8 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t8.setValues$3(0, 0, 0);
+        t1._batch$7(t4.tex, t6, new T.Vector2(t5), t4.sprite, t7, t8, t4.col);
+        t4 = $.game.renderer;
+        t8 = t3.swingbar;
+        t7 = Math.sin(H.checkNum(t2.barOffs));
+        t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t5.setValues$3(-0.36285714199999997 + t7 * 0.05, -0.257142858, -1);
+        t7 = P.max(0, 0.885714299 * ($.game.player.swingcharge / 1) - 0.15);
+        t6 = new Float32Array(H._checkLength(2));
+        t6[0] = t7;
+        t6[1] = 0.0642857;
+        t7 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t7.setValues$3(0, 0, 0);
+        t1 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t1.setValues$3(0, 0, 0);
+        t4._batch$7(t8.tex, t5, new T.Vector2(t6), t8.sprite, t7, t1, t8.col);
+      }
+      t1 = $.game.renderer;
+      t4 = t3.staminaometer;
+      t5 = Math.sin(H.checkNum(t2.barOffs));
+      t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t6.setValues$3(-0.9 + t5 * 0.05, -0.5, -1);
+      t5 = new Float32Array(H._checkLength(2));
+      t5[0] = 0.2;
+      t5[1] = 1;
+      t7 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t7.setValues$3(0, 0, 0);
+      t8 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t8.setValues$3(0, 0, 0);
+      t1._batch$7(t4.tex, t6, new T.Vector2(t5), t4.sprite, t7, t8, t4.col);
+      t4 = $.game.renderer;
+      t8 = t3.staminabar;
+      t7 = Math.sin(H.checkNum(t2.barOffs));
+      t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t5.setValues$3(-0.8400000000000001 + t7 * 0.05, 0.5, -1);
+      t7 = $.game.player.stamina;
+      t6 = new Float32Array(H._checkLength(2));
+      t6[0] = 0.09;
+      t6[1] = 0.99 * (-t7 / 100);
+      t7 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t7.setValues$3(0, 0, 0);
+      t1 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t1.setValues$3(0, 0, 0);
+      t4._batch$7(t8.tex, t5, new T.Vector2(t6), t8.sprite, t7, t1, t8.col);
+      t8 = $.game.renderer;
+      t1 = t3.healthometer;
+      t7 = Math.sin(H.checkNum(t2.barOffs));
+      t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t6.setValues$3(0.7 + t7 * 0.05, -0.5, -1);
+      t7 = new Float32Array(H._checkLength(2));
+      t7[0] = 0.2;
+      t7[1] = 1;
+      t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t5.setValues$3(0, 0, 0);
+      t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t4.setValues$3(0, 0, 0);
+      t8._batch$7(t1.tex, t6, new T.Vector2(t7), t1.sprite, t5, t4, t1.col);
+      t1 = $.game.renderer;
+      t4 = t3.healthbar;
+      t5 = Math.sin(H.checkNum(t2.barOffs));
+      t7 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t7.setValues$3(0.76 + t5 * 0.05, 0.5, -1);
+      t5 = P.max(0, 0.99);
+      t6 = $.game.player.health;
+      t8 = new Float32Array(H._checkLength(2));
+      t8[0] = 0.09;
+      t8[1] = t5 * (-t6 / 100);
+      t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t6.setValues$3(0, 0, 0);
+      t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t5.setValues$3(0, 0, 0);
+      t1._batch$7(t4.tex, t7, new T.Vector2(t8), t4.sprite, t6, t5, t4.col);
+      t4 = $.game.renderer;
+      t5 = t3.heart;
+      t6 = Math.sin(H.checkNum(t2.barOffs));
+      t8 = t2.beat * 0.01;
+      t7 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t7.setValues$3(-0.3 + t6 * 0.05 - t8, -0.5 - t8, -1);
+      t8 = t2.beat * 0.02;
+      t6 = new Float32Array(H._checkLength(2));
+      t6[0] = 0.132 + t8;
+      t6[1] = 0.12 + t8;
+      t8 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t8.setValues$3(0, 0, 0);
+      t1 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t1.setValues$3(0, 0, 0);
+      t4._batch$7(t5.tex, t7, new T.Vector2(t6), t5.sprite, t8, t1, t5.col);
+      if (t2.titlebg) {
+        t1 = $.game.renderer;
+        t3 = t3.titlebg;
+        t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t4.setValues$3(-2, -2, -0.5);
+        t5 = new Float32Array(H._checkLength(2));
+        t5[0] = 10;
+        t5[1] = 10;
+        t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t6.setValues$3(0, 0, 0);
+        t7 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t7.setValues$3(0, 0, 0);
+        t1._batch$7(t3.tex, t4, new T.Vector2(t5), t3.sprite, t6, t7, t3.col);
+      }
+      t1 = $.game;
+      if (C.JSInt_methods.$mod(t1.ticks, 180) === 0)
+        t2.bpm = t1.player.bpm;
+      if (C.JSInt_methods.$mod(++t2.beats, C.JSNumber_methods.toInt$0(Math.floor(60 / t2.bpm * 60))) <= 3)
+        t2.beat = 2;
+      else
+        t2.beat = 0;
+      t1 = C.JSInt_methods.toString$0(C.JSNumber_methods.toInt$0(Math.floor($.game.player.bpm))) + " BPM";
+      t3 = Math.sin(H.checkNum(t2.barOffs));
+      t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t4.setValues$3(-0.1 + t3 * 0.05, -0.48, -1);
+      t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t3.setValues$4(0.5, 0, 0, 1);
+      M.renderText(t1, t4, 0.06, t3);
+      t1 = $.game;
+      if (t1.player.bpm >= 150 && C.JSInt_methods.$mod(t1.ticks, 30) <= 20) {
+        t1 = Math.sin(H.checkNum(t2.barOffs));
+        t3 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t3.setValues$3(-0.6041666666666667 + t1 * 0.05, 0.1, -1);
+        t1 = new T.Vector4(new Float32Array(H._checkLength(4)));
+        t1.setValues$4(1, 0.7, 0, 1);
+        M.renderText("You're having a heart attack!", t3, 0.05, t1);
+      }
+      if (t2.coldticks > 0 && C.JSInt_methods.$mod($.game.ticks, 30) <= 20) {
+        t1 = Math.sin(H.checkNum(t2.barOffs));
+        t3 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t3.setValues$3(-0.5625000000000001 + t1 * 0.05, 0.1, -1);
+        t1 = new T.Vector4(new Float32Array(H._checkLength(4)));
+        t1.setValues$4(1, 0.7, 0, 1);
+        M.renderText("You're going to get a cold!", t3, 0.05, t1);
+      }
+      t1 = t2.coldticks;
+      if (t1 >= 0)
+        t2.coldticks = t1 - 1;
+      if (t2.attackticks > 0 && C.JSInt_methods.$mod($.game.ticks, 30) <= 20) {
+        t1 = Math.sin(H.checkNum(t2.barOffs));
+        t3 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t3.setValues$3(-0.43750000000000006 + t1 * 0.05, 0.1, -1);
+        t1 = new T.Vector4(new Float32Array(H._checkLength(4)));
+        t1.setValues$4(1, 0.7, 0, 1);
+        M.renderText("Don't break your hip!", t3, 0.05, t1);
+      }
+      t1 = t2.attackticks;
+      if (t1 >= 0)
+        t2.attackticks = t1 - 1;
+      t1 = C.JSInt_methods.toString$0(C.JSNumber_methods.toInt$0(Math.floor($.game.player.stamina))) + "%";
+      t3 = Math.sin(H.checkNum(t2.barOffs));
+      t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t4.setValues$3(-0.7 + t3 * 0.05, -0.03, -1);
+      t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t3.setValues$4(1, 1, 1, 0.5);
+      M.renderText(t1, t4, 0.05, t3);
+      t3 = C.JSInt_methods.toString$0(C.JSNumber_methods.toInt$0(Math.floor($.game.player.health))) + "%";
+      t2 = Math.sin(H.checkNum(t2.barOffs));
+      t4 = C.JSInt_methods.toString$0(C.JSNumber_methods.toInt$0(Math.floor($.game.player.health))) + "%";
+      t1 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t1.setValues$3(0.65 + t2 * 0.05 - t4.length * 0.04166666666666667, -0.03, -1);
+      t4 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t4.setValues$4(1, 1, 1, 0.5);
+      M.renderText(t3, t1, 0.05, t4);
+      $.game.renderer.flushBatch$0();
+      $.game.renderer.disableViewTrans = false;
+      this.renderer.flushBatch$0();
+      this.renderer.render_time = Date.now() - this.renderer.render_ticks;
+      t4 = window;
+      t1 = this.get$gameLoop();
+      C.Window_methods._ensureRequestAnimationFrame$0(t4);
+      C.Window_methods._requestAnimationFrame$1(t4, W._wrapZone(t1));
+    }, "call$1", "get$gameLoop", 2, 0, 2],
+    map$1: function($receiver, arg0) {
+      return this.map.call$1(arg0);
+    }
+  },
+  Input: {
+    "^": "Object;keydown,keypress,keyDown,x_input,y_input,z_input,swing,start",
+    keys$0: function() {
+      var t1 = H.setRuntimeTypeInfo(new W._EventStream(window, "keydown", false), [null]);
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new M.Input_keys_closure(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
+      t1 = H.setRuntimeTypeInfo(new W._EventStream(window, "keyup", false), [null]);
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new M.Input_keys_closure0(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
+    }
+  },
+  Input_keys_closure: {
+    "^": "Closure:3;_LD34$_captured_this_0",
+    call$1: function(e) {
+      var t1, t2, i;
+      if (J.get$keyCode$x(e) === 8)
+        e.preventDefault();
+      for (t1 = this._LD34$_captured_this_0, t2 = t1.keydown, i = 0; i < 256; ++i)
+        if (e.keyCode === i) {
+          t2[i] = true;
+          t1.keyDown = true;
+        }
+    }
+  },
+  Input_keys_closure0: {
+    "^": "Closure:3;_captured_this_1",
+    call$1: function(e) {
+      var t1, t2, i;
+      if (J.get$keyCode$x(e) === 8)
+        e.preventDefault();
+      for (t1 = this._captured_this_1, t2 = t1.keydown, i = 0; i < 256; ++i)
+        if (e.keyCode === i) {
+          t2[i] = false;
+          t1.keyDown = false;
+        }
+    }
+  },
+  Phys: {
+    "^": "Object;pos,pos_old,x_mov,y_mov,z_mov,rot,v,v_old,a,m"
+  },
+  Render: {
+    "^": "Object;vertexBuffer,indexBuffer,texBuffer,colBuffer,posBuffer,indexData,vertexData,posData,texData,u_camMatrix,u_objMatrix,u_viewMatrix,u_fov,u_col,u_a,u_pMatrix,objMatrix,camMatrix,viewMatrix,pos,s,position,shader,batch_size,batches,flush,fov,batchespercycle,render_time,render_ticks,render_count,oldtex,oldrot,oldcol,b_col,screenshake,screenshakevec,disableViewTrans",
+    _batch$7: function(tex, pos, s, sprite, rot, rot_c, col) {
+      var t1, t2, t3, t4, t5, t6, t7, t8, t9;
+      ++this.render_count;
+      if (this.batches < this.batch_size) {
+        t1 = rot.storage;
+        t2 = t1[0];
+        t3 = this.oldrot.storage;
+        if (!(t2 !== t3[0] || t1[1] !== t3[1] || t1[2] !== t3[2])) {
+          t1 = col.storage;
+          t2 = t1[0];
+          t3 = this.oldcol.storage;
+          t1 = t2 !== t3[0] || t1[1] !== t3[1] || t1[2] !== t3[2] || t1[3] !== t3[3];
+        } else
+          t1 = true;
+      } else
+        t1 = true;
+      if (t1 || this.flush) {
+        this.flushBatch$0();
+        ++this.batchespercycle;
+        this.batches = 0;
+        this.flush = false;
+        this.oldrot = rot;
+        this.oldcol = col;
+        this.b_col = col;
+        t1 = new T.Matrix4(new Float32Array(H._checkLength(16)));
+        t1.setIdentity$0();
+        this.objMatrix = t1;
+        t2 = rot_c.storage;
+        t1.translate$3(0, t2[0], t2[1], t2[2]);
+        t2 = this.objMatrix;
+        t1 = rot.storage;
+        t2.rotateX$1(t1[0]);
+        this.objMatrix.rotateY$1(t1[1]);
+        this.objMatrix.rotateZ$1(t1[2]);
+      }
+      t1 = this.vertexData;
+      t2 = 12 * this.batches;
+      t3 = pos.storage;
+      t4 = t3[0];
+      t5 = t3[1];
+      t6 = s.storage;
+      t7 = t6[1];
+      t5 = -(t5 + t7);
+      t7 = t5 + t7;
+      t8 = t3[2];
+      t9 = t4 + t6[0];
+      (t1 && C.NativeFloat32List_methods).setRange$3(t1, t2, 12 + t2, [t4, t7, t8, t9, t7, t8, t9, t5, t8, t4, t5, t8]);
+      t8 = this.texData;
+      t5 = 16 * this.batches;
+      t4 = t3[0];
+      t9 = sprite.storage;
+      t7 = t9[0];
+      t2 = tex.w;
+      t1 = t9[2] / t2 / t6[0];
+      t2 = t4 - t7 / t2 / t1;
+      t7 = t9[1];
+      t4 = tex.h;
+      t6 = t9[3] / t4 / t6[1];
+      t3 = t7 / t4 / t6 - t3[1];
+      (t8 && C.NativeFloat32List_methods).setRange$3(t8, t5, 16 + t5, [t2, t3, t1, t6, t2, t3, t1, t6, t2, t3, t1, t6, t2, t3, t1, t6]);
+      ++this.batches;
+    },
+    flushBatch$0: function() {
+      var t1, t2, t3, t4, r, z, x, y, temp, t5, rotatedEye, perspectiveMatrix, height, width, left, bottom, right_minus_left, top_minus_bottom;
+      J.enable$1$x($.gl, 3042);
+      J.enable$1$x($.gl, 2929);
+      J.depthMask$1$x($.gl, true);
+      J.depthFunc$1$x($.gl, 513);
+      J.activeTexture$1$x($.gl, 33984);
+      J.bindTexture$2$x($.gl, 3553, $.get$tex().Tex);
+      J.blendFunc$2$x($.gl, 770, 771);
+      t1 = new T.Matrix4(new Float32Array(H._checkLength(16)));
+      t1.setIdentity$0();
+      this.viewMatrix = t1;
+      if (!this.disableViewTrans) {
+        t1 = $.game.screen.camPos;
+        t2 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t2.setValues$3(0, 0, 1);
+        t3 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t3.setValues$3(0, 1, 0);
+        t4 = new Float32Array(H._checkLength(16));
+        r = new T.Matrix4(t4);
+        z = t1.$sub(0, t2);
+        z.normalize$0();
+        x = t3.cross$1(z);
+        x.normalize$0();
+        y = z.cross$1(x);
+        y.normalize$0();
+        r.setZero$0();
+        t4[15] = 1;
+        t3 = x.storage;
+        t4[0] = t3[0];
+        t4[1] = t3[1];
+        t4[2] = t3[2];
+        t3 = y.storage;
+        t4[4] = t3[0];
+        t4[5] = t3[1];
+        t4[6] = t3[2];
+        t3 = z.storage;
+        t4[8] = t3[0];
+        t4[9] = t3[1];
+        t4[10] = t3[2];
+        temp = t4[4];
+        t4[4] = t4[1];
+        t4[1] = temp;
+        temp = t4[8];
+        t4[8] = t4[2];
+        t4[2] = temp;
+        temp = t4[12];
+        t4[12] = t4[3];
+        t4[3] = temp;
+        temp = t4[9];
+        t4[9] = t4[6];
+        t4[6] = temp;
+        temp = t4[13];
+        t4[13] = t4[7];
+        t4[7] = temp;
+        temp = t4[14];
+        t4[14] = t4[11];
+        t4[11] = temp;
+        t1 = t1.storage;
+        t3 = t1[0];
+        t2 = t1[1];
+        t1 = t1[2];
+        t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t5.setValues$3(-t3, -t2, -t1);
+        rotatedEye = r.$mul(0, t5);
+        t4[12] = rotatedEye.get$x(rotatedEye);
+        t4[13] = rotatedEye.get$y(rotatedEye);
+        t4[14] = rotatedEye.get$z(rotatedEye);
+        this.viewMatrix = r;
+        r.rotateY$1(-$.game.player.rot.storage[1]);
+        this.viewMatrix.rotateX$1(-Math.cos(H.checkNum($.game.player.rot.storage[1])) * $.game.player.rot.storage[0]);
+        this.viewMatrix.rotateZ$1(-Math.sin(H.checkNum($.game.player.rot.storage[1])) * $.game.player.rot.storage[0]);
+        t4 = this.screenshakevec.storage;
+        t4[0] = M.random_interval(0, 100) / 100 * this.screenshake;
+        t4[1] = M.random_interval(0, 100) / 100 * this.screenshake;
+        t5 = this.viewMatrix;
+        t1 = $.game;
+        t2 = t1.player.pos.storage;
+        t5.translate$3(0, t2[0] + t4[0], t2[1] + t1.screen.walkerbop * 2 + t4[1], -t2[2]);
+      }
+      t1 = new Float32Array(H._checkLength(16));
+      perspectiveMatrix = new T.Matrix4(t1);
+      perspectiveMatrix.setIdentity$0();
+      t2 = J.get$width$x($.game.canvas);
+      t3 = J.get$height$x($.game.canvas);
+      if (typeof t2 !== "number")
+        return t2.$div();
+      if (typeof t3 !== "number")
+        return H.iae(t3);
+      height = Math.tan(H.checkNum(0.5235987755982988)) * 0.5;
+      width = height * (t2 / t3);
+      left = -width;
+      bottom = -height;
+      right_minus_left = width - left;
+      top_minus_bottom = height - bottom;
+      t3 = perspectiveMatrix.setZero$0().storage;
+      t3[0] = 1 / right_minus_left;
+      t3[5] = 1 / top_minus_bottom;
+      t3[8] = (width + left) / right_minus_left;
+      t3[9] = (height + bottom) / top_minus_bottom;
+      t3[10] = -1.0077220077220077;
+      t3[11] = -1;
+      t3[14] = -1.0038610038610039;
+      J.depthRange$2$x($.gl, 0.2, 130);
+      J.uniformMatrix4fv$3$x($.gl, this.u_pMatrix, false, t1);
+      J.uniformMatrix4fv$3$x($.gl, this.u_objMatrix, false, this.objMatrix.storage);
+      J.uniformMatrix4fv$3$x($.gl, this.u_viewMatrix, false, this.viewMatrix.storage);
+      t1 = $.gl;
+      t3 = this.u_col;
+      t2 = this.b_col.storage;
+      J.uniform4f$5$x(t1, t3, t2[0], t2[1], t2[2], t2[3]);
+      J.bindBuffer$2$x($.gl, 34962, this.vertexBuffer);
+      J.bufferDataTyped$3$x($.gl, 34962, this.vertexData, 35048);
+      J.bindBuffer$2$x($.gl, 34962, this.texBuffer);
+      J.bufferDataTyped$3$x($.gl, 34962, this.texData, 35048);
+      J.drawElements$4$x($.gl, 4, 6 * this.batches, 5123, 0);
+      this.batches = 0;
+    },
+    initQuad$0: function() {
+      var t1, t2, i, t3, t4, t5, t6, t7;
+      this.u_pMatrix = J.getUniformLocation$2$x($.gl, this.shader.program, "perspectiveMatrix");
+      this.u_objMatrix = J.getUniformLocation$2$x($.gl, this.shader.program, "objectMatrix");
+      t1 = this.shader;
+      J.useProgram$1$x($.gl, t1.program);
+      this.u_viewMatrix = J.getUniformLocation$2$x($.gl, this.shader.program, "viewMatrix");
+      this.u_col = J.getUniformLocation$2$x($.gl, this.shader.program, "u_col");
+      this.u_a = J.getUniformLocation$2$x($.gl, this.shader.program, "u_a");
+      this.pos = J.getAttribLocation$2$x($.gl, this.shader.program, "a_pos");
+      this.s = J.getAttribLocation$2$x($.gl, this.shader.program, "a_sprite");
+      J.enableVertexAttribArray$1$x($.gl, this.pos);
+      J.enableVertexAttribArray$1$x($.gl, this.s);
+      this.vertexBuffer = J.createBuffer$0$x($.gl);
+      this.texBuffer = J.createBuffer$0$x($.gl);
+      this.indexBuffer = J.createBuffer$0$x($.gl);
+      t1 = this.batch_size;
+      this.indexData = new Int16Array(H._checkLength(t1 * 6));
+      this.vertexData = new Float32Array(H._checkLength(12 * t1));
+      this.texData = new Float32Array(H._checkLength(16 * t1));
+      for (t2 = this.indexData, i = 0; i < t1; ++i) {
+        t3 = i * 6;
+        t4 = 4 * i;
+        t5 = t2.length;
+        if (t3 >= t5)
+          return H.ioore(t2, t3);
+        t2[t3] = t4;
+        t6 = t3 + 1;
+        t7 = 2 + t4;
+        if (t6 >= t5)
+          return H.ioore(t2, t6);
+        t2[t6] = t7;
+        t6 = t3 + 2;
+        if (t6 >= t5)
+          return H.ioore(t2, t6);
+        t2[t6] = 3 + t4;
+        t6 = t3 + 3;
+        if (t6 >= t5)
+          return H.ioore(t2, t6);
+        t2[t6] = t4;
+        t6 = t3 + 4;
+        if (t6 >= t5)
+          return H.ioore(t2, t6);
+        t2[t6] = 1 + t4;
+        t3 += 5;
+        if (t3 >= t5)
+          return H.ioore(t2, t3);
+        t2[t3] = t7;
+      }
+      J.bindBuffer$2$x($.gl, 34963, this.indexBuffer);
+      J.bufferDataTyped$3$x($.gl, 34963, this.indexData, 35048);
+      J.bindBuffer$2$x($.gl, 34962, this.vertexBuffer);
+      J.bufferDataTyped$3$x($.gl, 34962, this.vertexData, 35048);
+      J.vertexAttribPointer$6$x($.gl, this.pos, 3, 5126, false, 0, 0);
+      J.bindBuffer$2$x($.gl, 34962, this.texBuffer);
+      J.bufferDataTyped$3$x($.gl, 34962, this.texData, 35048);
+      J.vertexAttribPointer$6$x($.gl, this.s, 4, 5126, false, 0, 0);
+    }
+  },
+  Screen: {
+    "^": "Object;camPos,w,h,gui,walkerbop,walkerswing,moving,walkerticks,swingticks,swinging,titlebg,barOffs,beat,beats,coldticks,attackticks,bpm"
+  },
+  GameShader: {
+    "^": "Object;program",
+    ShaderFromFile$2: function(vertexShaderPath, fragmentShaderPath) {
+      var t1, req, t2, vertexShader, fragmentShader, program;
+      t1 = {};
+      t1._captured_vsrc_0 = null;
+      t1._captured_fsrc_1 = null;
+      req = new XMLHttpRequest();
+      t1._captured_req_2 = req;
+      t2 = H.setRuntimeTypeInfo(new W._EventStream(req, "load", false), [null]);
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new M.GameShader_ShaderFromFile_closure(t1)), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)])._tryResume$0();
+      C.HttpRequest_methods.open$3$async(t1._captured_req_2, "GET", vertexShaderPath, false);
+      t1._captured_req_2.send();
+      req = new XMLHttpRequest();
+      t1._captured_req_2 = req;
+      t2 = H.setRuntimeTypeInfo(new W._EventStream(req, "load", false), [null]);
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new M.GameShader_ShaderFromFile_closure0(t1)), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)])._tryResume$0();
+      C.HttpRequest_methods.open$3$async(t1._captured_req_2, "GET", fragmentShaderPath, false);
+      t1._captured_req_2.send();
+      vertexShader = this.compile$2(t1._captured_vsrc_0, 35633);
+      fragmentShader = this.compile$2(t1._captured_fsrc_1, 35632);
+      program = J.createProgram$0$x($.gl);
+      J.attachShader$2$x($.gl, program, vertexShader);
+      J.attachShader$2$x($.gl, program, fragmentShader);
+      J.linkProgram$1$x($.gl, program);
+      if (J.getProgramParameter$2$x($.gl, program, 35714) !== true)
+        H.throwExpression(J.getProgramInfoLog$1$x($.gl, program));
+      this.program = program;
+    },
+    compile$2: function(source, type) {
+      var shader = J.createShader$1$x($.gl, type);
+      J.shaderSource$2$x($.gl, shader, source);
+      J.compileShader$1$x($.gl, shader);
+      if (J.getShaderParameter$2$x($.gl, shader, 35713) !== true)
+        throw H.wrapException(J.getShaderInfoLog$1$x($.gl, shader));
+      return shader;
+    }
+  },
+  GameShader_ShaderFromFile_closure: {
+    "^": "Closure:1;_LD34$_box_0",
+    call$1: function(e) {
+      var t1, vsrc;
+      t1 = this._LD34$_box_0;
+      vsrc = t1._captured_req_2.responseText;
+      t1._captured_vsrc_0 = vsrc;
+      return vsrc;
+    }
+  },
+  GameShader_ShaderFromFile_closure0: {
+    "^": "Closure:1;_LD34$_box_0",
+    call$1: function(e) {
+      var t1, fsrc;
+      t1 = this._LD34$_box_0;
+      fsrc = t1._captured_req_2.responseText;
+      t1._captured_fsrc_1 = fsrc;
+      return fsrc;
+    }
+  },
+  Sprite: {
+    "^": "Object;tex,sprite,col"
+  },
+  Text: {
+    "^": "Object;"
+  },
+  Txtr: {
+    "^": "Object;Tex,w,h,path",
+    Txtr$1: function(path) {
+      var e, t1;
+      e = document.createElement("img", null);
+      this.Tex = J.createTexture$0$x($.gl);
+      this.path = path;
+      t1 = J.getInterceptor$x(e);
+      t1.set$src(e, path);
+      t1 = t1.get$onLoad(e);
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new M.Txtr_closure(this, e)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
+    },
+    static: {Txtr$: function(path) {
+        var t1 = new M.Txtr(null, 0, 0, null);
+        t1.Txtr$1(path);
+        return t1;
+      }}
+  },
+  Txtr_closure: {
+    "^": "Closure:1;_LD34$_captured_this_0,_captured_img_1",
+    call$1: function(e) {
+      var t1, t2, t3;
+      t1 = this._LD34$_captured_this_0;
+      J.bindTexture$2$x($.gl, 3553, t1.Tex);
+      J.pixelStorei$2$x($.gl, 37440, 1);
+      t2 = this._captured_img_1;
+      J.texImage2DImage$6$x($.gl, 3553, 0, 6408, 6408, 5121, t2);
+      J.texParameteri$3$x($.gl, 3553, 10240, 9728);
+      J.texParameteri$3$x($.gl, 3553, 10241, 9728);
+      t3 = J.getInterceptor$x(t2);
+      t1.w = J.toDouble$0$n(t3.get$width(t2));
+      t1.h = J.toDouble$0$n(t3.get$height(t2));
+      J.bindTexture$2$x($.gl, 3553, null);
+    }
+  },
+  Entity: {
+    "^": "Object;ducksprite1,ducksprite2,ducksprite3,attacking,anim,anim_ticks,pos,s,rot,health,damageticks,anim_cycle",
+    draw$0: function() {
+      var t1, t2, t3, t4, t5, t6, t7, t8;
+      $.game.renderer.flushBatch$0();
+      t1 = this.anim_cycle;
+      t2 = this.anim;
+      if (t2 >= 2)
+        return H.ioore(t1, t2);
+      t2 = t1[t2];
+      if (t2 === 0) {
+        t1 = $.game.renderer;
+        t2 = this.ducksprite1;
+        t3 = this.s.storage[0];
+        t4 = this.pos.storage[1];
+        t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t5.setValues$3(-t3 / 2, t4, 0);
+        t4 = this.s;
+        t3 = this.rot;
+        t6 = this.pos.storage;
+        t7 = t6[0];
+        t6 = t6[2];
+        t8 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t8.setValues$3(t7, 0, t6);
+        t1._batch$7(t2.tex, t5, t4, t2.sprite, t3, t8, t2.col);
+      } else if (t2 === 1) {
+        t1 = $.game.renderer;
+        t2 = this.ducksprite2;
+        t3 = this.s.storage[0];
+        t4 = this.pos.storage[1];
+        t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t5.setValues$3(-t3 / 2, t4, 0);
+        t4 = this.s;
+        t3 = this.rot;
+        t6 = this.pos.storage;
+        t7 = t6[0];
+        t6 = t6[2];
+        t8 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t8.setValues$3(t7, 0, t6);
+        t1._batch$7(t2.tex, t5, t4, t2.sprite, t3, t8, t2.col);
+      } else if (t2 === 2) {
+        t1 = $.game.renderer;
+        t2 = this.ducksprite3;
+        t3 = this.s.storage[0];
+        t4 = this.pos.storage[1];
+        t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t5.setValues$3(-t3 / 2, t4, 0);
+        t4 = this.s;
+        t3 = this.rot;
+        t6 = this.pos.storage;
+        t7 = t6[0];
+        t6 = t6[2];
+        t8 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t8.setValues$3(t7, 0, t6);
+        t1._batch$7(t2.tex, t5, t4, t2.sprite, t3, t8, t2.col);
+      }
+      $.game.renderer.flushBatch$0();
+      $.game.renderer.flush = true;
+    },
+    $set$3: function(newPos, newS, newRot) {
+      this.pos = newPos;
+      this.s = newS;
+      this.rot = newRot;
+    }
+  },
+  Floor: {
+    "^": "Obj;collidable@,id,pos,s,sprite,rot,rot_c",
+    draw$0: function() {
+      var t1, t2, t3, t4;
+      t1 = this.pos.storage;
+      t2 = t1[0];
+      t3 = t1[2];
+      t1 = t1[1];
+      t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t4.setValues$3(t2, t3, t1);
+      this.super$Obj$draw$3(t4, this.s, this.rot);
+    },
+    collision$2: function(char_pos, char_pos_old) {
+      var t1, t2, t3, t4, t5, t6, returns;
+      t1 = this.pos.storage;
+      t2 = t1[0];
+      t3 = this.s.storage[0];
+      t1 = t1[2];
+      t4 = t3 + 1.2 - 1.6;
+      t5 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t5.setValues$4(-t2 - 0.4 - t3 + 0.8, t1 - 0.4 + 0.8, t4, t4);
+      t4 = char_pos.storage;
+      t1 = t4[0];
+      t3 = t4[2];
+      t2 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t2.setValues$4(t1, -t3, 0.5, 0.5);
+      if (M.collision2d(t5, t2)) {
+        t1 = this.pos.storage;
+        t2 = t1[0];
+        t3 = this.s.storage[0];
+        t1 = t1[2];
+        t5 = t3 + 1.2 - 1.6;
+        t6 = new T.Vector4(new Float32Array(H._checkLength(4)));
+        t6.setValues$4(-t2 - 0.4 - t3 + 0.8, t1 - 0.4 + 0.8, t5, t5);
+        t5 = char_pos_old.storage[0];
+        t1 = t4[2];
+        t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+        t3.setValues$4(t5, -t1, 0.5, 0.5);
+        t3 = !M.collision2d(t6, t3);
+        t1 = t3;
+      } else
+        t1 = false;
+      returns = t1 ? 0 : -1;
+      t1 = this.pos.storage;
+      t2 = t1[0];
+      t3 = this.s.storage[0];
+      t1 = t1[2];
+      t5 = t3 + 1.2 - 1.6;
+      t6 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t6.setValues$4(-t2 - 0.4 - t3 + 0.8, t1 - 0.4 + 0.8, t5, t5);
+      t5 = t4[0];
+      t1 = t4[2];
+      t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t3.setValues$4(t5, -t1, 0.5, 0.5);
+      if (M.collision2d(t6, t3)) {
+        t1 = this.pos.storage;
+        t2 = t1[0];
+        t3 = this.s.storage[0];
+        t1 = t1[2];
+        t5 = t3 + 1.2 - 1.6;
+        t6 = new T.Vector4(new Float32Array(H._checkLength(4)));
+        t6.setValues$4(-t2 - 0.4 - t3 + 0.8, t1 - 0.4 + 0.8, t5, t5);
+        t4 = t4[0];
+        t5 = char_pos_old.storage[2];
+        t1 = new T.Vector4(new Float32Array(H._checkLength(4)));
+        t1.setValues$4(t4, -t5, 0.5, 0.5);
+        t1 = !M.collision2d(t6, t1);
+      } else
+        t1 = false;
+      return t1 ? 1 : returns;
+    }
+  },
+  GUI: {
+    "^": "Object;target,walker,swingometer,swingbar,staminaometer,staminabar,healthometer,healthbar,sky,titlebg,heart,fonts"
+  },
+  Map: {
+    "^": "Object;path,objs,walls,floors,ducks,sky",
+    draw$0: function() {
+      var t1, t2, t3, t4, t5, t6, t7, t8;
+      this.drawDucks$0();
+      this.drawObjs$0();
+      this.drawWalls$0();
+      this.drawFloors$0();
+      this.sky.draw$0();
+      this.sky.draw1$0();
+      this.sky.draw2$0();
+      this.sky.draw3$0();
+      t1 = $.game.renderer;
+      t2 = $.get$tex();
+      t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t3.setValues$4(7, 81, 1, 1);
+      t4 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t4.setValues$4(1, 1, 1, 1);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+      t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t5.setValues$3(-10, -15, -22.5);
+      t6 = new Float32Array(H._checkLength(2));
+      t6[0] = 100;
+      t6[1] = 100;
+      t7 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t7.setValues$3(1.5707963267948966, 0, 0);
+      t8 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t8.setValues$3(0, 0, 0);
+      t1._batch$7(t2, t5, new T.Vector2(t6), t3, t7, t8, t4);
+    },
+    drawDucks$0: function() {
+      var t1, i, t2, t3, t4, t5;
+      for (t1 = this.ducks, i = 0; i < t1.length; ++i) {
+        t2 = t1[i];
+        if (t2.health > 0) {
+          t2.toString;
+          t3 = $.game.player.pos.storage[0];
+          t4 = t2.pos.storage[0];
+          t3 = Math.pow(t3 + t4, 2);
+          t4 = $.game.player.pos.storage[2];
+          t5 = t2.pos.storage[2];
+          t4 = Math.pow(t4 - t5, 2);
+          if (Math.sqrt(t3 + t4) < 8) {
+            t2.attacking = true;
+            if ($.game.player.attacking) {
+              t2.health -= 50;
+              H.printString("damage");
+              t2.damageticks = 100;
+            }
+          } else
+            t2.attacking = false;
+          t3 = t2.damageticks;
+          if (t3 > 0) {
+            --t3;
+            t2.damageticks = t3;
+          }
+          if (t3 > 0 && C.JSInt_methods.$mod($.game.ticks, 15) > 7.5) {
+            t3 = t2.ducksprite1;
+            t4 = new Float32Array(4);
+            t4[3] = 1;
+            t4[2] = 0;
+            t4[1] = 0;
+            t4[0] = 1;
+            t3.col = new T.Vector4(t4);
+            t4 = t2.ducksprite2;
+            t3 = new Float32Array(4);
+            t3[3] = 1;
+            t3[2] = 0;
+            t3[1] = 0;
+            t3[0] = 1;
+            t4.col = new T.Vector4(t3);
+            t3 = t2.ducksprite3;
+            t4 = new Float32Array(4);
+            t4[3] = 1;
+            t4[2] = 0;
+            t4[1] = 0;
+            t4[0] = 1;
+            t3.col = new T.Vector4(t4);
+          } else {
+            t3 = t2.ducksprite1;
+            t4 = new Float32Array(4);
+            t4[3] = 1;
+            t4[2] = 1;
+            t4[1] = 1;
+            t4[0] = 1;
+            t3.col = new T.Vector4(t4);
+            t4 = t2.ducksprite2;
+            t3 = new Float32Array(4);
+            t3[3] = 1;
+            t3[2] = 1;
+            t3[1] = 1;
+            t3[0] = 1;
+            t4.col = new T.Vector4(t3);
+            t3 = t2.ducksprite3;
+            t4 = new Float32Array(4);
+            t4[3] = 1;
+            t4[2] = 1;
+            t4[1] = 1;
+            t4[0] = 1;
+            t3.col = new T.Vector4(t4);
+          }
+          t3 = t2.rot;
+          t4 = $.game.player;
+          t3.storage[1] = t4.rot.storage[1];
+          t3 = t2.pos.storage;
+          t5 = t3[0];
+          t4 = t4.pos.storage;
+          if (-t5 > t4[0])
+            t3[0] = t5 + 0.02;
+          t5 = t3[0];
+          if (-t5 < t4[0])
+            t3[0] = t5 - 0.02;
+          t5 = t3[2];
+          if (t5 < t4[2])
+            t3[2] = t5 + 0.02;
+          t5 = t3[2];
+          if (t5 > t4[2])
+            t3[2] = t5 - 0.02;
+          t5 = ++t2.anim_ticks;
+          if (t2.attacking)
+            t2.anim_cycle = [0, 2];
+          else
+            t2.anim_cycle = [0, 1];
+          if (t5 > 10) {
+            t2.anim_ticks = 0;
+            ++t2.anim;
+          }
+          if (t2.anim > 1)
+            t2.anim = 0;
+          t4 = t4[0];
+          t3 = t3[0];
+          t3 = Math.pow(t4 + t3, 2);
+          t4 = $.game.player.pos.storage[2];
+          t5 = t2.pos.storage[2];
+          t4 = Math.pow(t4 - t5, 2);
+          if (Math.sqrt(t3 + t4) < 2) {
+            t3 = $.game;
+            t3.player.health -= 0.1;
+            if (C.JSInt_methods.$mod(t3.ticks, 30) === 0)
+              t3.aud.hurt.PlaySound$0();
+          }
+          t3 = $.game.player.pos.storage[0];
+          t4 = t2.pos.storage[0];
+          t3 = Math.pow(t3 + t4, 2);
+          t4 = $.game.player.pos.storage[2];
+          t5 = t2.pos.storage[2];
+          t4 = Math.pow(t4 - t5, 2);
+          if (Math.sqrt(t3 + t4) < 32)
+            t2.draw$0();
+        }
+      }
+    },
+    drawObjs$0: function() {
+      var t1, i, t2;
+      for (t1 = this.objs, i = 0; i < t1.length; ++i) {
+        t2 = t1[i];
+        if (t2 != null)
+          t2.draw$0();
+      }
+    },
+    drawWalls$0: function() {
+      var t1, i, t2;
+      for (t1 = this.walls, i = 0; i < t1.length; ++i) {
+        t2 = t1[i];
+        if (t2 != null) {
+          t2.draw0$0();
+          if (i >= t1.length)
+            return H.ioore(t1, i);
+          t1[i].draw1$0();
+        }
+      }
+      for (i = 0; i < t1.length; ++i) {
+        t2 = t1[i];
+        if (t2 != null) {
+          t2.draw2$0();
+          if (i >= t1.length)
+            return H.ioore(t1, i);
+          t1[i].draw3$0();
+        }
+      }
+    },
+    drawFloors$0: function() {
+      var t1, i, t2;
+      for (t1 = this.floors, i = 0; i < t1.length; ++i) {
+        t2 = t1[i];
+        if (t2 != null)
+          t2.draw$0();
+      }
+    },
+    Map$1: function(path) {
+      var t1, i, t2, j, rand, floorsprite, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15;
+      for (t1 = this.floors, i = 0; i < 20; ++i)
+        for (t2 = i * 3.95, j = 0; j < 20; ++j) {
+          rand = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), 33));
+          if (rand >= 0 && rand < 10)
+            ;
+          floorsprite = rand >= 10 && rand < 20 ? 2 : 0;
+          if (rand >= 20 && rand < 30)
+            floorsprite = 5;
+          if (rand >= 30 && rand < 33)
+            floorsprite = 7;
+          C.JSArray_methods.set$length(t1, t1.length + 1);
+          t3 = t1.length - 1;
+          t4 = new Float32Array(3);
+          t4[0] = 0;
+          t4[1] = 0;
+          t4[2] = 0;
+          t4 = new Float32Array(2);
+          t4[0] = 0;
+          t4[1] = 0;
+          t4 = new Float32Array(3);
+          t4[0] = 0;
+          t4[1] = 0;
+          t4[2] = 0;
+          t4 = new Float32Array(3);
+          t4[0] = 0;
+          t4[1] = 0;
+          t4[2] = 0;
+          t4 = new M.Floor(false, floorsprite, null, null, null, null, new T.Vector3(t4));
+          t4.load$0(0);
+          t5 = t1.length;
+          if (t3 < 0 || t3 >= t5)
+            return H.ioore(t1, t3);
+          t1[t3] = t4;
+          if (floorsprite === 7) {
+            t3 = t5 - 1;
+            if (t3 < 0)
+              return H.ioore(t1, t3);
+            t1[t3].set$collidable(true);
+          }
+          t3 = t1.length;
+          t4 = t3 - 1;
+          if (t4 < 0)
+            return H.ioore(t1, t4);
+          t4 = t1[t4];
+          t3 = new Float32Array(3);
+          t3[0] = t2;
+          t3[1] = 2;
+          t3[2] = j * 3.95;
+          t5 = new Float32Array(2);
+          t5[0] = 4;
+          t5[1] = 4;
+          t6 = new Float32Array(3);
+          t6[0] = 1.5707963267948966;
+          t6[1] = 0;
+          t6[2] = 0;
+          t4.$set$3(new T.Vector3(t3), new T.Vector2(t5), new T.Vector3(t6));
+        }
+      for (t1 = this.walls, i = 0; i < 20; ++i) {
+        C.JSArray_methods.set$length(t1, t1.length + 1);
+        t2 = t1.length - 1;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(2);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new M.Wall(true, 1, null, null, null, null, new T.Vector3(t3));
+        t3.load$0(0);
+        t4 = t1.length;
+        if (t2 < 0 || t2 >= t4)
+          return H.ioore(t1, t2);
+        t1[t2] = t3;
+        t3 = t4 - 1;
+        if (t3 < 0)
+          return H.ioore(t1, t3);
+        t3 = t1[t3];
+        t2 = new Float32Array(3);
+        t2[0] = i * 3.95;
+        t2[1] = -2;
+        t2[2] = 0;
+        t4 = new Float32Array(2);
+        t4[0] = 4;
+        t4[1] = 4;
+        t5 = new Float32Array(3);
+        t5[0] = 0;
+        t5[1] = 0;
+        t5[2] = 0;
+        t3.$set$3(new T.Vector3(t2), new T.Vector2(t4), new T.Vector3(t5));
+      }
+      for (i = 0; i < 20; ++i) {
+        C.JSArray_methods.set$length(t1, t1.length + 1);
+        t2 = t1.length - 1;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(2);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new M.Wall(true, 1, null, null, null, null, new T.Vector3(t3));
+        t3.load$0(0);
+        t4 = t1.length;
+        if (t2 < 0 || t2 >= t4)
+          return H.ioore(t1, t2);
+        t1[t2] = t3;
+        t3 = t4 - 1;
+        if (t3 < 0)
+          return H.ioore(t1, t3);
+        t3 = t1[t3];
+        t2 = new Float32Array(3);
+        t2[0] = i * 3.95;
+        t2[1] = -2;
+        t2[2] = -79;
+        t4 = new Float32Array(2);
+        t4[0] = 4;
+        t4[1] = 4;
+        t5 = new Float32Array(3);
+        t5[0] = 0;
+        t5[1] = 0;
+        t5[2] = 0;
+        t3.$set$3(new T.Vector3(t2), new T.Vector2(t4), new T.Vector3(t5));
+      }
+      for (i = 0; i < 20; ++i) {
+        C.JSArray_methods.set$length(t1, t1.length + 1);
+        t2 = t1.length - 1;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(2);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new M.Wall(true, 1, null, null, null, null, new T.Vector3(t3));
+        t3.load$0(0);
+        t4 = t1.length;
+        if (t2 < 0 || t2 >= t4)
+          return H.ioore(t1, t2);
+        t1[t2] = t3;
+        t3 = t4 - 1;
+        if (t3 < 0)
+          return H.ioore(t1, t3);
+        t3 = t1[t3];
+        t2 = new Float32Array(3);
+        t2[0] = 0;
+        t2[1] = -2;
+        t2[2] = -i * 3.95;
+        t4 = new Float32Array(2);
+        t4[0] = 4;
+        t4[1] = 4;
+        t5 = new Float32Array(3);
+        t5[0] = 0;
+        t5[1] = 0;
+        t5[2] = 0;
+        t3.$set$3(new T.Vector3(t2), new T.Vector2(t4), new T.Vector3(t5));
+      }
+      for (i = 0; i < 20; ++i) {
+        C.JSArray_methods.set$length(t1, t1.length + 1);
+        t2 = t1.length - 1;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(2);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new M.Wall(true, 1, null, null, null, null, new T.Vector3(t3));
+        t3.load$0(0);
+        t4 = t1.length;
+        if (t2 < 0 || t2 >= t4)
+          return H.ioore(t1, t2);
+        t1[t2] = t3;
+        t3 = t4 - 1;
+        if (t3 < 0)
+          return H.ioore(t1, t3);
+        t3 = t1[t3];
+        t2 = new Float32Array(3);
+        t2[0] = 79;
+        t2[1] = -2;
+        t2[2] = -i * 3.95;
+        t4 = new Float32Array(2);
+        t4[0] = 4;
+        t4[1] = 4;
+        t5 = new Float32Array(3);
+        t5[0] = 0;
+        t5[1] = 0;
+        t5[2] = 0;
+        t3.$set$3(new T.Vector3(t2), new T.Vector2(t4), new T.Vector3(t5));
+      }
+      for (i = 0; i < 40; ++i) {
+        C.JSArray_methods.set$length(t1, t1.length + 1);
+        t2 = t1.length - 1;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(2);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new M.Wall(true, 8, null, null, null, null, new T.Vector3(t3));
+        t3.load$0(0);
+        t4 = t1.length;
+        if (t2 < 0 || t2 >= t4)
+          return H.ioore(t1, t2);
+        t1[t2] = t3;
+        t3 = t4 - 1;
+        if (t3 < 0)
+          return H.ioore(t1, t3);
+        t3 = t1[t3];
+        t2 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), 36) + 5);
+        t4 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), 36) + 5);
+        t5 = new Float32Array(3);
+        t5[0] = t2 / 2 * 3.95;
+        t5[1] = -2;
+        t5[2] = -t4 / 2 * 3.95;
+        t2 = new Float32Array(2);
+        t2[0] = 2;
+        t2[1] = 4;
+        t4 = new Float32Array(3);
+        t4[0] = 0;
+        t4[1] = 0;
+        t4[2] = 0;
+        t3.$set$3(new T.Vector3(t5), new T.Vector2(t2), new T.Vector3(t4));
+      }
+      for (i = 0; i < 40; ++i) {
+        C.JSArray_methods.set$length(t1, t1.length + 1);
+        t2 = t1.length - 1;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(2);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new M.Wall(true, 6, null, null, null, null, new T.Vector3(t3));
+        t3.load$0(0);
+        t4 = t1.length;
+        if (t2 < 0 || t2 >= t4)
+          return H.ioore(t1, t2);
+        t1[t2] = t3;
+        t3 = t4 - 1;
+        if (t3 < 0)
+          return H.ioore(t1, t3);
+        t3 = t1[t3];
+        t2 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), 36) + 5);
+        t4 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), 36) + 5);
+        t5 = new Float32Array(3);
+        t5[0] = t2 / 2 * 3.95;
+        t5[1] = -2;
+        t5[2] = -t4 / 2 * 3.95;
+        t2 = new Float32Array(2);
+        t2[0] = 4;
+        t2[1] = 4;
+        t4 = new Float32Array(3);
+        t4[0] = 0;
+        t4[1] = 0;
+        t4[2] = 0;
+        t3.$set$3(new T.Vector3(t5), new T.Vector2(t2), new T.Vector3(t4));
+      }
+      for (i = 0; i < 20; ++i) {
+        C.JSArray_methods.set$length(t1, t1.length + 1);
+        t2 = t1.length - 1;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(2);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new M.Wall(true, 4, null, null, null, null, new T.Vector3(t3));
+        t3.load$0(0);
+        t4 = t1.length;
+        if (t2 < 0 || t2 >= t4)
+          return H.ioore(t1, t2);
+        t1[t2] = t3;
+        t3 = t4 - 1;
+        if (t3 < 0)
+          return H.ioore(t1, t3);
+        t3 = t1[t3];
+        t2 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), 36) + 5);
+        t4 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), 36) + 5);
+        t5 = new Float32Array(3);
+        t5[0] = t2 / 2 * 3.95;
+        t5[1] = -2;
+        t5[2] = -t4 / 2 * 3.95;
+        t2 = new Float32Array(2);
+        t2[0] = 4;
+        t2[1] = 4;
+        t4 = new Float32Array(3);
+        t4[0] = 0;
+        t4[1] = 0;
+        t4[2] = 0;
+        t3.$set$3(new T.Vector3(t5), new T.Vector2(t2), new T.Vector3(t4));
+      }
+      for (t1 = this.objs, i = 0; i < 200; ++i) {
+        C.JSArray_methods.set$length(t1, t1.length + 1);
+        t2 = t1.length - 1;
+        t3 = $.get$tex();
+        t4 = new Float32Array(4);
+        t4[3] = 16;
+        t4[2] = 16;
+        t4[1] = 18;
+        t4[0] = 36;
+        t5 = new Float32Array(4);
+        t5[3] = 1;
+        t5[2] = 1;
+        t5[1] = 1;
+        t5[0] = 1;
+        t6 = new Float32Array(4);
+        t6[3] = 0;
+        t6[2] = 0;
+        t6[1] = 0;
+        t6[0] = 0;
+        t6 = new Float32Array(4);
+        t6[3] = 1;
+        t6[2] = 1;
+        t6[1] = 1;
+        t6[0] = 1;
+        t6 = new Float32Array(3);
+        t6[0] = 0;
+        t6[1] = 0;
+        t6[2] = 0;
+        t6 = new Float32Array(2);
+        t6[0] = 0;
+        t6[1] = 0;
+        t6 = new Float32Array(3);
+        t6[0] = 0;
+        t6[1] = 0;
+        t6[2] = 0;
+        t6 = new Float32Array(3);
+        t6[0] = 0;
+        t6[1] = 0;
+        t6[2] = 0;
+        t7 = t1.length;
+        if (t2 < 0 || t2 >= t7)
+          return H.ioore(t1, t2);
+        t1[t2] = new M.Obj(1, null, null, new M.Sprite(t3, new T.Vector4(t4), new T.Vector4(t5)), null, new T.Vector3(t6));
+        t6 = t7 - 1;
+        if (t6 < 0)
+          return H.ioore(t1, t6);
+        t6 = t1[t6];
+        t2 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
+        t3 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
+        t4 = new Float32Array(3);
+        t4[0] = t2 / 4;
+        t4[1] = 0;
+        t4[2] = -t3 / 4;
+        t2 = new Float32Array(2);
+        t2[0] = 2;
+        t2[1] = 2;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t6.$set$3(new T.Vector3(t4), new T.Vector2(t2), new T.Vector3(t3));
+      }
+      for (i = 0; i < 100; ++i) {
+        C.JSArray_methods.set$length(t1, t1.length + 1);
+        t2 = t1.length - 1;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(2);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new M.Obj(9, null, null, null, null, new T.Vector3(t3));
+        t3.load$0(0);
+        t4 = t1.length;
+        if (t2 < 0 || t2 >= t4)
+          return H.ioore(t1, t2);
+        t1[t2] = t3;
+        t3 = t4 - 1;
+        if (t3 < 0)
+          return H.ioore(t1, t3);
+        t3 = t1[t3];
+        t2 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
+        t4 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
+        t5 = new Float32Array(3);
+        t5[0] = t2 / 4;
+        t5[1] = 0;
+        t5[2] = -t4 / 4;
+        t2 = new Float32Array(2);
+        t2[0] = 2;
+        t2[1] = 2;
+        t4 = new Float32Array(3);
+        t4[0] = 0;
+        t4[1] = 0;
+        t4[2] = 0;
+        t3.$set$3(new T.Vector3(t5), new T.Vector2(t2), new T.Vector3(t4));
+      }
+      for (i = 0; i < 50; ++i) {
+        C.JSArray_methods.set$length(t1, t1.length + 1);
+        t2 = t1.length - 1;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(2);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new M.Obj(10, null, null, null, null, new T.Vector3(t3));
+        t3.load$0(0);
+        t4 = t1.length;
+        if (t2 < 0 || t2 >= t4)
+          return H.ioore(t1, t2);
+        t1[t2] = t3;
+        t3 = t4 - 1;
+        if (t3 < 0)
+          return H.ioore(t1, t3);
+        t3 = t1[t3];
+        t2 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
+        t4 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
+        t5 = new Float32Array(3);
+        t5[0] = t2 / 4;
+        t5[1] = -2.125;
+        t5[2] = -t4 / 4;
+        t2 = new Float32Array(2);
+        t2[0] = 2.875;
+        t2[1] = 4.25;
+        t4 = new Float32Array(3);
+        t4[0] = 0;
+        t4[1] = 0;
+        t4[2] = 0;
+        t3.$set$3(new T.Vector3(t5), new T.Vector2(t2), new T.Vector3(t4));
+      }
+      for (i = 0; i < 100; ++i) {
+        C.JSArray_methods.set$length(t1, t1.length + 1);
+        t2 = t1.length - 1;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(2);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new M.Obj(9, null, null, null, null, new T.Vector3(t3));
+        t3.load$0(0);
+        t4 = t1.length;
+        if (t2 < 0 || t2 >= t4)
+          return H.ioore(t1, t2);
+        t1[t2] = t3;
+        t3 = t4 - 1;
+        if (t3 < 0)
+          return H.ioore(t1, t3);
+        t3 = t1[t3];
+        t2 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
+        t4 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
+        t5 = new Float32Array(3);
+        t5[0] = t2 / 4;
+        t5[1] = 0;
+        t5[2] = t4 / 4;
+        t2 = new Float32Array(2);
+        t2[0] = 2;
+        t2[1] = 2;
+        t4 = new Float32Array(3);
+        t4[0] = 0;
+        t4[1] = -1.5707963267948966;
+        t4[2] = 0;
+        t3.$set$3(new T.Vector3(t5), new T.Vector2(t2), new T.Vector3(t4));
+      }
+      for (i = 0; i < 50; ++i) {
+        C.JSArray_methods.set$length(t1, t1.length + 1);
+        t2 = t1.length - 1;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(2);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t3 = new M.Obj(10, null, null, null, null, new T.Vector3(t3));
+        t3.load$0(0);
+        t4 = t1.length;
+        if (t2 < 0 || t2 >= t4)
+          return H.ioore(t1, t2);
+        t1[t2] = t3;
+        t3 = t4 - 1;
+        if (t3 < 0)
+          return H.ioore(t1, t3);
+        t3 = t1[t3];
+        t2 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
+        t4 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
+        t5 = new Float32Array(3);
+        t5[0] = t2 / 4;
+        t5[1] = -2.125;
+        t5[2] = t4 / 4;
+        t2 = new Float32Array(2);
+        t2[0] = 2.875;
+        t2[1] = 4.25;
+        t4 = new Float32Array(3);
+        t4[0] = 0;
+        t4[1] = -1.5707963267948966;
+        t4[2] = 0;
+        t3.$set$3(new T.Vector3(t5), new T.Vector2(t2), new T.Vector3(t4));
+      }
+      for (i = 0; i < 200; ++i) {
+        C.JSArray_methods.set$length(t1, t1.length + 1);
+        t2 = t1.length - 1;
+        t3 = $.get$tex();
+        t4 = new Float32Array(4);
+        t4[3] = 16;
+        t4[2] = 16;
+        t4[1] = 18;
+        t4[0] = 36;
+        t5 = new Float32Array(4);
+        t5[3] = 1;
+        t5[2] = 1;
+        t5[1] = 1;
+        t5[0] = 1;
+        t6 = new Float32Array(4);
+        t6[3] = 0;
+        t6[2] = 0;
+        t6[1] = 0;
+        t6[0] = 0;
+        t6 = new Float32Array(4);
+        t6[3] = 1;
+        t6[2] = 1;
+        t6[1] = 1;
+        t6[0] = 1;
+        t6 = new Float32Array(3);
+        t6[0] = 0;
+        t6[1] = 0;
+        t6[2] = 0;
+        t6 = new Float32Array(2);
+        t6[0] = 0;
+        t6[1] = 0;
+        t6 = new Float32Array(3);
+        t6[0] = 0;
+        t6[1] = 0;
+        t6[2] = 0;
+        t6 = new Float32Array(3);
+        t6[0] = 0;
+        t6[1] = 0;
+        t6[2] = 0;
+        t7 = t1.length;
+        if (t2 < 0 || t2 >= t7)
+          return H.ioore(t1, t2);
+        t1[t2] = new M.Obj(3, null, null, new M.Sprite(t3, new T.Vector4(t4), new T.Vector4(t5)), null, new T.Vector3(t6));
+        t6 = t7 - 1;
+        if (t6 < 0)
+          return H.ioore(t1, t6);
+        t6 = t1[t6];
+        t2 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
+        t3 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
+        t4 = new Float32Array(3);
+        t4[0] = t2 / 4;
+        t4[1] = 0;
+        t4[2] = t3 / 4;
+        t2 = new Float32Array(2);
+        t2[0] = 2;
+        t2[1] = 2;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = -1.5707963267948966;
+        t3[2] = 0;
+        t6.$set$3(new T.Vector3(t4), new T.Vector2(t2), new T.Vector3(t3));
+      }
+      t1 = $.get$tex();
+      t2 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t2.setValues$4(7, 81, 128, 75);
+      t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t3.setValues$4(1, 1, 1, 1);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+      new T.Vector3(new Float32Array(H._checkLength(3))).setValues$3(0, 0, 0);
+      t4 = new Float32Array(H._checkLength(2));
+      t4[0] = 0;
+      t4[1] = 0;
+      new T.Vector3(new Float32Array(H._checkLength(3))).setValues$3(0, 0, 0);
+      t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t4.setValues$3(0, 0, 0);
+      t4 = new M.Obj(0, null, null, new M.Sprite(t1, t2, t3), null, t4);
+      this.sky = t4;
+      t1 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t1.setValues$3(-10, -23, -85);
+      t2 = new Float32Array(H._checkLength(2));
+      t2[0] = 100;
+      t2[1] = 30;
+      t3 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t3.setValues$3(0, 0, 0);
+      t4.$set$3(t1, new T.Vector2(t2), t3);
+      for (t1 = this.ducks, i = 0; i < 40; ++i) {
+        C.JSArray_methods.set$length(t1, t1.length + 1);
+        t2 = t1.length - 1;
+        t3 = $.get$tex();
+        t4 = new Float32Array(4);
+        t4[3] = 17;
+        t4[2] = 25;
+        t4[1] = 62;
+        t4[0] = 150;
+        t5 = new Float32Array(4);
+        t5[3] = 1;
+        t5[2] = 1;
+        t5[1] = 1;
+        t5[0] = 1;
+        t6 = new Float32Array(4);
+        t6[3] = 0;
+        t6[2] = 0;
+        t6[1] = 0;
+        t6[0] = 0;
+        t6 = new Float32Array(4);
+        t6[3] = 1;
+        t6[2] = 1;
+        t6[1] = 1;
+        t6[0] = 1;
+        t6 = $.get$tex();
+        t7 = new Float32Array(4);
+        t7[3] = 17;
+        t7[2] = 25;
+        t7[1] = 86;
+        t7[0] = 150;
+        t8 = new Float32Array(4);
+        t8[3] = 1;
+        t8[2] = 1;
+        t8[1] = 1;
+        t8[0] = 1;
+        t9 = new Float32Array(4);
+        t9[3] = 0;
+        t9[2] = 0;
+        t9[1] = 0;
+        t9[0] = 0;
+        t9 = new Float32Array(4);
+        t9[3] = 1;
+        t9[2] = 1;
+        t9[1] = 1;
+        t9[0] = 1;
+        t9 = $.get$tex();
+        t10 = new Float32Array(4);
+        t10[3] = 17;
+        t10[2] = 25;
+        t10[1] = 62;
+        t10[0] = 187;
+        t11 = new Float32Array(4);
+        t11[3] = 1;
+        t11[2] = 1;
+        t11[1] = 1;
+        t11[0] = 1;
+        t12 = new Float32Array(4);
+        t12[3] = 0;
+        t12[2] = 0;
+        t12[1] = 0;
+        t12[0] = 0;
+        t12 = new Float32Array(4);
+        t12[3] = 1;
+        t12[2] = 1;
+        t12[1] = 1;
+        t12[0] = 1;
+        t12 = new Float32Array(3);
+        t12[0] = 0;
+        t12[1] = 0;
+        t12[2] = 0;
+        t13 = new Float32Array(2);
+        t13[0] = 0;
+        t13[1] = 0;
+        t14 = new Float32Array(3);
+        t14[0] = 0;
+        t14[1] = 0;
+        t14[2] = 0;
+        t15 = t1.length;
+        if (t2 < 0 || t2 >= t15)
+          return H.ioore(t1, t2);
+        t1[t2] = new M.Entity(new M.Sprite(t3, new T.Vector4(t4), new T.Vector4(t5)), new M.Sprite(t6, new T.Vector4(t7), new T.Vector4(t8)), new M.Sprite(t9, new T.Vector4(t10), new T.Vector4(t11)), false, 0, 0, new T.Vector3(t12), new T.Vector2(t13), new T.Vector3(t14), 100, 0, Array(2));
+        t14 = t15 - 1;
+        if (t14 < 0)
+          return H.ioore(t1, t14);
+        t14 = t1[t14];
+        t2 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), 36) + 5);
+        t3 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), 36) + 5);
+        t4 = new Float32Array(3);
+        t4[0] = t2 / 2 * 3.95;
+        t4[1] = -0.019999999999999907;
+        t4[2] = -t3 / 2 * 3.95;
+        t2 = new Float32Array(2);
+        t2[0] = 3;
+        t2[1] = 2.04;
+        t3 = new Float32Array(3);
+        t3[0] = 0;
+        t3[1] = 0;
+        t3[2] = 0;
+        t14.pos = new T.Vector3(t4);
+        t14.s = new T.Vector2(t2);
+        t14.rot = new T.Vector3(t3);
+      }
+    },
+    static: {Map$: function(path) {
+        var t1 = new M.Map(path, [], [], [], [], null);
+        t1.Map$1(path);
+        return t1;
+      }}
+  },
+  Obj: {
+    "^": "Object;id,pos,s,sprite,rot,rot_c",
+    draw$3: ["super$Obj$draw$3", function(newPos, newS, newRot) {
+      var t1, t2, t3, t4, t5, t6;
+      t1 = newPos != null && newS != null && newRot != null;
+      t2 = this.sprite;
+      t3 = $.game;
+      t4 = this.rot_c;
+      if (t1) {
+        t1 = t3.renderer;
+        t1.toString;
+        t1._batch$7(t2.tex, newPos, newS, t2.sprite, newRot, t4, t2.col);
+      } else {
+        t1 = t3.renderer;
+        t3 = this.pos;
+        t5 = this.s;
+        t6 = this.rot;
+        t1.toString;
+        t1._batch$7(t2.tex, t3, t5, t2.sprite, t6, t4, t2.col);
+      }
+    }, function() {
+      return this.draw$3(null, null, null);
+    }, "draw$0", null, null, "get$draw", 0, 6, null, 0, 0, 0],
+    draw0$0: function() {
+      this.draw$0();
+    },
+    draw1$0: function() {
+      var t1, t2, t3, t4, t5;
+      t1 = this.pos.storage;
+      t2 = t1[0];
+      t3 = t1[1];
+      t1 = t1[2];
+      t4 = this.s.storage[0];
+      t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t5.setValues$3(t2, t3, t1 + t4);
+      t4 = this.s.storage;
+      t1 = t4[0];
+      t4 = t4[1];
+      t3 = new Float32Array(H._checkLength(2));
+      t3[0] = t1;
+      t3[1] = t4;
+      this.draw$3(t5, new T.Vector2(t3), this.rot);
+    },
+    draw2$0: function() {
+      var t1, t2, t3, t4, t5, t6;
+      t1 = this.pos.storage;
+      t2 = t1[2];
+      t3 = t1[1];
+      t1 = t1[0];
+      t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t4.setValues$3(t2, t3, -t1);
+      t1 = this.s.storage;
+      t3 = t1[0];
+      t1 = t1[1];
+      t2 = new Float32Array(H._checkLength(2));
+      t2[0] = t3;
+      t2[1] = t1;
+      t1 = this.rot.storage;
+      t3 = t1[0];
+      t5 = t1[1];
+      t1 = t1[2];
+      t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t6.setValues$3(t3, t5 + 1.5707963267948966, t1);
+      this.draw$3(t4, new T.Vector2(t2), t6);
+    },
+    draw3$0: function() {
+      var t1, t2, t3, t4, t5, t6;
+      t1 = this.pos.storage;
+      t2 = t1[2];
+      t3 = t1[1];
+      t1 = t1[0];
+      t4 = this.s.storage[0];
+      t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t5.setValues$3(t2, t3, -t1 - t4);
+      t4 = this.s.storage;
+      t1 = t4[0];
+      t4 = t4[1];
+      t3 = new Float32Array(H._checkLength(2));
+      t3[0] = t1;
+      t3[1] = t4;
+      t4 = this.rot.storage;
+      t1 = t4[0];
+      t2 = t4[1];
+      t4 = t4[2];
+      t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t6.setValues$3(t1, t2 + 1.5707963267948966, t4);
+      this.draw$3(t5, new T.Vector2(t3), t6);
+    },
+    load$0: function(_) {
+      var t1, req, t2, i, returns, tex_path, sprite_sprite, sprite_col;
+      t1 = {};
+      t1._captured_objs_0 = null;
+      req = new XMLHttpRequest();
+      t2 = H.setRuntimeTypeInfo(new W._EventStream(req, "load", false), [null]);
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new M.Obj_load_closure(t1, req)), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)])._tryResume$0();
+      C.HttpRequest_methods.open$3$async(req, "GET", "Game/Objects.o", false);
+      req.send();
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+      t2 = this.id;
+      i = M.parseId(t1._captured_objs_0, t2);
+      if (i !== -1) {
+        returns = M.parseString(t1._captured_objs_0, i + 1);
+        tex_path = returns.s;
+        returns = M.parseString(t1._captured_objs_0, returns.i + 1);
+        sprite_sprite = M.parseVec4(returns.s);
+        sprite_col = M.parseVec4(M.parseString(t1._captured_objs_0, returns.i + 1).s);
+        t1 = M.Txtr$(tex_path);
+        new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+        new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+        this.sprite = new M.Sprite(t1, sprite_sprite, sprite_col);
+      } else
+        throw H.wrapException("id " + C.JSNumber_methods.toString$0(t2) + " not found!");
+    },
+    $set$3: function(newPos, newS, newRot) {
+      this.pos = newPos;
+      this.s = newS;
+      this.rot = newRot;
+    }
+  },
+  Obj_load_closure: {
+    "^": "Closure:1;_LD34$_box_0,_captured_req_1",
+    call$1: function(e) {
+      var objs = this._captured_req_1.responseText;
+      this._LD34$_box_0._captured_objs_0 = objs;
+      return objs;
+    }
+  },
+  Player: {
+    "^": "Object;pos,rot,phys,spd,jumping,flying,moving,attacking,swingcharge,health,stamina,bpm",
+    collisions$0: function() {
+      var t1, t2, t3, collides, i;
+      t1 = this.phys;
+      t2 = t1.v.storage;
+      t2[1] = t2[1] + 0.008;
+      t3 = t1.pos.storage;
+      if (t3[1] > 0.15 && !this.jumping) {
+        t3[1] = t1.pos_old.storage[1];
+        t2[1] = 0;
+        this.flying = false;
+      }
+      if (t3[1] > 0.1)
+        this.jumping = false;
+      if (!this.flying) {
+        for (collides = -1, i = 0; t2 = $.game.map.walls, i < t2.length; ++i)
+          if (t2[i].get$collidable()) {
+            t2 = $.game.map.walls;
+            if (i >= t2.length)
+              return H.ioore(t2, i);
+            if (t2[i].collision$2(t1.pos, t1.pos_old) === 1 && collides === -1)
+              collides = 1;
+            t2 = $.game.map.walls;
+            if (i >= t2.length)
+              return H.ioore(t2, i);
+            if (t2[i].collision$2(t1.pos, t1.pos_old) === 0 && collides === -1)
+              collides = 0;
+            t2 = $.game.map.walls;
+            if (i >= t2.length)
+              return H.ioore(t2, i);
+            if (t2[i].collision$2(t1.pos, t1.pos_old) !== -1) {
+              t2 = $.game.map.walls;
+              if (i >= t2.length)
+                return H.ioore(t2, i);
+              t2 = collides !== t2[i].collision$2(t1.pos, t1.pos_old);
+            } else
+              t2 = false;
+            if (t2)
+              collides = 2;
+          }
+        for (i = 0; t2 = $.game.map.floors, i < t2.length; ++i)
+          if (t2[i].get$collidable()) {
+            t2 = $.game.map.floors;
+            if (i >= t2.length)
+              return H.ioore(t2, i);
+            if (t2[i].collision$2(t1.pos, t1.pos_old) !== -1) {
+              this.health -= 10;
+              $.game.aud.hurt.PlaySound$0();
+              t2 = $.game;
+              t2.renderer.screenshake = 0.4;
+              t2.screen.coldticks = 100;
+            }
+          }
+      }
+    }
+  },
+  Wall: {
+    "^": "Obj;collidable@,id,pos,s,sprite,rot,rot_c",
+    draw$0: function() {
+      this.super$Obj$draw$3(null, null, null);
+      this.draw1$0();
+      this.draw2$0();
+      this.draw3$0();
+    },
+    draw0$0: function() {
+      this.super$Obj$draw$3(null, null, null);
+    },
+    draw1$0: function() {
+      var t1, t2, t3, t4, t5;
+      t1 = this.pos.storage;
+      t2 = t1[0];
+      t3 = t1[1];
+      t1 = t1[2];
+      t4 = this.s.storage[0];
+      t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t5.setValues$3(t2, t3, t1 + t4);
+      t4 = this.s.storage;
+      t1 = t4[0];
+      t4 = t4[1];
+      t3 = new Float32Array(H._checkLength(2));
+      t3[0] = t1;
+      t3[1] = t4;
+      this.super$Obj$draw$3(t5, new T.Vector2(t3), this.rot);
+    },
+    draw2$0: function() {
+      var t1, t2, t3, t4, t5, t6;
+      t1 = this.pos.storage;
+      t2 = t1[2];
+      t3 = t1[1];
+      t1 = t1[0];
+      t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t4.setValues$3(t2, t3, -t1);
+      t1 = this.s.storage;
+      t3 = t1[0];
+      t1 = t1[1];
+      t2 = new Float32Array(H._checkLength(2));
+      t2[0] = t3;
+      t2[1] = t1;
+      t1 = this.rot.storage;
+      t3 = t1[0];
+      t5 = t1[1];
+      t1 = t1[2];
+      t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t6.setValues$3(t3, t5 + 1.5707963267948966, t1);
+      this.super$Obj$draw$3(t4, new T.Vector2(t2), t6);
+    },
+    draw3$0: function() {
+      var t1, t2, t3, t4, t5, t6;
+      t1 = this.pos.storage;
+      t2 = t1[2];
+      t3 = t1[1];
+      t1 = t1[0];
+      t4 = this.s.storage[0];
+      t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t5.setValues$3(t2, t3, -t1 - t4);
+      t4 = this.s.storage;
+      t1 = t4[0];
+      t4 = t4[1];
+      t3 = new Float32Array(H._checkLength(2));
+      t3[0] = t1;
+      t3[1] = t4;
+      t4 = this.rot.storage;
+      t1 = t4[0];
+      t2 = t4[1];
+      t4 = t4[2];
+      t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t6.setValues$3(t1, t2 + 1.5707963267948966, t4);
+      this.super$Obj$draw$3(t5, new T.Vector2(t3), t6);
+    },
+    collision$2: function(char_pos, char_pos_old) {
+      var t1, t2, t3, t4, t5, t6, returns;
+      t1 = this.pos.storage;
+      t2 = t1[0];
+      t3 = this.s.storage[0];
+      t1 = t1[2];
+      t4 = t3 + 1.2;
+      t5 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t5.setValues$4(-t2 - 0.4 - t3, t1 - 0.4, t4, t4);
+      t4 = char_pos.storage;
+      t1 = t4[0];
+      t3 = t4[2];
+      t2 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t2.setValues$4(t1, t3, 0.5, 0.5);
+      if (M.collision2d(t5, t2)) {
+        t1 = this.pos.storage;
+        t2 = t1[0];
+        t3 = this.s.storage[0];
+        t1 = t1[2];
+        t5 = t3 + 1.2;
+        t6 = new T.Vector4(new Float32Array(H._checkLength(4)));
+        t6.setValues$4(-t2 - 0.4 - t3, t1 - 0.4, t5, t5);
+        t5 = char_pos_old.storage[0];
+        t1 = t4[2];
+        t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+        t3.setValues$4(t5, t1, 0.5, 0.5);
+        t3 = !M.collision2d(t6, t3);
+        t1 = t3;
+      } else
+        t1 = false;
+      if (t1) {
+        t1 = $.game.player.phys;
+        t1.pos.storage[0] = t1.pos_old.storage[0];
+        t1.v.storage[0] = 0;
+        returns = 0;
+      } else
+        returns = -1;
+      t1 = this.pos.storage;
+      t2 = t1[0];
+      t3 = this.s.storage[0];
+      t1 = t1[2];
+      t5 = t3 + 1.2;
+      t6 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t6.setValues$4(-t2 - 0.4 - t3, t1 - 0.4, t5, t5);
+      t5 = t4[0];
+      t1 = t4[2];
+      t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t3.setValues$4(t5, t1, 0.5, 0.5);
+      if (M.collision2d(t6, t3)) {
+        t1 = this.pos.storage;
+        t2 = t1[0];
+        t3 = this.s.storage[0];
+        t1 = t1[2];
+        t5 = t3 + 1.2;
+        t6 = new T.Vector4(new Float32Array(H._checkLength(4)));
+        t6.setValues$4(-t2 - 0.4 - t3, t1 - 0.4, t5, t5);
+        t4 = t4[0];
+        t5 = char_pos_old.storage[2];
+        t1 = new T.Vector4(new Float32Array(H._checkLength(4)));
+        t1.setValues$4(t4, t5, 0.5, 0.5);
+        t1 = !M.collision2d(t6, t1);
+      } else
+        t1 = false;
+      if (t1) {
+        t1 = $.game.player.phys;
+        t1.pos.storage[2] = t1.pos_old.storage[2];
+        t1.v.storage[2] = 0;
+        returns = 1;
+      }
+      return returns;
+    }
+  },
+  ParseReturn: {
+    "^": "Object;i,s"
+  }
+},
+1],
 ["_foreign_helper", "dart:_foreign_helper", , H, {
   "^": "",
   JS_CONST: {
@@ -748,36 +3560,8 @@ var dart = [
   },
   JSNumber: {
     "^": "Interceptor;",
-    compareTo$1: function(receiver, b) {
-      var bIsNegative;
-      if (typeof b !== "number")
-        throw H.wrapException(P.ArgumentError$(b));
-      if (receiver < b)
-        return -1;
-      else if (receiver > b)
-        return 1;
-      else if (receiver === b) {
-        if (receiver === 0) {
-          bIsNegative = this.get$isNegative(b);
-          if (this.get$isNegative(receiver) === bIsNegative)
-            return 0;
-          if (this.get$isNegative(receiver))
-            return -1;
-          return 1;
-        }
-        return 0;
-      } else if (isNaN(receiver)) {
-        if (this.get$isNaN(b))
-          return 0;
-        return 1;
-      } else
-        return -1;
-    },
     get$isNegative: function(receiver) {
       return receiver === 0 ? 1 / receiver < 0 : receiver < 0;
-    },
-    get$isNaN: function(receiver) {
-      return isNaN(receiver);
     },
     remainder$1: function(receiver, b) {
       return receiver % b;
@@ -838,20 +3622,17 @@ var dart = [
         throw H.wrapException(P.ArgumentError$(other));
       return receiver < other;
     },
-    $gt: function(receiver, other) {
-      if (typeof other !== "number")
-        throw H.wrapException(P.ArgumentError$(other));
-      return receiver > other;
-    },
     $isnum: 1
   },
   JSInt: {
     "^": "JSNumber;",
+    $is$double: 1,
     $isnum: 1,
     $is$int: 1
   },
   JSDouble: {
     "^": "JSNumber;",
+    $is$double: 1,
     $isnum: 1
   },
   JSString: {
@@ -886,16 +3667,6 @@ var dart = [
     },
     get$isEmpty: function(receiver) {
       return receiver.length === 0;
-    },
-    compareTo$1: function(receiver, other) {
-      var t1;
-      if (typeof other !== "string")
-        throw H.wrapException(P.ArgumentError$(other));
-      if (receiver === other)
-        t1 = 0;
-      else
-        t1 = receiver < other ? -1 : 1;
-      return t1;
     },
     toString$0: function(receiver) {
       return receiver;
@@ -1113,13 +3884,13 @@ var dart = [
     return new H._Deserializer(true, []).deserialize$1(new H._Serializer(false, P.LinkedHashMap_LinkedHashMap$identity(null, P.$int)).serialize$1(message));
   },
   startRootIsolate_closure: {
-    "^": "Closure:0;__isolate_helper$_box_0,_captured_entry_1",
+    "^": "Closure:4;__isolate_helper$_box_0,_captured_entry_1",
     call$0: function() {
       this._captured_entry_1.call$1(this.__isolate_helper$_box_0._captured_args_0);
     }
   },
   startRootIsolate_closure0: {
-    "^": "Closure:0;__isolate_helper$_box_0,_captured_entry_2",
+    "^": "Closure:4;__isolate_helper$_box_0,_captured_entry_2",
     call$0: function() {
       this._captured_entry_2.call$2(this.__isolate_helper$_box_0._captured_args_0, null);
     }
@@ -1359,10 +4130,10 @@ var dart = [
           J.send$1$x(t1.__interceptors$_current, null);
         this.doneHandlers = null;
       }
-    }, "call$0", "get$kill", 0, 0, 1]
+    }, "call$0", "get$kill", 0, 0, 5]
   },
   _IsolateContext_handlePing_respond: {
-    "^": "Closure:1;_captured_responsePort_0",
+    "^": "Closure:5;_captured_responsePort_0",
     call$0: function() {
       J.send$1$x(this._captured_responsePort_0, null);
     }
@@ -1421,7 +4192,7 @@ var dart = [
     }
   },
   _EventLoop__runHelper_next: {
-    "^": "Closure:1;__isolate_helper$_captured_this_0",
+    "^": "Closure:5;__isolate_helper$_captured_this_0",
     call$0: function() {
       if (!this.__isolate_helper$_captured_this_0.runIteration$0())
         return;
@@ -1443,13 +4214,13 @@ var dart = [
     "^": "Object;"
   },
   IsolateNatives__processWorkerMessage_closure: {
-    "^": "Closure:0;_captured_entryPoint_0,_captured_args_1,_captured_message_2,_captured_isSpawnUri_3,_captured_startPaused_4,_captured_replyTo_5",
+    "^": "Closure:4;_captured_entryPoint_0,_captured_args_1,_captured_message_2,_captured_isSpawnUri_3,_captured_startPaused_4,_captured_replyTo_5",
     call$0: function() {
       H.IsolateNatives__startIsolate(this._captured_entryPoint_0, this._captured_args_1, this._captured_message_2, this._captured_isSpawnUri_3, this._captured_startPaused_4, this._captured_replyTo_5);
     }
   },
   IsolateNatives__startIsolate_runStartFunction: {
-    "^": "Closure:1;_captured_topLevel_0,_captured_args_1,_captured_message_2,_captured_isSpawnUri_3,_captured_context_4",
+    "^": "Closure:5;_captured_topLevel_0,_captured_args_1,_captured_message_2,_captured_isSpawnUri_3,_captured_context_4",
     call$0: function() {
       var t1, t2, t3;
       this._captured_context_4.initialized = true;
@@ -1534,7 +4305,7 @@ var dart = [
     }
   },
   _NativeJsSendPort_send_closure: {
-    "^": "Closure:0;__isolate_helper$_captured_this_0,_captured_msg_1",
+    "^": "Closure:4;__isolate_helper$_captured_this_0,_captured_msg_1",
     call$0: function() {
       var t1 = this.__isolate_helper$_captured_this_0._receivePort;
       if (!t1.get$_isClosed())
@@ -1618,14 +4389,14 @@ var dart = [
       }}
   },
   TimerImpl_internalCallback: {
-    "^": "Closure:1;__isolate_helper$_captured_this_0,_captured_callback_1",
+    "^": "Closure:5;__isolate_helper$_captured_this_0,_captured_callback_1",
     call$0: function() {
       this.__isolate_helper$_captured_this_0._handle = null;
       this._captured_callback_1.call$0();
     }
   },
   TimerImpl_internalCallback0: {
-    "^": "Closure:1;__isolate_helper$_captured_this_2,_captured_callback_3",
+    "^": "Closure:5;__isolate_helper$_captured_this_2,_captured_callback_3",
     call$0: function() {
       this.__isolate_helper$_captured_this_2._handle = null;
       H.leaveJsAsync();
@@ -1696,7 +4467,7 @@ var dart = [
         return ["function", $name];
       }
       return ["dart", init.classIdExtractor(x), this.serializeArrayInPlace$1(init.classFieldsExtractor(x))];
-    }, "call$1", "get$serialize", 2, 0, 2],
+    }, "call$1", "get$serialize", 2, 0, 1],
     unsupported$2: function(x, message) {
       throw H.wrapException(P.UnsupportedError$(H.S(message == null ? "Can't transmit:" : message) + " " + H.S(x)));
     },
@@ -1853,7 +4624,7 @@ var dart = [
         default:
           throw H.wrapException("couldn't deserialize: " + H.S(x));
       }
-    }, "call$1", "get$deserialize", 2, 0, 2],
+    }, "call$1", "get$deserialize", 2, 0, 1],
     deserializeArrayInPlace$1: function(x) {
       var t1, i, t2;
       t1 = J.getInterceptor$asx(x);
@@ -1993,6 +4764,11 @@ var dart = [
   },
   Primitives_objectToString: function(object) {
     return "Instance of '" + H.Primitives_objectTypeName(object) + "'";
+  },
+  Primitives_lazyAsJsDate: function(receiver) {
+    if (receiver.date === void 0)
+      receiver.date = new Date(receiver.millisecondsSinceEpoch);
+    return receiver.date;
   },
   Primitives_getProperty: function(object, key) {
     if (object == null || typeof object === "boolean" || typeof object === "number" || typeof object === "string")
@@ -2882,7 +5658,7 @@ var dart = [
     }
   },
   unwrapException_saveStackTrace: {
-    "^": "Closure:2;_captured_ex_0",
+    "^": "Closure:1;_captured_ex_0",
     call$1: function(error) {
       if (!!J.getInterceptor(error).$isError)
         if (error.$thrownJsError == null)
@@ -2905,31 +5681,31 @@ var dart = [
     }
   },
   invokeClosure_closure: {
-    "^": "Closure:0;_captured_closure_0",
+    "^": "Closure:4;_captured_closure_0",
     call$0: function() {
       return this._captured_closure_0.call$0();
     }
   },
   invokeClosure_closure0: {
-    "^": "Closure:0;_captured_closure_1,_captured_arg1_2",
+    "^": "Closure:4;_captured_closure_1,_captured_arg1_2",
     call$0: function() {
       return this._captured_closure_1.call$1(this._captured_arg1_2);
     }
   },
   invokeClosure_closure1: {
-    "^": "Closure:0;_captured_closure_3,_captured_arg1_4,_captured_arg2_5",
+    "^": "Closure:4;_captured_closure_3,_captured_arg1_4,_captured_arg2_5",
     call$0: function() {
       return this._captured_closure_3.call$2(this._captured_arg1_4, this._captured_arg2_5);
     }
   },
   invokeClosure_closure2: {
-    "^": "Closure:0;_captured_closure_6,_captured_arg1_7,_captured_arg2_8,_captured_arg3_9",
+    "^": "Closure:4;_captured_closure_6,_captured_arg1_7,_captured_arg2_8,_captured_arg3_9",
     call$0: function() {
       return this._captured_closure_6.call$3(this._captured_arg1_7, this._captured_arg2_8, this._captured_arg3_9);
     }
   },
   invokeClosure_closure3: {
-    "^": "Closure:0;_captured_closure_10,_captured_arg1_11,_captured_arg2_12,_captured_arg3_13,_captured_arg4_14",
+    "^": "Closure:4;_captured_closure_10,_captured_arg1_11,_captured_arg2_12,_captured_arg3_13,_captured_arg4_14",
     call$0: function() {
       return this._captured_closure_10.call$4(this._captured_arg1_11, this._captured_arg2_12, this._captured_arg3_13, this._captured_arg4_14);
     }
@@ -3299,7 +6075,7 @@ var dart = [
       }}
   },
   JsLinkedHashMap_values_closure: {
-    "^": "Closure:2;__js_helper$_captured_this_0",
+    "^": "Closure:1;__js_helper$_captured_this_0",
     call$1: function(each) {
       return this.__js_helper$_captured_this_0.$index(0, each);
     }
@@ -3356,19 +6132,19 @@ var dart = [
     }
   },
   initHooks_closure: {
-    "^": "Closure:2;_captured_getTag_0",
+    "^": "Closure:1;_captured_getTag_0",
     call$1: function(o) {
       return this._captured_getTag_0(o);
     }
   },
   initHooks_closure0: {
-    "^": "Closure:3;_captured_getUnknownTag_1",
+    "^": "Closure:6;_captured_getUnknownTag_1",
     call$2: function(o, tag) {
       return this._captured_getUnknownTag_1(o, tag);
     }
   },
   initHooks_closure1: {
-    "^": "Closure:4;_captured_prototypeForTag_2",
+    "^": "Closure:7;_captured_prototypeForTag_2",
     call$1: function(tag) {
       return this._captured_prototypeForTag_2(tag);
     }
@@ -3381,285 +6157,6 @@ var dart = [
   },
   IterableElementError_tooFew: function() {
     return new P.StateError("Too few elements");
-  },
-  Sort__doSort: function(a, left, right, compare) {
-    if (right - left <= 32)
-      H.Sort__insertionSort(a, left, right, compare);
-    else
-      H.Sort__dualPivotQuicksort(a, left, right, compare);
-  },
-  Sort__insertionSort: function(a, left, right, compare) {
-    var i, t1, el, j, j0;
-    for (i = left + 1, t1 = J.getInterceptor$asx(a); i <= right; ++i) {
-      el = t1.$index(a, i);
-      j = i;
-      while (true) {
-        if (!(j > left && J.$gt$n(compare.call$2(t1.$index(a, j - 1), el), 0)))
-          break;
-        j0 = j - 1;
-        t1.$indexSet(a, j, t1.$index(a, j0));
-        j = j0;
-      }
-      t1.$indexSet(a, j, el);
-    }
-  },
-  Sort__dualPivotQuicksort: function(a, left, right, compare) {
-    var sixth, index1, index5, index3, index2, index4, t1, el1, el2, el3, el4, el5, t0, less, great, k, ak, comp, t2, t3, great0, less0, pivots_are_equal;
-    sixth = C.JSInt_methods._tdivFast$1(right - left + 1, 6);
-    index1 = left + sixth;
-    index5 = right - sixth;
-    index3 = C.JSInt_methods._tdivFast$1(left + right, 2);
-    index2 = index3 - sixth;
-    index4 = index3 + sixth;
-    t1 = J.getInterceptor$asx(a);
-    el1 = t1.$index(a, index1);
-    el2 = t1.$index(a, index2);
-    el3 = t1.$index(a, index3);
-    el4 = t1.$index(a, index4);
-    el5 = t1.$index(a, index5);
-    if (J.$gt$n(compare.call$2(el1, el2), 0)) {
-      t0 = el2;
-      el2 = el1;
-      el1 = t0;
-    }
-    if (J.$gt$n(compare.call$2(el4, el5), 0)) {
-      t0 = el5;
-      el5 = el4;
-      el4 = t0;
-    }
-    if (J.$gt$n(compare.call$2(el1, el3), 0)) {
-      t0 = el3;
-      el3 = el1;
-      el1 = t0;
-    }
-    if (J.$gt$n(compare.call$2(el2, el3), 0)) {
-      t0 = el3;
-      el3 = el2;
-      el2 = t0;
-    }
-    if (J.$gt$n(compare.call$2(el1, el4), 0)) {
-      t0 = el4;
-      el4 = el1;
-      el1 = t0;
-    }
-    if (J.$gt$n(compare.call$2(el3, el4), 0)) {
-      t0 = el4;
-      el4 = el3;
-      el3 = t0;
-    }
-    if (J.$gt$n(compare.call$2(el2, el5), 0)) {
-      t0 = el5;
-      el5 = el2;
-      el2 = t0;
-    }
-    if (J.$gt$n(compare.call$2(el2, el3), 0)) {
-      t0 = el3;
-      el3 = el2;
-      el2 = t0;
-    }
-    if (J.$gt$n(compare.call$2(el4, el5), 0)) {
-      t0 = el5;
-      el5 = el4;
-      el4 = t0;
-    }
-    t1.$indexSet(a, index1, el1);
-    t1.$indexSet(a, index3, el3);
-    t1.$indexSet(a, index5, el5);
-    if (left < 0 || left >= a.length)
-      return H.ioore(a, left);
-    t1.$indexSet(a, index2, a[left]);
-    if (right < 0 || right >= a.length)
-      return H.ioore(a, right);
-    t1.$indexSet(a, index4, a[right]);
-    less = left + 1;
-    great = right - 1;
-    if (J.$eq(compare.call$2(el2, el4), 0)) {
-      for (k = less; k <= great; ++k) {
-        if (k >= a.length)
-          return H.ioore(a, k);
-        ak = a[k];
-        comp = compare.call$2(ak, el2);
-        t2 = J.getInterceptor(comp);
-        if (t2.$eq(comp, 0))
-          continue;
-        if (t2.$lt(comp, 0)) {
-          if (k !== less) {
-            if (less >= a.length)
-              return H.ioore(a, less);
-            t1.$indexSet(a, k, a[less]);
-            t1.$indexSet(a, less, ak);
-          }
-          ++less;
-        } else
-          for (; true;) {
-            if (great < 0 || great >= a.length)
-              return H.ioore(a, great);
-            comp = compare.call$2(a[great], el2);
-            t2 = J.getInterceptor$n(comp);
-            if (t2.$gt(comp, 0)) {
-              --great;
-              continue;
-            } else {
-              t2 = t2.$lt(comp, 0);
-              t3 = a.length;
-              great0 = great - 1;
-              if (t2) {
-                if (less >= t3)
-                  return H.ioore(a, less);
-                t1.$indexSet(a, k, a[less]);
-                less0 = less + 1;
-                if (great >= a.length)
-                  return H.ioore(a, great);
-                t1.$indexSet(a, less, a[great]);
-                t1.$indexSet(a, great, ak);
-                great = great0;
-                less = less0;
-                break;
-              } else {
-                if (great >= t3)
-                  return H.ioore(a, great);
-                t1.$indexSet(a, k, a[great]);
-                t1.$indexSet(a, great, ak);
-                great = great0;
-                break;
-              }
-            }
-          }
-      }
-      pivots_are_equal = true;
-    } else {
-      for (k = less; k <= great; ++k) {
-        if (k >= a.length)
-          return H.ioore(a, k);
-        ak = a[k];
-        if (J.$lt$n(compare.call$2(ak, el2), 0)) {
-          if (k !== less) {
-            if (less >= a.length)
-              return H.ioore(a, less);
-            t1.$indexSet(a, k, a[less]);
-            t1.$indexSet(a, less, ak);
-          }
-          ++less;
-        } else if (J.$gt$n(compare.call$2(ak, el4), 0))
-          for (; true;) {
-            if (great < 0 || great >= a.length)
-              return H.ioore(a, great);
-            if (J.$gt$n(compare.call$2(a[great], el4), 0)) {
-              --great;
-              if (great < k)
-                break;
-              continue;
-            } else {
-              if (great >= a.length)
-                return H.ioore(a, great);
-              t2 = J.$lt$n(compare.call$2(a[great], el2), 0);
-              great0 = great - 1;
-              t3 = a.length;
-              if (t2) {
-                if (less >= t3)
-                  return H.ioore(a, less);
-                t1.$indexSet(a, k, a[less]);
-                less0 = less + 1;
-                if (great >= a.length)
-                  return H.ioore(a, great);
-                t1.$indexSet(a, less, a[great]);
-                t1.$indexSet(a, great, ak);
-                great = great0;
-                less = less0;
-              } else {
-                if (great >= t3)
-                  return H.ioore(a, great);
-                t1.$indexSet(a, k, a[great]);
-                t1.$indexSet(a, great, ak);
-                great = great0;
-              }
-              break;
-            }
-          }
-      }
-      pivots_are_equal = false;
-    }
-    t2 = less - 1;
-    if (t2 >= a.length)
-      return H.ioore(a, t2);
-    t1.$indexSet(a, left, a[t2]);
-    t1.$indexSet(a, t2, el2);
-    t2 = great + 1;
-    if (t2 < 0 || t2 >= a.length)
-      return H.ioore(a, t2);
-    t1.$indexSet(a, right, a[t2]);
-    t1.$indexSet(a, t2, el4);
-    H.Sort__doSort(a, left, less - 2, compare);
-    H.Sort__doSort(a, great + 2, right, compare);
-    if (pivots_are_equal)
-      return;
-    if (less < index1 && great > index5) {
-      while (true) {
-        if (less >= a.length)
-          return H.ioore(a, less);
-        if (!J.$eq(compare.call$2(a[less], el2), 0))
-          break;
-        ++less;
-      }
-      while (true) {
-        if (great < 0 || great >= a.length)
-          return H.ioore(a, great);
-        if (!J.$eq(compare.call$2(a[great], el4), 0))
-          break;
-        --great;
-      }
-      for (k = less; k <= great; ++k) {
-        if (k >= a.length)
-          return H.ioore(a, k);
-        ak = a[k];
-        if (J.$eq(compare.call$2(ak, el2), 0)) {
-          if (k !== less) {
-            if (less >= a.length)
-              return H.ioore(a, less);
-            t1.$indexSet(a, k, a[less]);
-            t1.$indexSet(a, less, ak);
-          }
-          ++less;
-        } else if (J.$eq(compare.call$2(ak, el4), 0))
-          for (; true;) {
-            if (great < 0 || great >= a.length)
-              return H.ioore(a, great);
-            if (J.$eq(compare.call$2(a[great], el4), 0)) {
-              --great;
-              if (great < k)
-                break;
-              continue;
-            } else {
-              if (great >= a.length)
-                return H.ioore(a, great);
-              t2 = J.$lt$n(compare.call$2(a[great], el2), 0);
-              great0 = great - 1;
-              t3 = a.length;
-              if (t2) {
-                if (less >= t3)
-                  return H.ioore(a, less);
-                t1.$indexSet(a, k, a[less]);
-                less0 = less + 1;
-                if (great >= a.length)
-                  return H.ioore(a, great);
-                t1.$indexSet(a, less, a[great]);
-                t1.$indexSet(a, great, ak);
-                great = great0;
-                less = less0;
-              } else {
-                if (great >= t3)
-                  return H.ioore(a, great);
-                t1.$indexSet(a, k, a[great]);
-                t1.$indexSet(a, great, ak);
-                great = great0;
-              }
-              break;
-            }
-          }
-      }
-      H.Sort__doSort(a, less, great, compare);
-    } else
-      H.Sort__doSort(a, less, great, compare);
   },
   Symbol_getName: function(symbol) {
     return symbol.get$_name();
@@ -3682,15 +6179,12 @@ var dart = [
       return H.setRuntimeTypeInfo(new H.MappedListIterable(this, f), [null, null]);
     },
     toList$1$growable: function(_, growable) {
-      var result, t1, i;
+      var result, i, t1;
       if (growable) {
         result = H.setRuntimeTypeInfo([], [H.getRuntimeTypeArgument(this, "ListIterable", 0)]);
         C.JSArray_methods.set$length(result, this.get$length(this));
-      } else {
-        t1 = Array(this.get$length(this));
-        t1.fixed$length = Array;
-        result = H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(this, "ListIterable", 0)]);
-      }
+      } else
+        result = H.setRuntimeTypeInfo(Array(this.get$length(this)), [H.getRuntimeTypeArgument(this, "ListIterable", 0)]);
       for (i = 0; i < this.get$length(this); ++i) {
         t1 = this.elementAt$1(0, i);
         if (i >= result.length)
@@ -3768,12 +6262,12 @@ var dart = [
     }
   },
   MappedListIterable: {
-    "^": "ListIterable;_source,_f",
+    "^": "ListIterable;__internal$_source,_f",
     get$length: function(_) {
-      return J.get$length$asx(this._source);
+      return J.get$length$asx(this.__internal$_source);
     },
     elementAt$1: function(_, index) {
-      return this._f$1(J.elementAt$1$ax(this._source, index));
+      return this._f$1(J.elementAt$1$ax(this.__internal$_source, index));
     },
     _f$1: function(arg0) {
       return this._f.call$1(arg0);
@@ -3788,18 +6282,6 @@ var dart = [
   },
   FixedLengthListMixin: {
     "^": "Object;"
-  },
-  ReversedListIterable: {
-    "^": "ListIterable;_source",
-    get$length: function(_) {
-      return J.get$length$asx(this._source);
-    },
-    elementAt$1: function(_, index) {
-      var t1, t2;
-      t1 = this._source;
-      t2 = J.getInterceptor$asx(t1);
-      return t2.elementAt$1(t1, t2.get$length(t1) - 1 - index);
-    }
   }
 }],
 ["dart._js_names", "dart:_js_names", , H, {
@@ -3830,14 +6312,14 @@ var dart = [
   _AsyncRun__scheduleImmediateJsOverride: [function(callback) {
     ++init.globalState.topEventLoop._activeJsAsyncCount;
     self.scheduleImmediate(H.convertDartClosureToJS(new P._AsyncRun__scheduleImmediateJsOverride_internalCallback(callback), 0));
-  }, "call$1", "_AsyncRun__scheduleImmediateJsOverride$closure", 2, 0, 18],
+  }, "call$1", "_AsyncRun__scheduleImmediateJsOverride$closure", 2, 0, 22],
   _AsyncRun__scheduleImmediateWithSetImmediate: [function(callback) {
     ++init.globalState.topEventLoop._activeJsAsyncCount;
     self.setImmediate(H.convertDartClosureToJS(new P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback(callback), 0));
-  }, "call$1", "_AsyncRun__scheduleImmediateWithSetImmediate$closure", 2, 0, 18],
+  }, "call$1", "_AsyncRun__scheduleImmediateWithSetImmediate$closure", 2, 0, 22],
   _AsyncRun__scheduleImmediateWithTimer: [function(callback) {
     P.Timer__createTimer(C.Duration_0, callback);
-  }, "call$1", "_AsyncRun__scheduleImmediateWithTimer$closure", 2, 0, 18],
+  }, "call$1", "_AsyncRun__scheduleImmediateWithTimer$closure", 2, 0, 22],
   _registerErrorHandler: function(errorHandler, zone) {
     var t1 = H.getDynamicRuntimeType();
     t1 = H.buildFunctionType(t1, [t1, t1])._isTest$1(errorHandler);
@@ -3870,7 +6352,7 @@ var dart = [
       if ($._nextCallback != null)
         $.get$_AsyncRun_scheduleImmediateClosure().call$1(P._asyncRunCallback$closure());
     }
-  }, "call$0", "_asyncRunCallback$closure", 0, 0, 1],
+  }, "call$0", "_asyncRunCallback$closure", 0, 0, 5],
   _scheduleAsyncCallback: function(callback) {
     var t1, newEntry;
     if ($._nextCallback == null) {
@@ -3894,16 +6376,16 @@ var dart = [
     P._rootScheduleMicrotask(null, null, t1, t1.bindCallback$2$runGuarded(callback, true));
   },
   _nullDataHandler: [function(value) {
-  }, "call$1", "_nullDataHandler$closure", 2, 0, 19],
+  }, "call$1", "_nullDataHandler$closure", 2, 0, 23],
   _nullErrorHandler: [function(error, stackTrace) {
     var t1 = $.Zone__current;
     t1.toString;
     P._rootHandleUncaughtError(null, null, t1, error, stackTrace);
   }, function(error) {
     return P._nullErrorHandler(error, null);
-  }, null, "call$2", "call$1", "_nullErrorHandler$closure", 2, 2, 6, 0],
+  }, null, "call$2", "call$1", "_nullErrorHandler$closure", 2, 2, 9, 0],
   _nullDoneHandler: [function() {
-  }, "call$0", "_nullDoneHandler$closure", 0, 0, 1],
+  }, "call$0", "_nullDoneHandler$closure", 0, 0, 5],
   _runUserCode: function(userCode, onSuccess, onError) {
     var e, s, replacement, error, stackTrace, exception, t1;
     try {
@@ -4017,7 +6499,7 @@ var dart = [
     P._scheduleAsyncCallback(f);
   },
   _AsyncRun__initializeScheduleImmediate_internalCallback: {
-    "^": "Closure:2;_async$_box_0",
+    "^": "Closure:1;_async$_box_0",
     call$1: function(_) {
       var t1, f;
       H.leaveJsAsync();
@@ -4028,7 +6510,7 @@ var dart = [
     }
   },
   _AsyncRun__initializeScheduleImmediate_closure: {
-    "^": "Closure:5;_async$_box_0,_captured_div_1,_captured_span_2",
+    "^": "Closure:8;_async$_box_0,_captured_div_1,_captured_span_2",
     call$1: function(callback) {
       var t1, t2;
       ++init.globalState.topEventLoop._activeJsAsyncCount;
@@ -4039,14 +6521,14 @@ var dart = [
     }
   },
   _AsyncRun__scheduleImmediateJsOverride_internalCallback: {
-    "^": "Closure:0;_captured_callback_0",
+    "^": "Closure:4;_captured_callback_0",
     call$0: function() {
       H.leaveJsAsync();
       this._captured_callback_0.call$0();
     }
   },
   _AsyncRun__scheduleImmediateWithSetImmediate_internalCallback: {
-    "^": "Closure:0;_captured_callback_0",
+    "^": "Closure:4;_captured_callback_0",
     call$0: function() {
       H.leaveJsAsync();
       this._captured_callback_0.call$0();
@@ -4070,6 +6552,31 @@ var dart = [
   },
   Future: {
     "^": "Object;"
+  },
+  _Completer: {
+    "^": "Object;",
+    completeError$2: function(error, stackTrace) {
+      error = error != null ? error : new P.NullThrownError();
+      if (this.future._state !== 0)
+        throw H.wrapException(P.StateError$("Future already completed"));
+      $.Zone__current.toString;
+      this._completeError$2(error, stackTrace);
+    },
+    completeError$1: function(error) {
+      return this.completeError$2(error, null);
+    }
+  },
+  _AsyncCompleter: {
+    "^": "_Completer;future",
+    complete$1: function(_, value) {
+      var t1 = this.future;
+      if (t1._state !== 0)
+        throw H.wrapException(P.StateError$("Future already completed"));
+      t1._asyncComplete$1(value);
+    },
+    _completeError$2: function(error, stackTrace) {
+      this.future._asyncCompleteError$2(error, stackTrace);
+    }
   },
   _FutureListener: {
     "^": "Object;_nextListener<,result>,state,callback,errorCallback",
@@ -4115,6 +6622,9 @@ var dart = [
       this._addListener$1(new P._FutureListener(null, result, onError == null ? 1 : 3, f, onError));
       return result;
     },
+    then$1: function(f) {
+      return this.then$2$onError(f, null);
+    },
     whenComplete$1: function(action) {
       var t1, result;
       t1 = $.Zone__current;
@@ -4124,6 +6634,11 @@ var dart = [
         t1.toString;
       this._addListener$1(new P._FutureListener(null, result, 8, action, null));
       return result;
+    },
+    _markPendingCompletion$0: function() {
+      if (this._state !== 0)
+        throw H.wrapException(P.StateError$("Future already completed"));
+      this._state = 1;
     },
     get$_value: function() {
       return this._resultOrListeners;
@@ -4188,7 +6703,40 @@ var dart = [
       P._Future__propagateToListeners(this, listeners);
     }, function(error) {
       return this._completeError$2(error, null);
-    }, "_completeError$1", "call$2", "call$1", "get$_completeError", 2, 2, 6, 0],
+    }, "_completeError$1", "call$2", "call$1", "get$_completeError", 2, 2, 9, 0],
+    _asyncComplete$1: function(value) {
+      var t1;
+      if (value == null)
+        ;
+      else {
+        t1 = J.getInterceptor(value);
+        if (!!t1.$isFuture) {
+          if (!!t1.$is_Future) {
+            t1 = value._state;
+            if (t1 >= 4 && t1 === 8) {
+              this._markPendingCompletion$0();
+              t1 = this._zone;
+              t1.toString;
+              P._rootScheduleMicrotask(null, null, t1, new P._Future__asyncComplete_closure(this, value));
+            } else
+              P._Future__chainCoreFuture(value, this);
+          } else
+            P._Future__chainForeignFuture(value, this);
+          return;
+        }
+      }
+      this._markPendingCompletion$0();
+      t1 = this._zone;
+      t1.toString;
+      P._rootScheduleMicrotask(null, null, t1, new P._Future__asyncComplete_closure0(this, value));
+    },
+    _asyncCompleteError$2: function(error, stackTrace) {
+      var t1;
+      this._markPendingCompletion$0();
+      t1 = this._zone;
+      t1.toString;
+      P._rootScheduleMicrotask(null, null, t1, new P._Future__asyncCompleteError_closure(this, error, stackTrace));
+    },
     $isFuture: 1,
     static: {_Future__chainForeignFuture: function(source, target) {
         var e, s, exception, t1;
@@ -4315,19 +6863,19 @@ var dart = [
       }}
   },
   _Future__addListener_closure: {
-    "^": "Closure:0;_captured_this_0,_captured_listener_1",
+    "^": "Closure:4;_captured_this_0,_captured_listener_1",
     call$0: function() {
       P._Future__propagateToListeners(this._captured_this_0, this._captured_listener_1);
     }
   },
   _Future__chainForeignFuture_closure: {
-    "^": "Closure:2;_captured_target_0",
+    "^": "Closure:1;_captured_target_0",
     call$1: function(value) {
       this._captured_target_0._completeWithValue$1(value);
     }
   },
   _Future__chainForeignFuture_closure0: {
-    "^": "Closure:7;_captured_target_1",
+    "^": "Closure:10;_captured_target_1",
     call$2: function(error, stackTrace) {
       this._captured_target_1._completeError$2(error, stackTrace);
     },
@@ -4336,13 +6884,31 @@ var dart = [
     }
   },
   _Future__chainForeignFuture_closure1: {
-    "^": "Closure:0;_captured_target_2,_captured_e_3,_captured_s_4",
+    "^": "Closure:4;_captured_target_2,_captured_e_3,_captured_s_4",
     call$0: function() {
       this._captured_target_2._completeError$2(this._captured_e_3, this._captured_s_4);
     }
   },
+  _Future__asyncComplete_closure: {
+    "^": "Closure:4;_captured_this_0,_captured_coreFuture_1",
+    call$0: function() {
+      P._Future__chainCoreFuture(this._captured_coreFuture_1, this._captured_this_0);
+    }
+  },
+  _Future__asyncComplete_closure0: {
+    "^": "Closure:4;_captured_this_2,_captured_value_3",
+    call$0: function() {
+      this._captured_this_2._completeWithValue$1(this._captured_value_3);
+    }
+  },
+  _Future__asyncCompleteError_closure: {
+    "^": "Closure:4;_captured_this_0,_captured_error_1,_captured_stackTrace_2",
+    call$0: function() {
+      this._captured_this_0._completeError$2(this._captured_error_1, this._captured_stackTrace_2);
+    }
+  },
   _Future__propagateToListeners_handleValueCallback: {
-    "^": "Closure:8;_box_1,_captured_listener_3,_captured_sourceValue_4,_captured_zone_5",
+    "^": "Closure:11;_box_1,_captured_listener_3,_captured_sourceValue_4,_captured_zone_5",
     call$0: function() {
       var e, s, exception, t1;
       try {
@@ -4358,7 +6924,7 @@ var dart = [
     }
   },
   _Future__propagateToListeners_handleError: {
-    "^": "Closure:1;_box_2,_box_1,_captured_listener_6,_captured_zone_7",
+    "^": "Closure:5;_box_2,_box_1,_captured_listener_6,_captured_zone_7",
     call$0: function() {
       var asyncError, matchesTest, test, e, s, errorCallback, e0, s0, t1, exception, t2, listenerValueOrError, t3, t4;
       asyncError = this._box_2._captured_source_4.get$_error();
@@ -4414,7 +6980,7 @@ var dart = [
     }
   },
   _Future__propagateToListeners_handleWhenCompleteCallback: {
-    "^": "Closure:1;_box_2,_box_1,_captured_hasError_8,_captured_listener_9,_captured_zone_10",
+    "^": "Closure:5;_box_2,_box_1,_captured_hasError_8,_captured_listener_9,_captured_zone_10",
     call$0: function() {
       var t1, e, s, completeResult, t2, exception, result;
       t1 = {};
@@ -4452,13 +7018,13 @@ var dart = [
     }
   },
   _Future__propagateToListeners_handleWhenCompleteCallback_closure: {
-    "^": "Closure:2;_box_2,_captured_result_11",
+    "^": "Closure:1;_box_2,_captured_result_11",
     call$1: function(ignored) {
       P._Future__propagateToListeners(this._box_2._captured_source_4, new P._FutureListener(null, this._captured_result_11, 0, null, null));
     }
   },
   _Future__propagateToListeners_handleWhenCompleteCallback_closure0: {
-    "^": "Closure:7;_async$_box_0,_captured_result_12",
+    "^": "Closure:10;_async$_box_0,_captured_result_12",
     call$2: function(error, stackTrace) {
       var t1, completeResult;
       t1 = this._async$_box_0;
@@ -4520,30 +7086,30 @@ var dart = [
     }
   },
   Stream_forEach__closure: {
-    "^": "Closure:0;_captured_action_4,_captured_element_5",
+    "^": "Closure:4;_captured_action_4,_captured_element_5",
     call$0: function() {
       return this._captured_action_4.call$1(this._captured_element_5);
     }
   },
   Stream_forEach__closure0: {
-    "^": "Closure:2;",
+    "^": "Closure:1;",
     call$1: function(_) {
     }
   },
   Stream_forEach_closure0: {
-    "^": "Closure:0;_captured_future_6",
+    "^": "Closure:4;_captured_future_6",
     call$0: function() {
       this._captured_future_6._complete$1(null);
     }
   },
   Stream_length_closure: {
-    "^": "Closure:2;_async$_box_0",
+    "^": "Closure:1;_async$_box_0",
     call$1: function(_) {
       ++this._async$_box_0._captured_count_0;
     }
   },
   Stream_length_closure0: {
-    "^": "Closure:0;_async$_box_0,_captured_future_1",
+    "^": "Closure:4;_async$_box_0,_captured_future_1",
     call$0: function() {
       this._captured_future_1._complete$1(this._async$_box_0._captured_count_0);
     }
@@ -4560,7 +7126,7 @@ var dart = [
     }
   },
   Stream_toList_closure0: {
-    "^": "Closure:0;_captured_result_2,_captured_future_3",
+    "^": "Closure:4;_captured_result_2,_captured_future_3",
     call$0: function() {
       this._captured_future_3._complete$1(this._captured_result_2);
     }
@@ -4657,9 +7223,9 @@ var dart = [
         this._addPending$1(C.C__DelayedDone);
     },
     _onPause$0: [function() {
-    }, "call$0", "get$_onPause", 0, 0, 1],
+    }, "call$0", "get$_onPause", 0, 0, 5],
     _onResume$0: [function() {
-    }, "call$0", "get$_onResume", 0, 0, 1],
+    }, "call$0", "get$_onResume", 0, 0, 5],
     _onCancel$0: function() {
       return;
     },
@@ -4771,7 +7337,7 @@ var dart = [
     }
   },
   _BufferingStreamSubscription__sendError_sendError: {
-    "^": "Closure:1;_captured_this_0,_captured_error_1,_captured_stackTrace_2",
+    "^": "Closure:5;_captured_this_0,_captured_error_1,_captured_stackTrace_2",
     call$0: function() {
       var t1, t2, t3, t4, t5, t6;
       t1 = this._captured_this_0;
@@ -4793,7 +7359,7 @@ var dart = [
     }
   },
   _BufferingStreamSubscription__sendDone_sendDone: {
-    "^": "Closure:1;_captured_this_0",
+    "^": "Closure:5;_captured_this_0",
     call$0: function() {
       var t1, t2;
       t1 = this._captured_this_0;
@@ -4851,7 +7417,7 @@ var dart = [
     }
   },
   _PendingEvents_schedule_closure: {
-    "^": "Closure:0;_captured_this_0,_captured_dispatch_1",
+    "^": "Closure:4;_captured_this_0,_captured_dispatch_1",
     call$0: function() {
       var t1, oldState;
       t1 = this._captured_this_0;
@@ -4888,13 +7454,13 @@ var dart = [
     }
   },
   _cancelAndError_closure: {
-    "^": "Closure:0;_captured_future_0,_captured_error_1,_captured_stackTrace_2",
+    "^": "Closure:4;_captured_future_0,_captured_error_1,_captured_stackTrace_2",
     call$0: function() {
       return this._captured_future_0._completeError$2(this._captured_error_1, this._captured_stackTrace_2);
     }
   },
   _cancelAndErrorClosure_closure: {
-    "^": "Closure:9;_captured_subscription_0,_captured_future_1",
+    "^": "Closure:12;_captured_subscription_0,_captured_future_1",
     call$2: function(error, stackTrace) {
       return P._cancelAndError(this._captured_subscription_0, this._captured_future_1, error, stackTrace);
     }
@@ -4934,13 +7500,13 @@ var dart = [
       if (t1 == null)
         return;
       t1.pause$0(0);
-    }, "call$0", "get$_onPause", 0, 0, 1],
+    }, "call$0", "get$_onPause", 0, 0, 5],
     _onResume$0: [function() {
       var t1 = this._subscription;
       if (t1 == null)
         return;
       t1.resume$0();
-    }, "call$0", "get$_onResume", 0, 0, 1],
+    }, "call$0", "get$_onResume", 0, 0, 5],
     _onCancel$0: function() {
       var t1 = this._subscription;
       if (t1 != null) {
@@ -4958,15 +7524,15 @@ var dart = [
     }],
     _handleError$2: [function(error, stackTrace) {
       this._addError$2(error, stackTrace);
-    }, "call$2", "get$_handleError", 4, 0, 10],
+    }, "call$2", "get$_handleError", 4, 0, 13],
     _handleDone$0: [function() {
       this._async$_close$0();
-    }, "call$0", "get$_handleDone", 0, 0, 1],
+    }, "call$0", "get$_handleDone", 0, 0, 5],
     _ForwardingStreamSubscription$5: function(_stream, onData, onError, onDone, cancelOnError, $S, $T) {
       var t1, t2;
       t1 = this.get$_handleData();
       t2 = this.get$_handleError();
-      this._subscription = this._stream._async$_source.listen$3$onDone$onError(t1, this.get$_handleDone(), t2);
+      this._subscription = this._stream._source.listen$3$onDone$onError(t1, this.get$_handleDone(), t2);
     },
     static: {_ForwardingStreamSubscription$: function(_stream, onData, onError, onDone, cancelOnError, $S, $T) {
         var t1 = $.Zone__current;
@@ -4977,7 +7543,7 @@ var dart = [
       }}
   },
   _MapStream: {
-    "^": "_ForwardingStream;_transform,_async$_source",
+    "^": "_ForwardingStream;_transform,_source",
     _handleData$2: function(inputEvent, sink) {
       var outputEvent, e, s, exception, t1;
       outputEvent = null;
@@ -5008,7 +7574,7 @@ var dart = [
     "^": "Object;"
   },
   _rootHandleUncaughtError_closure: {
-    "^": "Closure:0;_captured_error_0,_captured_stackTrace_1",
+    "^": "Closure:4;_captured_error_0,_captured_stackTrace_1",
     call$0: function() {
       var t1 = this._captured_error_0;
       throw H.wrapException(new P._UncaughtAsyncError(t1, P._UncaughtAsyncError__getBestStackTrace(t1, this._captured_stackTrace_1)));
@@ -5099,25 +7665,25 @@ var dart = [
     }
   },
   _RootZone_bindCallback_closure: {
-    "^": "Closure:0;_captured_this_0,_captured_f_1",
+    "^": "Closure:4;_captured_this_0,_captured_f_1",
     call$0: function() {
       return this._captured_this_0.runGuarded$1(this._captured_f_1);
     }
   },
   _RootZone_bindCallback_closure0: {
-    "^": "Closure:0;_captured_this_2,_captured_f_3",
+    "^": "Closure:4;_captured_this_2,_captured_f_3",
     call$0: function() {
       return this._captured_this_2.run$1(this._captured_f_3);
     }
   },
   _RootZone_bindUnaryCallback_closure: {
-    "^": "Closure:2;_captured_this_0,_captured_f_1",
+    "^": "Closure:1;_captured_this_0,_captured_f_1",
     call$1: function(arg) {
       return this._captured_this_0.runUnaryGuarded$2(this._captured_f_1, arg);
     }
   },
   _RootZone_bindUnaryCallback_closure0: {
-    "^": "Closure:2;_captured_this_2,_captured_f_3",
+    "^": "Closure:1;_captured_this_2,_captured_f_3",
     call$1: function(arg) {
       return this._captured_this_2.runUnary$2(this._captured_f_3, arg);
     }
@@ -5133,10 +7699,10 @@ var dart = [
   },
   _defaultEquals: [function(a, b) {
     return J.$eq(a, b);
-  }, "call$2", "_defaultEquals$closure", 4, 0, 20],
+  }, "call$2", "_defaultEquals$closure", 4, 0, 24],
   _defaultHashCode: [function(a) {
     return J.get$hashCode$(a);
-  }, "call$1", "_defaultHashCode$closure", 2, 0, 21],
+  }, "call$1", "_defaultHashCode$closure", 2, 0, 18],
   IterableBase_iterableToShortString: function(iterable, leftDelimiter, rightDelimiter) {
     var parts, t1;
     if (P.IterableBase__isToStringVisiting(iterable)) {
@@ -5668,7 +8234,7 @@ var dart = [
     $isEfficientLength: 1
   },
   Maps_mapToString_closure: {
-    "^": "Closure:11;_collection$_box_0,_captured_result_1",
+    "^": "Closure:14;_collection$_box_0,_captured_result_1",
     call$2: function(k, v) {
       var t1, t2;
       t1 = this._collection$_box_0;
@@ -5876,9 +8442,6 @@ var dart = [
   _symbolToString: function(symbol) {
     return H.Symbol_getName(symbol);
   },
-  Comparable_compare: [function(a, b) {
-    return J.compareTo$1$ns(a, b);
-  }, "call$2", "Comparable_compare$closure", 4, 0, 22],
   Error_safeToString: function(object) {
     if (typeof object === "number" || typeof object === "boolean" || null == object)
       return J.toString$0(object);
@@ -5891,10 +8454,10 @@ var dart = [
   },
   identical: [function(a, b) {
     return a == null ? b == null : a === b;
-  }, "call$2", "identical$closure", 4, 0, 23],
+  }, "call$2", "identical$closure", 4, 0, 25],
   identityHashCode: [function(object) {
     return H.objectHashCode(object);
-  }, "call$1", "identityHashCode$closure", 2, 0, 24],
+  }, "call$1", "identityHashCode$closure", 2, 0, 26],
   List_List$filled: function($length, fill, $E) {
     var result, t1, i;
     result = J.JSArray_JSArray$fixed($length, $E);
@@ -5918,7 +8481,7 @@ var dart = [
     H.printString(line);
   },
   NoSuchMethodError_toString_closure: {
-    "^": "Closure:12;_box_0",
+    "^": "Closure:15;_box_0",
     call$2: function(key, value) {
       var t1 = this._box_0;
       if (t1._captured_i_1 > 0)
@@ -5930,32 +8493,75 @@ var dart = [
     "^": "Object;"
   },
   "+bool": 0,
-  Comparable: {
-    "^": "Object;"
-  },
   DateTime: {
-    "^": "Object;",
-    $isComparable: 1,
-    $asComparable: $.functionThatReturnsNull
+    "^": "Object;millisecondsSinceEpoch,isUtc",
+    $eq: function(_, other) {
+      if (other == null)
+        return false;
+      if (!(other instanceof P.DateTime))
+        return false;
+      return this.millisecondsSinceEpoch === other.millisecondsSinceEpoch && this.isUtc === other.isUtc;
+    },
+    get$hashCode: function(_) {
+      return this.millisecondsSinceEpoch;
+    },
+    toString$0: function(_) {
+      var t1, y, m, d, h, min, sec, ms;
+      t1 = this.isUtc;
+      y = P.DateTime__fourDigits(t1 ? H.Primitives_lazyAsJsDate(this).getUTCFullYear() + 0 : H.Primitives_lazyAsJsDate(this).getFullYear() + 0);
+      m = P.DateTime__twoDigits(t1 ? H.Primitives_lazyAsJsDate(this).getUTCMonth() + 1 : H.Primitives_lazyAsJsDate(this).getMonth() + 1);
+      d = P.DateTime__twoDigits(t1 ? H.Primitives_lazyAsJsDate(this).getUTCDate() + 0 : H.Primitives_lazyAsJsDate(this).getDate() + 0);
+      h = P.DateTime__twoDigits(t1 ? H.Primitives_lazyAsJsDate(this).getUTCHours() + 0 : H.Primitives_lazyAsJsDate(this).getHours() + 0);
+      min = P.DateTime__twoDigits(t1 ? H.Primitives_lazyAsJsDate(this).getUTCMinutes() + 0 : H.Primitives_lazyAsJsDate(this).getMinutes() + 0);
+      sec = P.DateTime__twoDigits(t1 ? H.Primitives_lazyAsJsDate(this).getUTCSeconds() + 0 : H.Primitives_lazyAsJsDate(this).getSeconds() + 0);
+      ms = P.DateTime__threeDigits(t1 ? H.Primitives_lazyAsJsDate(this).getUTCMilliseconds() + 0 : H.Primitives_lazyAsJsDate(this).getMilliseconds() + 0);
+      if (t1)
+        return y + "-" + m + "-" + d + " " + h + ":" + min + ":" + sec + "." + ms + "Z";
+      else
+        return y + "-" + m + "-" + d + " " + h + ":" + min + ":" + sec + "." + ms;
+    },
+    DateTime$fromMillisecondsSinceEpoch$2$isUtc: function(millisecondsSinceEpoch, isUtc) {
+      if (Math.abs(millisecondsSinceEpoch) > 864e13)
+        throw H.wrapException(P.ArgumentError$(millisecondsSinceEpoch));
+    },
+    static: {DateTime$fromMillisecondsSinceEpoch: function(millisecondsSinceEpoch, isUtc) {
+        var t1 = new P.DateTime(millisecondsSinceEpoch, isUtc);
+        t1.DateTime$fromMillisecondsSinceEpoch$2$isUtc(millisecondsSinceEpoch, isUtc);
+        return t1;
+      }, DateTime__fourDigits: function(n) {
+        var absN, sign;
+        absN = Math.abs(n);
+        sign = n < 0 ? "-" : "";
+        if (absN >= 1000)
+          return "" + n;
+        if (absN >= 100)
+          return sign + "0" + H.S(absN);
+        if (absN >= 10)
+          return sign + "00" + H.S(absN);
+        return sign + "000" + H.S(absN);
+      }, DateTime__threeDigits: function(n) {
+        if (n >= 100)
+          return "" + n;
+        if (n >= 10)
+          return "0" + n;
+        return "00" + n;
+      }, DateTime__twoDigits: function(n) {
+        if (n >= 10)
+          return "" + n;
+        return "0" + n;
+      }}
   },
   $double: {
-    "^": "num;",
-    $isComparable: 1,
-    $asComparable: function() {
-      return [P.num];
-    }
+    "^": "num;"
   },
   "+double": 0,
   Duration: {
-    "^": "Object;_duration<",
+    "^": "Object;_duration",
     $add: function(_, other) {
       return new P.Duration(C.JSInt_methods.$add(this._duration, other.get$_duration()));
     },
     $lt: function(_, other) {
       return C.JSInt_methods.$lt(this._duration, other.get$_duration());
-    },
-    $gt: function(_, other) {
-      return C.JSInt_methods.$gt(this._duration, other.get$_duration());
     },
     $eq: function(_, other) {
       if (other == null)
@@ -5967,9 +8573,6 @@ var dart = [
     get$hashCode: function(_) {
       return this._duration & 0x1FFFFFFF;
     },
-    compareTo$1: function(_, other) {
-      return C.JSInt_methods.compareTo$1(this._duration, other.get$_duration());
-    },
     toString$0: function(_) {
       var t1, t2, twoDigitMinutes, twoDigitSeconds, sixDigitUs;
       t1 = new P.Duration_toString_twoDigits();
@@ -5980,14 +8583,10 @@ var dart = [
       twoDigitSeconds = t1.call$1(C.JSInt_methods.remainder$1(C.JSInt_methods._tdivFast$1(t2, 1000000), 60));
       sixDigitUs = new P.Duration_toString_sixDigits().call$1(C.JSInt_methods.remainder$1(t2, 1000000));
       return "" + C.JSInt_methods._tdivFast$1(t2, 3600000000) + ":" + H.S(twoDigitMinutes) + ":" + H.S(twoDigitSeconds) + "." + H.S(sixDigitUs);
-    },
-    $isComparable: 1,
-    $asComparable: function() {
-      return [P.Duration];
     }
   },
   Duration_toString_sixDigits: {
-    "^": "Closure:13;",
+    "^": "Closure:16;",
     call$1: function(n) {
       if (n >= 100000)
         return "" + n;
@@ -6003,7 +8602,7 @@ var dart = [
     }
   },
   Duration_toString_twoDigits: {
-    "^": "Closure:13;",
+    "^": "Closure:16;",
     call$1: function(n) {
       if (n >= 10)
         return "" + n;
@@ -6196,11 +8795,7 @@ var dart = [
     }
   },
   $int: {
-    "^": "num;",
-    $isComparable: 1,
-    $asComparable: function() {
-      return [P.num];
-    }
+    "^": "num;"
   },
   "+int": 0,
   Iterable: {
@@ -6224,11 +8819,7 @@ var dart = [
   },
   "+Null": 0,
   num: {
-    "^": "Object;",
-    $isComparable: 1,
-    $asComparable: function() {
-      return [P.num];
-    }
+    "^": "Object;"
   },
   "+num": 0,
   Object: {
@@ -6247,11 +8838,7 @@ var dart = [
     "^": "Object;"
   },
   String: {
-    "^": "Object;",
-    $isComparable: 1,
-    $asComparable: function() {
-      return [P.String];
-    }
+    "^": "Object;"
   },
   "+String": 0,
   StringBuffer: {
@@ -6286,6 +8873,11 @@ var dart = [
 }],
 ["dart.dom.html", "dart:html", , W, {
   "^": "",
+  _convertNativeToDart_XHR_Response: function(o) {
+    if (!!J.getInterceptor(o).$isDocument)
+      return o;
+    return P.convertNativeToDart_AcceptStructuredClone(o, true);
+  },
   _wrapZone: function(callback) {
     var t1 = $.Zone__current;
     if (t1 === C.C__RootZone)
@@ -6334,6 +8926,11 @@ var dart = [
     $isInterceptor: 1,
     "%": "CDATASection|CharacterData|Comment|ProcessingInstruction|Text"
   },
+  Document: {
+    "^": "Node;",
+    $isDocument: 1,
+    "%": "Document|HTMLDocument|XMLDocument"
+  },
   DocumentFragment: {
     "^": "Node;",
     $isInterceptor: 1,
@@ -6367,7 +8964,7 @@ var dart = [
   },
   Event: {
     "^": "Interceptor;",
-    "%": "AnimationPlayerEvent|ApplicationCacheErrorEvent|AudioProcessingEvent|AutocompleteErrorEvent|BeforeUnloadEvent|CloseEvent|CustomEvent|DeviceLightEvent|DeviceMotionEvent|DeviceOrientationEvent|ExtendableEvent|FetchEvent|FontFaceSetLoadEvent|GamepadEvent|HashChangeEvent|IDBVersionChangeEvent|InstallEvent|MIDIConnectionEvent|MIDIMessageEvent|MediaKeyEvent|MediaKeyMessageEvent|MediaKeyNeededEvent|MediaQueryListEvent|MediaStreamEvent|MediaStreamTrackEvent|MessageEvent|MutationEvent|OfflineAudioCompletionEvent|OverflowEvent|PageTransitionEvent|PopStateEvent|ProgressEvent|PushEvent|RTCDTMFToneChangeEvent|RTCDataChannelEvent|RTCIceCandidateEvent|RTCPeerConnectionIceEvent|RelatedEvent|ResourceProgressEvent|SecurityPolicyViolationEvent|SpeechRecognitionEvent|SpeechSynthesisEvent|StorageEvent|TrackEvent|TransitionEvent|WebGLContextEvent|WebKitAnimationEvent|WebKitTransitionEvent|XMLHttpRequestProgressEvent;ClipboardEvent|Event|InputEvent"
+    "%": "AnimationPlayerEvent|ApplicationCacheErrorEvent|AudioProcessingEvent|AutocompleteErrorEvent|BeforeUnloadEvent|CloseEvent|CustomEvent|DeviceLightEvent|DeviceMotionEvent|DeviceOrientationEvent|ExtendableEvent|FetchEvent|FontFaceSetLoadEvent|GamepadEvent|HashChangeEvent|IDBVersionChangeEvent|InstallEvent|MIDIConnectionEvent|MIDIMessageEvent|MediaKeyEvent|MediaKeyMessageEvent|MediaKeyNeededEvent|MediaQueryListEvent|MediaStreamEvent|MediaStreamTrackEvent|MessageEvent|MutationEvent|OfflineAudioCompletionEvent|OverflowEvent|PageTransitionEvent|PopStateEvent|PushEvent|RTCDTMFToneChangeEvent|RTCDataChannelEvent|RTCIceCandidateEvent|RTCPeerConnectionIceEvent|RelatedEvent|SecurityPolicyViolationEvent|SpeechRecognitionEvent|SpeechSynthesisEvent|StorageEvent|TrackEvent|TransitionEvent|WebGLContextEvent|WebKitAnimationEvent|WebKitTransitionEvent;ClipboardEvent|Event|InputEvent"
   },
   EventTarget: {
     "^": "Interceptor;",
@@ -6377,7 +8974,7 @@ var dart = [
     _removeEventListener$3: function(receiver, type, listener, useCapture) {
       return receiver.removeEventListener(type, H.convertDartClosureToJS(listener, 1), useCapture);
     },
-    "%": "MediaStream;EventTarget"
+    "%": "AudioBufferSourceNode|AudioDestinationNode|AudioGainNode|AudioNode|AudioSourceNode|GainNode|MediaStream;EventTarget"
   },
   FormElement: {
     "^": "HtmlElement;length=",
@@ -6438,7 +9035,7 @@ var dart = [
       return value == null ? this.super$Interceptor$toString$0(receiver) : value;
     },
     $isObject: 1,
-    "%": "Attr|Document|HTMLDocument|XMLDocument;Node"
+    "%": "Attr;Node"
   },
   NodeList: {
     "^": "Interceptor_ListMixin_ImmutableListMixin;",
@@ -6486,6 +9083,12 @@ var dart = [
   ObjectElement: {
     "^": "HtmlElement;height=,width=",
     "%": "HTMLObjectElement"
+  },
+  ProgressEvent: {
+    "^": "Event;",
+    $isProgressEvent: 1,
+    $isObject: 1,
+    "%": "ProgressEvent|ResourceProgressEvent|XMLHttpRequestProgressEvent"
   },
   ScriptElement: {
     "^": "HtmlElement;src}",
@@ -6858,7 +9461,48 @@ var dart = [
   }
 }],
 ["dart.dom.web_audio", "dart:web_audio", , P, {
-  "^": ""
+  "^": "",
+  AudioBuffer: {
+    "^": "Interceptor;length=",
+    $isObject: 1,
+    "%": "AudioBuffer"
+  },
+  AudioContext: {
+    "^": "EventTarget;",
+    _decodeAudioData$3: function(receiver, audioData, successCallback, errorCallback) {
+      return receiver.decodeAudioData(audioData, H.convertDartClosureToJS(successCallback, 1), H.convertDartClosureToJS(errorCallback, 1));
+    },
+    createGain$0: function(receiver) {
+      if (receiver.createGain !== undefined)
+        return receiver.createGain();
+      else
+        return receiver.createGainNode();
+    },
+    decodeAudioData$1: function(receiver, audioData) {
+      var t1, completer;
+      t1 = P.AudioBuffer;
+      completer = H.setRuntimeTypeInfo(new P._AsyncCompleter(H.setRuntimeTypeInfo(new P._Future(0, $.Zone__current, null), [t1])), [t1]);
+      this._decodeAudioData$3(receiver, audioData, new P.AudioContext_decodeAudioData_closure(completer), new P.AudioContext_decodeAudioData_closure0(completer));
+      return completer.future;
+    },
+    "%": "AudioContext|OfflineAudioContext|webkitAudioContext"
+  },
+  AudioContext_decodeAudioData_closure: {
+    "^": "Closure:1;_captured_completer_0",
+    call$1: function(value) {
+      this._captured_completer_0.complete$1(0, value);
+    }
+  },
+  AudioContext_decodeAudioData_closure0: {
+    "^": "Closure:1;_captured_completer_1",
+    call$1: function(error) {
+      var t1 = this._captured_completer_1;
+      if (error == null)
+        t1.completeError$1("");
+      else
+        t1.completeError$1(error);
+    }
+  }
 }],
 ["dart.dom.web_gl", "dart:web_gl", , P, {
   "^": "",
@@ -6906,8 +9550,11 @@ var dart = [
     depthFunc$1: function(receiver, func) {
       return receiver.depthFunc(func);
     },
-    disable$1: function(receiver, cap) {
-      return receiver.disable(cap);
+    depthMask$1: function(receiver, flag) {
+      return receiver.depthMask(flag);
+    },
+    depthRange$2: function(receiver, zNear, zFar) {
+      return receiver.depthRange(zNear, zFar);
     },
     drawElements$4: function(receiver, mode, count, type, offset) {
       return receiver.drawElements(mode, count, type, offset);
@@ -6951,9 +9598,6 @@ var dart = [
     texParameteri$3: function(receiver, target, pname, param) {
       return receiver.texParameteri(target, pname, param);
     },
-    uniform1f$2: function(receiver, $location, x) {
-      return receiver.uniform1f($location, x);
-    },
     uniform4f$5: function(receiver, $location, x, y, z, w) {
       return receiver.uniform4f($location, x, y, z, w);
     },
@@ -6983,6 +9627,38 @@ var dart = [
 }],
 ["dart.math", "dart:math", , P, {
   "^": "",
+  min: function(a, b) {
+    if (a > b)
+      return b;
+    if (a < b)
+      return a;
+    if (typeof b === "number") {
+      if (typeof a === "number")
+        if (a === 0)
+          return (a + b) * a * b;
+      if (a === 0 && C.JSInt_methods.get$isNegative(b) || isNaN(b))
+        return b;
+      return a;
+    }
+    return a;
+  },
+  max: function(a, b) {
+    if (a > b)
+      return a;
+    if (a < b)
+      return b;
+    if (typeof b === "number") {
+      if (typeof a === "number")
+        if (a === 0)
+          return a + b;
+      if (isNaN(b))
+        return b;
+      return a;
+    }
+    if (b === 0 && C.JSNumber_methods.get$isNegative(a))
+      return b;
+    return a;
+  },
   _JSRandom: {
     "^": "Object;",
     nextInt$1: function(max) {
@@ -7263,10 +9939,98 @@ var dart = [
     dict.forEach$1(0, new P.convertDartToNative_Dictionary_closure(object));
     return object;
   },
+  convertNativeToDart_AcceptStructuredClone: function(object, mustCopy) {
+    var copies = [];
+    return new P.convertNativeToDart_AcceptStructuredClone_walk(mustCopy, new P.convertNativeToDart_AcceptStructuredClone_findSlot([], copies), new P.convertNativeToDart_AcceptStructuredClone_readSlot(copies), new P.convertNativeToDart_AcceptStructuredClone_writeSlot(copies)).call$1(object);
+  },
   convertDartToNative_Dictionary_closure: {
-    "^": "Closure:14;_captured_object_0",
+    "^": "Closure:17;_captured_object_0",
     call$2: function(key, value) {
       this._captured_object_0[key] = value;
+    }
+  },
+  convertNativeToDart_AcceptStructuredClone_findSlot: {
+    "^": "Closure:18;_captured_values_0,_captured_copies_1",
+    call$1: function(value) {
+      var t1, $length, i, t2;
+      t1 = this._captured_values_0;
+      $length = t1.length;
+      for (i = 0; i < $length; ++i) {
+        t2 = t1[i];
+        if (t2 == null ? value == null : t2 === value)
+          return i;
+      }
+      t1.push(value);
+      this._captured_copies_1.push(null);
+      return $length;
+    }
+  },
+  convertNativeToDart_AcceptStructuredClone_readSlot: {
+    "^": "Closure:19;_captured_copies_2",
+    call$1: function(i) {
+      var t1 = this._captured_copies_2;
+      if (i >= t1.length)
+        return H.ioore(t1, i);
+      return t1[i];
+    }
+  },
+  convertNativeToDart_AcceptStructuredClone_writeSlot: {
+    "^": "Closure:20;_captured_copies_3",
+    call$2: function(i, x) {
+      var t1 = this._captured_copies_3;
+      if (i >= t1.length)
+        return H.ioore(t1, i);
+      t1[i] = x;
+    }
+  },
+  convertNativeToDart_AcceptStructuredClone_walk: {
+    "^": "Closure:1;_captured_mustCopy_4,_captured_findSlot_5,_captured_readSlot_6,_captured_writeSlot_7",
+    call$1: function(e) {
+      var proto, slot, copy, t1, key, $length, t2, i;
+      if (e == null)
+        return e;
+      if (typeof e === "boolean")
+        return e;
+      if (typeof e === "number")
+        return e;
+      if (typeof e === "string")
+        return e;
+      if (e instanceof Date)
+        return P.DateTime$fromMillisecondsSinceEpoch(e.getTime(), true);
+      if (e instanceof RegExp)
+        throw H.wrapException(P.UnimplementedError$("structured clone of RegExp"));
+      proto = Object.getPrototypeOf(e);
+      if (proto === Object.prototype || proto === null) {
+        slot = this._captured_findSlot_5.call$1(e);
+        copy = this._captured_readSlot_6.call$1(slot);
+        if (copy != null)
+          return copy;
+        copy = P.LinkedHashMap_LinkedHashMap$_empty(null, null);
+        this._captured_writeSlot_7.call$2(slot, copy);
+        for (t1 = Object.keys(e), t1 = new J.ArrayIterator(t1, t1.length, 0, null); t1.moveNext$0();) {
+          key = t1.__interceptors$_current;
+          copy.$indexSet(0, key, this.call$1(e[key]));
+        }
+        return copy;
+      }
+      if (e instanceof Array) {
+        slot = this._captured_findSlot_5.call$1(e);
+        copy = this._captured_readSlot_6.call$1(slot);
+        if (copy != null)
+          return copy;
+        t1 = J.getInterceptor$asx(e);
+        $length = t1.get$length(e);
+        copy = this._captured_mustCopy_4 ? new Array($length) : e;
+        this._captured_writeSlot_7.call$2(slot, copy);
+        if (typeof $length !== "number")
+          return H.iae($length);
+        t2 = J.getInterceptor$ax(copy);
+        i = 0;
+        for (; i < $length; ++i)
+          t2.$indexSet(copy, i, this.call$1(t1.$index(e, i)));
+        return copy;
+      }
+      return e;
     }
   }
 }],
@@ -7343,9 +10107,11 @@ var dart = [
       return new T.Matrix4(t1);
     },
     translate$3: function(_, x, y, z) {
-      var t1, tx, ty, tz, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17;
+      var t1, t2, tw, tx, ty, tz, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17;
       t1 = J.getInterceptor(x);
-      if (!!t1.$isVector3 || false) {
+      t2 = !!t1.$isVector4;
+      tw = t2 ? x.get$w() : 1;
+      if (!!t1.$isVector3 || t2) {
         tx = t1.get$x(x);
         ty = t1.get$y(x);
         tz = t1.get$z(x);
@@ -7356,8 +10122,6 @@ var dart = [
       }
       t1 = this.storage;
       t2 = t1[0];
-      if (typeof tx !== "number")
-        return H.iae(tx);
       t3 = t1[4];
       t4 = t1[8];
       t5 = t1[12];
@@ -7373,14 +10137,35 @@ var dart = [
       t15 = t1[7];
       t16 = t1[11];
       t17 = t1[15];
-      t1[12] = t2 * tx + t3 * ty + t4 * tz + t5;
-      t1[13] = t6 * tx + t7 * ty + t8 * tz + t9;
-      t1[14] = t10 * tx + t11 * ty + t12 * tz + t13;
-      t1[15] = t14 * tx + t15 * ty + t16 * tz + t17;
+      t1[12] = t2 * tx + t3 * ty + t4 * tz + t5 * tw;
+      t1[13] = t6 * tx + t7 * ty + t8 * tz + t9 * tw;
+      t1[14] = t10 * tx + t11 * ty + t12 * tz + t13 * tw;
+      t1[15] = t14 * tx + t15 * ty + t16 * tz + t17 * tw;
       return this;
     },
-    translate$1: function($receiver, x) {
-      return this.translate$3($receiver, x, 0, 0);
+    rotateX$1: function(angle) {
+      var cosAngle, sinAngle, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10;
+      cosAngle = Math.cos(H.checkNum(angle));
+      sinAngle = Math.sin(H.checkNum(angle));
+      t1 = this.storage;
+      t2 = t1[4];
+      t3 = t1[8];
+      t4 = t1[5];
+      t5 = t1[9];
+      t6 = t1[6];
+      t7 = t1[10];
+      t8 = t1[7];
+      t9 = t1[11];
+      t10 = -sinAngle;
+      t1[4] = t2 * cosAngle + t3 * sinAngle;
+      t1[5] = t4 * cosAngle + t5 * sinAngle;
+      t1[6] = t6 * cosAngle + t7 * sinAngle;
+      t1[7] = t8 * cosAngle + t9 * sinAngle;
+      t1[8] = t2 * t10 + t3 * cosAngle;
+      t1[9] = t4 * t10 + t5 * cosAngle;
+      t1[10] = t6 * t10 + t7 * cosAngle;
+      t1[11] = t8 * t10 + t9 * cosAngle;
+      return this;
     },
     rotateY$1: function(angle) {
       var cosAngle, sinAngle, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10;
@@ -7404,6 +10189,50 @@ var dart = [
       t1[9] = t4 * t10 + t5 * cosAngle;
       t1[10] = t6 * t10 + t7 * cosAngle;
       t1[11] = t8 * t10 + t9 * cosAngle;
+      return this;
+    },
+    rotateZ$1: function(angle) {
+      var cosAngle, sinAngle, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10;
+      cosAngle = Math.cos(H.checkNum(angle));
+      sinAngle = Math.sin(H.checkNum(angle));
+      t1 = this.storage;
+      t2 = t1[0];
+      t3 = t1[4];
+      t4 = t1[1];
+      t5 = t1[5];
+      t6 = t1[2];
+      t7 = t1[6];
+      t8 = t1[3];
+      t9 = t1[7];
+      t10 = -sinAngle;
+      t1[0] = t2 * cosAngle + t3 * sinAngle;
+      t1[1] = t4 * cosAngle + t5 * sinAngle;
+      t1[2] = t6 * cosAngle + t7 * sinAngle;
+      t1[3] = t8 * cosAngle + t9 * sinAngle;
+      t1[4] = t2 * t10 + t3 * cosAngle;
+      t1[5] = t4 * t10 + t5 * cosAngle;
+      t1[6] = t6 * t10 + t7 * cosAngle;
+      t1[7] = t8 * t10 + t9 * cosAngle;
+      return this;
+    },
+    setZero$0: function() {
+      var t1 = this.storage;
+      t1[0] = 0;
+      t1[1] = 0;
+      t1[2] = 0;
+      t1[3] = 0;
+      t1[4] = 0;
+      t1[5] = 0;
+      t1[6] = 0;
+      t1[7] = 0;
+      t1[8] = 0;
+      t1[9] = 0;
+      t1[10] = 0;
+      t1[11] = 0;
+      t1[12] = 0;
+      t1[13] = 0;
+      t1[14] = 0;
+      t1[15] = 0;
       return this;
     },
     setIdentity$0: function() {
@@ -7613,1583 +10442,6 @@ var dart = [
     }
   }
 }],
-["webglrender", "Main.dart", , T, {
-  "^": "",
-  boolToInt: function(b) {
-    if (b)
-      return 1;
-    else
-      return 0;
-  },
-  main: [function() {
-    var e, t1, exception;
-    try {
-      t1 = new T.Game(null, null, null, null, null, null, 1, 0, 0, 0, 0);
-      t1.start$0(0);
-      $.game = t1;
-    } catch (exception) {
-      t1 = H.unwrapException(exception);
-      e = t1;
-      throw H.wrapException(e);
-    }
-  }, "call$0", "main$closure", 0, 0, 25],
-  parseId: function(s, id) {
-    var t1, b, r, done, i, t2;
-    t1 = s.length;
-    b = "";
-    r = false;
-    done = false;
-    i = 0;
-    while (true) {
-      if (!(i < t1 && !done))
-        break;
-      if (i >= t1)
-        return H.ioore(s, i);
-      t2 = s[i];
-      if (t2 === ">")
-        r = false;
-      if (r)
-        b += t2;
-      if (t2 === "<")
-        r = true;
-      if (T.stringToInt(b) === id)
-        done = true;
-      else if (!r)
-        b = "";
-      ++i;
-    }
-    return done ? i : -1;
-  },
-  parseString: function(s, i) {
-    var t1, done, r, b, t2;
-    t1 = s.length;
-    done = false;
-    r = false;
-    b = "";
-    while (true) {
-      if (!(i < t1 && !done))
-        break;
-      if (i < 0 || i >= t1)
-        return H.ioore(s, i);
-      t2 = s[i];
-      if (t2 === "]") {
-        done = true;
-        r = false;
-      }
-      if (r)
-        b += t2;
-      if (t2 === "[")
-        r = true;
-      ++i;
-    }
-    return new T.ParseReturn(i, b);
-  },
-  parseVec4: function(s) {
-    var t1, returns, t2, t3, i, r, done, b, vec_i, t4, t5;
-    t1 = new Float32Array(H._checkLength(4));
-    returns = new T.Vector4(t1);
-    returns.setValues$4(0, 0, 0, 0);
-    for (t2 = s.length, t3 = t2 - 1, i = 0, r = false, done = false, b = "", vec_i = 0; i < t2; ++i) {
-      t4 = s[i];
-      t5 = t4 !== " ";
-      if ((!t5 || t4 === ",") && r) {
-        r = false;
-        done = true;
-      }
-      if (t5 && t4 !== ",")
-        r = true;
-      if (r)
-        b += t4;
-      t4 = !r;
-      if (t4 && done || t3 === i) {
-        t5 = T.parseDouble(b);
-        if (vec_i >= 4)
-          return H.ioore(t1, vec_i);
-        t1[vec_i] = t5;
-        ++vec_i;
-      }
-      if (t4) {
-        done = false;
-        b = "";
-      }
-    }
-    return returns;
-  },
-  parseDouble: function(s) {
-    var t1, d, num, neg, j, t2, n, end;
-    for (t1 = s.length, d = 0, num = "", neg = false, j = 0; j < t1; ++j) {
-      if (j < 0)
-        return H.ioore(s, j);
-      t2 = s[j];
-      if (t2 === "-")
-        neg = true;
-      if (t2 !== ".")
-        num += t2;
-      d = T.stringToInt(num);
-      if (s[j] === ".") {
-        d = T.stringToInt(num);
-        ++j;
-        for (num = "", n = 0, end = false; j < t1; ++j) {
-          t2 = s[j];
-          end = t2 !== "0" || end;
-          num += t2;
-          ++n;
-        }
-        t2 = T.stringToInt(num);
-        d += t2 / Math.pow(10, n);
-      }
-    }
-    return neg ? -d : d;
-  },
-  parseVec3: function(s) {
-    var t1, t2, t3, i, r, done, b, vec_i, t4, t5;
-    t1 = new Float32Array(3);
-    t1[0] = 0;
-    t1[1] = 0;
-    t1[2] = 0;
-    for (t2 = s.length, t3 = t2 - 1, i = 0, r = false, done = false, b = "", vec_i = 0; i < t2; ++i) {
-      t4 = s[i];
-      t5 = t4 !== " ";
-      if ((!t5 || t4 === ",") && r) {
-        r = false;
-        done = true;
-      }
-      if (t5 && t4 !== ",")
-        r = true;
-      if (r)
-        b += t4;
-      t4 = !r;
-      if (t4 && done || t3 === i) {
-        t5 = T.parseDouble(b);
-        if (vec_i >= 3)
-          return H.ioore(t1, vec_i);
-        t1[vec_i] = t5;
-        ++vec_i;
-      }
-      if (t4) {
-        done = false;
-        b = "";
-      }
-    }
-    return new T.Vector3(t1);
-  },
-  parseVec2: function(s) {
-    var t1, t2, t3, i, r, done, b, vec_i, t4, t5;
-    t1 = new Float32Array(2);
-    t1[0] = 0;
-    t1[1] = 0;
-    for (t2 = s.length, t3 = t2 - 1, i = 0, r = false, done = false, b = "", vec_i = 0; i < t2; ++i) {
-      t4 = s[i];
-      t5 = t4 !== " ";
-      if ((!t5 || t4 === ",") && r) {
-        r = false;
-        done = true;
-      }
-      if (t5 && t4 !== ",")
-        r = true;
-      if (r)
-        b += t4;
-      t4 = !r;
-      if (t4 && done || t3 === i) {
-        t5 = T.parseDouble(b);
-        if (vec_i >= 2)
-          return H.ioore(t1, vec_i);
-        t1[vec_i] = t5;
-        ++vec_i;
-      }
-      if (t4) {
-        done = false;
-        b = "";
-      }
-    }
-    return new T.Vector2(t1);
-  },
-  stringToInt: function(s) {
-    var t1, t2, returns, n, number;
-    for (t1 = s.length, t2 = t1 - 1, returns = 0, n = 0; n < t1; ++n) {
-      switch (s[n]) {
-        case "0":
-          number = 0;
-          break;
-        case "1":
-          number = 1;
-          break;
-        case "2":
-          number = 2;
-          break;
-        case "3":
-          number = 3;
-          break;
-        case "4":
-          number = 4;
-          break;
-        case "5":
-          number = 5;
-          break;
-        case "6":
-          number = 6;
-          break;
-        case "7":
-          number = 7;
-          break;
-        case "8":
-          number = 8;
-          break;
-        case "9":
-          number = 9;
-          break;
-        default:
-          number = 0;
-      }
-      returns += Math.pow(10, t2 - n) * number;
-    }
-    return returns;
-  },
-  Game: {
-    "^": "Object;canvas,renderer,input,player,screen,map,currentMap,fps,fps_ticks,fps_time,ticks",
-    start$1: function(_, restarting) {
-      var t1, t2, t3, t4, t5, t6, t7, t8, t9;
-      t1 = !restarting;
-      if (t1) {
-        t2 = document.querySelector("#game");
-        this.canvas = t2;
-        t2 = J.getContext$2$x(t2, "webgl", P.LinkedHashMap_LinkedHashMap$_literal(["antialias", false], null, null));
-        $.gl = t2;
-        J.viewport$4$x(t2, 0, 0, J.get$width$x(this.canvas), J.get$height$x(this.canvas));
-        J.clearColor$4$x($.gl, 0, 0, 0, 1);
-        J.clear$1$ax($.gl, 16640);
-        t2 = new T.Matrix4(new Float32Array(H._checkLength(16)));
-        t2.setIdentity$0();
-        t3 = new T.Matrix4(new Float32Array(H._checkLength(16)));
-        t3.setIdentity$0();
-        t4 = new T.Matrix4(new Float32Array(H._checkLength(16)));
-        t4.setIdentity$0();
-        t5 = T.Txtr$("");
-        t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
-        t6.setValues$3(0, 0, 0);
-        t7 = new T.Vector4(new Float32Array(H._checkLength(4)));
-        t7.setValues$4(0, 0, 0, 0);
-        t8 = new T.Vector4(new Float32Array(H._checkLength(4)));
-        t8.setValues$4(0, 0, 0, 0);
-        t8 = new T.Render(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, t2, t3, t4, null, null, null, null, 1024, 0, false, 1.5, 0, 0, 0, 0, t5, t6, t7, t8, [], 0);
-        t7 = new T.GameShader(null);
-        t7.ShaderFromFile$2("Shaders/VertexShader.vert", "Shaders/FragmentShader.frag");
-        t8.shader = t7;
-        t8.initQuad$0();
-        this.renderer = t8;
-        t8 = new T.Input(P.List_List$filled(256, false, null), false, false, false, false);
-        this.input = t8;
-        t8.keys$0();
-      }
-      t2 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t2.setValues$3(0, 0, -1);
-      t3 = new Float32Array(H._checkLength(2));
-      t3[0] = 0;
-      t3[1] = 0;
-      t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t4.setValues$3(0, 0, 0);
-      t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t5.setValues$3(0, 0, 0);
-      t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t6.setValues$3(0, 0, 0);
-      t7 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t7.setValues$3(0, 0, 0);
-      t8 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t8.setValues$3(0, 0, 0);
-      t9 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t9.setValues$3(0, 0, 0);
-      t9 = new T.Phys(t4, t5, false, false, false, t6, t7, t8, t9, 1);
-      t8 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t8.setValues$3(-8, 0, 8);
-      t9.pos = t8;
-      this.player = new T.Player(t2, new T.Vector2(t3), t9, 0.8, false, false);
-      t9 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t9.setValues$3(0, 0, 0);
-      this.screen = new T.Screen(t9, 1024, 600);
-      this.map = T.Map$("Map" + C.JSInt_methods.toString$0(this.currentMap) + ".m");
-      if (t1) {
-        t1 = window;
-        t2 = this.get$gameLoop();
-        C.Window_methods._ensureRequestAnimationFrame$0(t1);
-        C.Window_methods._requestAnimationFrame$1(t1, W._wrapZone(t2));
-      }
-    },
-    start$0: function($receiver) {
-      return this.start$1($receiver, false);
-    },
-    gameLoop$1: [function(time) {
-      var t1, t2, t3, t4, t5, t6, t7, t8;
-      ++this.ticks;
-      ++this.fps_ticks;
-      if (Date.now() - this.fps_time >= 1000) {
-        this.fps = this.fps_ticks;
-        this.fps_ticks = 0;
-        this.fps_time = Date.now();
-        P.print("FPS: " + C.JSInt_methods.toString$0(this.fps) + ", render count: " + C.JSInt_methods.toString$0(this.renderer.render_count) + ", batches: " + C.JSInt_methods.toString$0(this.renderer.batchespercycle) + ", batch size: " + C.JSInt_methods.toString$0(this.renderer.batch_size) + ", render time: " + C.JSInt_methods.toString$0(this.renderer.render_time) + " ms");
-      }
-      t1 = $.game;
-      t2 = t1.input;
-      t2.x_input = false;
-      t2.y_input = false;
-      t2.z_input = false;
-      t3 = t1.player;
-      t3.flying = false;
-      t2 = t2.keydown;
-      if (t2[32] === true)
-        if (!t3.jumping) {
-          t3.jumping = true;
-          t3.phys.v.storage[1] = -0.14;
-        }
-      if (t2[39] === true) {
-        t4 = t3.rot.storage;
-        t4[1] = t4[1] + 0.05;
-      }
-      if (t2[37] === true) {
-        t4 = t3.rot.storage;
-        t4[1] = t4[1] - 0.05;
-      }
-      if (t2[38] === true && t3.rot.storage[0] > -0.5235987755982988) {
-        t4 = t3.rot.storage;
-        t4[0] = t4[0] - 0.05;
-      }
-      if (t2[40] === true && t3.rot.storage[0] < 0.5235987755982988) {
-        t4 = t3.rot.storage;
-        t4[0] = t4[0] + 0.05;
-      }
-      if (t2[68] === true) {
-        t1 = t3.phys.v.storage;
-        t2 = t1[2];
-        t3 = Math.cos(H.checkNum(t3.rot.storage[1] + 1.5707963267948966));
-        t4 = $.game.player;
-        t1[2] = t2 + 0.03 * t3 * (1 + T.boolToInt(t4.jumping));
-        t3 = t4.phys.v.storage;
-        t2 = t3[0];
-        t4 = Math.sin(H.checkNum(t4.rot.storage[1] + 1.5707963267948966));
-        t1 = $.game;
-        t3[0] = t2 + 0.03 * t4 * (1 + T.boolToInt(t1.player.jumping));
-      }
-      if (t1.input.keydown[65] === true) {
-        t1 = t1.player;
-        t2 = t1.phys.v.storage;
-        t3 = t2[2];
-        t1 = Math.cos(H.checkNum(t1.rot.storage[1] + 1.5707963267948966));
-        t4 = $.game.player;
-        t2[2] = t3 + -0.03 * t1 * (1 + T.boolToInt(t4.jumping));
-        t1 = t4.phys.v.storage;
-        t3 = t1[0];
-        t4 = Math.sin(H.checkNum(t4.rot.storage[1] + 1.5707963267948966));
-        t2 = $.game;
-        t1[0] = t3 + -0.03 * t4 * (1 + T.boolToInt(t2.player.jumping));
-        t1 = t2;
-      }
-      if (t1.input.keydown[87] === true) {
-        t1 = t1.player;
-        t2 = t1.phys.v.storage;
-        t3 = t2[2];
-        t1 = Math.cos(H.checkNum(t1.rot.storage[1]));
-        t4 = $.game.player;
-        t2[2] = t3 + 0.03 * t1 * (1 + T.boolToInt(t4.jumping));
-        t1 = t4.phys.v.storage;
-        t3 = t1[0];
-        t4 = Math.sin(H.checkNum(t4.rot.storage[1]));
-        t2 = $.game;
-        t1[0] = t3 + 0.03 * t4 * (1 + T.boolToInt(t2.player.jumping));
-        t1 = t2;
-      }
-      if (t1.input.keydown[83] === true) {
-        t1 = t1.player;
-        t2 = t1.phys.v.storage;
-        t3 = t2[2];
-        t1 = Math.cos(H.checkNum(t1.rot.storage[1]));
-        t4 = $.game.player;
-        t2[2] = t3 + -0.03 * t1 * (1 + T.boolToInt(t4.jumping));
-        t1 = t4.phys.v.storage;
-        t3 = t1[0];
-        t4 = Math.sin(H.checkNum(t4.rot.storage[1]));
-        t2 = $.game;
-        t1[0] = t3 + -0.03 * t4 * (1 + T.boolToInt(t2.player.jumping));
-        t1 = t2;
-      }
-      t2 = t1.input.keydown;
-      if (t2[16] === true) {
-        t3 = t1.player;
-        t4 = t3.phys.v.storage;
-        t4[1] = t4[1] - 0.01;
-        t3.flying = true;
-      }
-      if (t2[17] === true) {
-        t3 = t1.player;
-        t4 = t3.phys.pos.storage;
-        t4[1] = t4[1] + 0.05;
-        t3.flying = true;
-      }
-      if (t2[82] === true)
-        t1.start$1(0, true);
-      t1 = $.game.player;
-      if (!t1.flying) {
-        t2 = t1.phys;
-        t3 = t2.v.storage;
-        t3[1] = t3[1] + 0.008;
-        t4 = t2.pos.storage;
-        if (t4[1] > 0.15 && !t1.jumping) {
-          t4[1] = t2.pos_old.storage[1];
-          t3[1] = 0;
-        }
-        t5 = t4[0];
-        if (t5 > -0.6 || t5 < -79.4) {
-          t4[0] = t2.pos_old.storage[0];
-          t3[0] = 0;
-        }
-        t5 = t4[2];
-        if (t5 < 0.6 || t5 > 79.4) {
-          t4[2] = t2.pos_old.storage[2];
-          t3[2] = 0;
-        }
-        if (t4[1] > 0.1)
-          t1.jumping = false;
-      }
-      t2 = t1.phys;
-      t3 = t1.spd;
-      t4 = t2.v.storage;
-      t4[0] = t3 * t4[0];
-      t4[2] = t3 * t4[2];
-      t2.x_mov = false;
-      t2.y_mov = false;
-      t2.z_mov = false;
-      t3 = t2.pos.storage;
-      t5 = t3[0];
-      t6 = t3[1];
-      t3 = t3[2];
-      t7 = new Float32Array(H._checkLength(3));
-      t8 = new T.Vector3(t7);
-      t8.setValues$3(t5, t6, t3);
-      t2.pos_old = t8;
-      t8 = t2.a.storage;
-      t4[0] = t4[0] + t8[0];
-      t4[1] = t4[1] + t8[1];
-      t4[2] = t4[2] + t8[2];
-      t8 = t2.pos.storage;
-      t8[0] = t8[0] + t4[0];
-      t8[1] = t8[1] + t4[1];
-      t8[2] = t8[2] + t4[2];
-      if (t8[0] !== t7[0])
-        t2.x_mov = true;
-      if (t8[1] !== t7[1])
-        t2.y_mov = true;
-      if (t8[2] !== t7[2])
-        t2.z_mov = true;
-      t3 = t4[0];
-      t5 = t4[1];
-      t4 = t4[2];
-      t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t6.setValues$3(t3, t5, t4);
-      t2.v_old = t6;
-      t1.pos = t2.pos_old;
-      this.gameRender$0();
-      t2 = window;
-      t1 = this.get$gameLoop();
-      C.Window_methods._ensureRequestAnimationFrame$0(t2);
-      C.Window_methods._requestAnimationFrame$1(t2, W._wrapZone(t1));
-    }, "call$1", "get$gameLoop", 2, 0, 15],
-    gameRender$0: function() {
-      var t1, t2;
-      J.clear$1$ax($.gl, 16640);
-      t1 = this.renderer;
-      t1.flush = true;
-      t1.batchespercycle = 0;
-      t1.render_count = 0;
-      t1.render_ticks = Date.now();
-      C.JSArray_methods.set$length(this.renderer.quads, 0);
-      this.renderer.quadnum = 0;
-      this.map.drawObjs$0();
-      if (C.JSInt_methods.$mod(this.ticks, 10) === 0) {
-        t1 = this.map.objs;
-        C.JSArray_methods.checkMutable$1(t1, "sort");
-        H.Sort__doSort(t1, 0, t1.length - 1, new T.Game_gameRender_closure(this));
-        if (Math.cos(H.checkNum($.game.player.rot.storage[1])) < 0) {
-          t1 = this.map;
-          t2 = t1.objs;
-          t1.objs = H.setRuntimeTypeInfo(new H.ReversedListIterable(t2), [H.getTypeArgumentByIndex(t2, 0)]).toList$0(0);
-        }
-      }
-      this.renderer.flushBatch$0();
-      this.renderer.render_time = Date.now() - this.renderer.render_ticks;
-    },
-    map$1: function($receiver, arg0) {
-      return this.map.call$1(arg0);
-    }
-  },
-  Game_gameRender_closure: {
-    "^": "Closure:16;_webglrender$_captured_this_0",
-    call$2: function(a, b) {
-      var t1 = this._webglrender$_captured_this_0;
-      return C.JSNumber_methods.compareTo$1(J.get$z$x(a.get$pos()) - t1.player.pos.storage[2], J.get$z$x(b.get$pos()) - t1.player.pos.storage[2]);
-    }
-  },
-  Floor: {
-    "^": "Obj;id,pos,s,sprite,rot,rot_c",
-    draw$0: function() {
-      var t1, t2, t3, t4;
-      t1 = this.pos.storage;
-      t2 = t1[0];
-      t3 = t1[2];
-      t1 = t1[1];
-      t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t4.setValues$3(t2, t3, t1);
-      this.super$Obj$draw$3(t4, this.s, this.rot);
-    }
-  },
-  Map: {
-    "^": "Object;path,objs",
-    load$0: function(_) {
-      var t1, req, t2, i, b, r, done, id, t3, returns, pos, s, rot, t4;
-      t1 = {};
-      t1._captured_map_0 = null;
-      req = new XMLHttpRequest();
-      t2 = H.setRuntimeTypeInfo(new W._EventStream(req, "load", false), [null]);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new T.Map_load_closure(t1, req)), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)])._tryResume$0();
-      C.HttpRequest_methods.open$3$async(req, "GET", "../Maps/" + this.path, false);
-      req.send();
-      for (i = 0, b = "", r = false; i < t1._captured_map_0.length; i = returns.i + 1) {
-        t2 = new Float32Array(3);
-        t2[0] = 0;
-        t2[1] = 0;
-        t2[2] = 0;
-        t2 = new Float32Array(3);
-        t2[0] = 0;
-        t2[1] = 0;
-        t2[2] = 0;
-        t2 = new Float32Array(2);
-        t2[0] = 0;
-        t2[1] = 0;
-        done = false;
-        id = -1;
-        while (true) {
-          t2 = t1._captured_map_0;
-          t3 = t2.length;
-          if (!(i < t3 && !done))
-            break;
-          if (i < 0 || i >= t3)
-            return H.ioore(t2, i);
-          if (t2[i] === ">") {
-            id = T.stringToInt(b);
-            r = false;
-            done = true;
-          }
-          if (r) {
-            t2 = t1._captured_map_0;
-            if (i >= t2.length)
-              return H.ioore(t2, i);
-            b += t2[i];
-          }
-          t2 = t1._captured_map_0;
-          if (i >= t2.length)
-            return H.ioore(t2, i);
-          if (t2[i] === "<")
-            r = true;
-          ++i;
-        }
-        returns = T.parseString(t2, i + 1);
-        pos = T.parseVec3(returns.s);
-        returns = T.parseString(t1._captured_map_0, returns.i + 1);
-        s = T.parseVec2(returns.s);
-        returns = T.parseString(t1._captured_map_0, returns.i + 1);
-        rot = T.parseVec3(returns.s);
-        if (id !== -1) {
-          t2 = this.objs;
-          C.JSArray_methods.set$length(t2, t2.length + 1);
-          t2 = this.objs;
-          t3 = t2.length - 1;
-          t4 = new Float32Array(3);
-          t4[0] = 0;
-          t4[1] = 0;
-          t4[2] = 0;
-          t4 = new Float32Array(2);
-          t4[0] = 0;
-          t4[1] = 0;
-          t4 = new Float32Array(3);
-          t4[0] = 0;
-          t4[1] = 0;
-          t4[2] = 0;
-          t4 = new Float32Array(3);
-          t4[0] = 0;
-          t4[1] = 0;
-          t4[2] = 0;
-          t4 = new T.Obj(id, null, null, null, null, new T.Vector3(t4));
-          t4.load$0(0);
-          if (t3 < 0 || t3 >= t2.length)
-            return H.ioore(t2, t3);
-          t2[t3] = t4;
-          t2 = this.objs;
-          t3 = t2.length;
-          t4 = t3 - 1;
-          if (t4 < 0)
-            return H.ioore(t2, t4);
-          t2[t4].$set$3(pos, s, rot);
-        }
-      }
-    },
-    draw$0: function() {
-      this.drawObjs$0();
-    },
-    drawObjs$0: function() {
-      var i, t1;
-      for (i = 0; t1 = this.objs, i < t1.length; ++i) {
-        t1 = t1[i];
-        if (t1 != null)
-          t1.draw$0();
-      }
-    },
-    Map$1: function(path) {
-      var i, t1, j, t2, t3, t4, t5, t6, t7;
-      this.load$0(0);
-      for (i = 0; i < 20; ++i)
-        for (t1 = i * 4, j = 0; j < 20; ++j) {
-          t2 = this.objs;
-          C.JSArray_methods.set$length(t2, t2.length + 1);
-          t2 = this.objs;
-          t3 = t2.length - 1;
-          t4 = new Float32Array(3);
-          t4[0] = 0;
-          t4[1] = 0;
-          t4[2] = 0;
-          t4 = new Float32Array(2);
-          t4[0] = 0;
-          t4[1] = 0;
-          t4 = new Float32Array(3);
-          t4[0] = 0;
-          t4[1] = 0;
-          t4[2] = 0;
-          t4 = new Float32Array(3);
-          t4[0] = 0;
-          t4[1] = 0;
-          t4[2] = 0;
-          t4 = new T.Floor(0, null, null, null, null, new T.Vector3(t4));
-          t4.load$0(0);
-          if (t3 < 0 || t3 >= t2.length)
-            return H.ioore(t2, t3);
-          t2[t3] = t4;
-          t2 = this.objs;
-          t3 = t2.length;
-          t4 = t3 - 1;
-          if (t4 < 0)
-            return H.ioore(t2, t4);
-          t4 = t2[t4];
-          t2 = j * 4;
-          t3 = new Float32Array(3);
-          t3[0] = t1;
-          t3[1] = 2;
-          t3[2] = t2;
-          t5 = new Float32Array(2);
-          t5[0] = 4;
-          t5[1] = 4;
-          t6 = new Float32Array(3);
-          t6[0] = 1.5707963267948966;
-          t6[1] = 0;
-          t6[2] = 0;
-          t4.$set$3(new T.Vector3(t3), new T.Vector2(t5), new T.Vector3(t6));
-          t6 = this.objs;
-          C.JSArray_methods.set$length(t6, t6.length + 1);
-          t6 = this.objs;
-          t5 = t6.length - 1;
-          t3 = new Float32Array(3);
-          t3[0] = 0;
-          t3[1] = 0;
-          t3[2] = 0;
-          t3 = new Float32Array(2);
-          t3[0] = 0;
-          t3[1] = 0;
-          t3 = new Float32Array(3);
-          t3[0] = 0;
-          t3[1] = 0;
-          t3[2] = 0;
-          t3 = new Float32Array(3);
-          t3[0] = 0;
-          t3[1] = 0;
-          t3[2] = 0;
-          t3 = new T.Floor(2, null, null, null, null, new T.Vector3(t3));
-          t3.load$0(0);
-          if (t5 < 0 || t5 >= t6.length)
-            return H.ioore(t6, t5);
-          t6[t5] = t3;
-          t3 = this.objs;
-          t4 = t3.length;
-          t5 = t4 - 1;
-          if (t5 < 0)
-            return H.ioore(t3, t5);
-          t5 = t3[t5];
-          t3 = new Float32Array(3);
-          t3[0] = t1;
-          t3[1] = -2;
-          t3[2] = t2;
-          t2 = new Float32Array(2);
-          t2[0] = 4;
-          t2[1] = 4;
-          t4 = new Float32Array(3);
-          t4[0] = 1.5707963267948966;
-          t4[1] = 0;
-          t4[2] = 0;
-          t5.$set$3(new T.Vector3(t3), new T.Vector2(t2), new T.Vector3(t4));
-        }
-      for (i = 0; i < 20; ++i) {
-        C.JSArray_methods.set$length(this.objs, 80);
-        t1 = this.objs;
-        t2 = $.get$tex();
-        t3 = new Float32Array(4);
-        t3[3] = 16;
-        t3[2] = 16;
-        t3[1] = 0;
-        t3[0] = 36;
-        t4 = new Float32Array(4);
-        t4[3] = 1;
-        t4[2] = 1;
-        t4[1] = 1;
-        t4[0] = 1;
-        t5 = new Float32Array(4);
-        t5[3] = 0;
-        t5[2] = 0;
-        t5[1] = 0;
-        t5[0] = 0;
-        t5 = new Float32Array(4);
-        t5[3] = 1;
-        t5[2] = 1;
-        t5[1] = 1;
-        t5[0] = 1;
-        t5 = new Float32Array(3);
-        t5[0] = 0;
-        t5[1] = 0;
-        t5[2] = 0;
-        t5 = new Float32Array(2);
-        t5[0] = 0;
-        t5[1] = 0;
-        t5 = new Float32Array(3);
-        t5[0] = 0;
-        t5[1] = 0;
-        t5[2] = 0;
-        t5 = new Float32Array(3);
-        t5[0] = 0;
-        t5[1] = 0;
-        t5[2] = 0;
-        if (i >= t1.length)
-          return H.ioore(t1, i);
-        t1[i] = new T.Wall(1, null, null, new T.Sprite(t2, new T.Vector4(t3), new T.Vector4(t4)), null, new T.Vector3(t5));
-        t1 = this.objs;
-        if (i >= t1.length)
-          return H.ioore(t1, i);
-        t1 = t1[i];
-        t2 = i * 4;
-        t3 = new Float32Array(3);
-        t3[0] = t2;
-        t3[1] = -2;
-        t3[2] = 0;
-        t4 = new Float32Array(2);
-        t4[0] = 4;
-        t4[1] = 4;
-        t5 = new Float32Array(3);
-        t5[0] = 0;
-        t5[1] = 0;
-        t5[2] = 0;
-        t1.$set$3(new T.Vector3(t3), new T.Vector2(t4), new T.Vector3(t5));
-        t5 = this.objs;
-        t4 = i + 20;
-        t3 = $.get$tex();
-        t1 = new Float32Array(4);
-        t1[3] = 16;
-        t1[2] = 16;
-        t1[1] = 0;
-        t1[0] = 36;
-        t6 = new Float32Array(4);
-        t6[3] = 1;
-        t6[2] = 1;
-        t6[1] = 1;
-        t6[0] = 1;
-        t7 = new Float32Array(4);
-        t7[3] = 0;
-        t7[2] = 0;
-        t7[1] = 0;
-        t7[0] = 0;
-        t7 = new Float32Array(4);
-        t7[3] = 1;
-        t7[2] = 1;
-        t7[1] = 1;
-        t7[0] = 1;
-        t7 = new Float32Array(3);
-        t7[0] = 0;
-        t7[1] = 0;
-        t7[2] = 0;
-        t7 = new Float32Array(2);
-        t7[0] = 0;
-        t7[1] = 0;
-        t7 = new Float32Array(3);
-        t7[0] = 0;
-        t7[1] = 0;
-        t7[2] = 0;
-        t7 = new Float32Array(3);
-        t7[0] = 0;
-        t7[1] = 0;
-        t7[2] = 0;
-        if (t4 >= t5.length)
-          return H.ioore(t5, t4);
-        t5[t4] = new T.Wall(1, null, null, new T.Sprite(t3, new T.Vector4(t1), new T.Vector4(t6)), null, new T.Vector3(t7));
-        t1 = this.objs;
-        if (t4 >= t1.length)
-          return H.ioore(t1, t4);
-        t4 = t1[t4];
-        t1 = new Float32Array(3);
-        t1[0] = t2;
-        t1[1] = -2;
-        t1[2] = -80;
-        t3 = new Float32Array(2);
-        t3[0] = 4;
-        t3[1] = 4;
-        t5 = new Float32Array(3);
-        t5[0] = 0;
-        t5[1] = 0;
-        t5[2] = 0;
-        t4.$set$3(new T.Vector3(t1), new T.Vector2(t3), new T.Vector3(t5));
-        t5 = this.objs;
-        t3 = i + 40;
-        t1 = $.get$tex();
-        t4 = new Float32Array(4);
-        t4[3] = 16;
-        t4[2] = 16;
-        t4[1] = 0;
-        t4[0] = 36;
-        t6 = new Float32Array(4);
-        t6[3] = 1;
-        t6[2] = 1;
-        t6[1] = 1;
-        t6[0] = 1;
-        t7 = new Float32Array(4);
-        t7[3] = 0;
-        t7[2] = 0;
-        t7[1] = 0;
-        t7[0] = 0;
-        t7 = new Float32Array(4);
-        t7[3] = 1;
-        t7[2] = 1;
-        t7[1] = 1;
-        t7[0] = 1;
-        t7 = new Float32Array(3);
-        t7[0] = 0;
-        t7[1] = 0;
-        t7[2] = 0;
-        t7 = new Float32Array(2);
-        t7[0] = 0;
-        t7[1] = 0;
-        t7 = new Float32Array(3);
-        t7[0] = 0;
-        t7[1] = 0;
-        t7[2] = 0;
-        t7 = new Float32Array(3);
-        t7[0] = 0;
-        t7[1] = 0;
-        t7[2] = 0;
-        if (t3 >= t5.length)
-          return H.ioore(t5, t3);
-        t5[t3] = new T.Wall(1, null, null, new T.Sprite(t1, new T.Vector4(t4), new T.Vector4(t6)), null, new T.Vector3(t7));
-        t1 = this.objs;
-        if (t3 >= t1.length)
-          return H.ioore(t1, t3);
-        t3 = t1[t3];
-        t1 = new Float32Array(3);
-        t1[0] = t2;
-        t1[1] = -2;
-        t1[2] = 0;
-        t4 = new Float32Array(2);
-        t4[0] = 4;
-        t4[1] = 4;
-        t5 = new Float32Array(3);
-        t5[0] = 0;
-        t5[1] = -1.5707963267948966;
-        t5[2] = 0;
-        t3.$set$3(new T.Vector3(t1), new T.Vector2(t4), new T.Vector3(t5));
-        t5 = this.objs;
-        t4 = i + 60;
-        t1 = $.get$tex();
-        t3 = new Float32Array(4);
-        t3[3] = 16;
-        t3[2] = 16;
-        t3[1] = 0;
-        t3[0] = 36;
-        t6 = new Float32Array(4);
-        t6[3] = 1;
-        t6[2] = 1;
-        t6[1] = 1;
-        t6[0] = 1;
-        t7 = new Float32Array(4);
-        t7[3] = 0;
-        t7[2] = 0;
-        t7[1] = 0;
-        t7[0] = 0;
-        t7 = new Float32Array(4);
-        t7[3] = 1;
-        t7[2] = 1;
-        t7[1] = 1;
-        t7[0] = 1;
-        t7 = new Float32Array(3);
-        t7[0] = 0;
-        t7[1] = 0;
-        t7[2] = 0;
-        t7 = new Float32Array(2);
-        t7[0] = 0;
-        t7[1] = 0;
-        t7 = new Float32Array(3);
-        t7[0] = 0;
-        t7[1] = 0;
-        t7[2] = 0;
-        t7 = new Float32Array(3);
-        t7[0] = 0;
-        t7[1] = 0;
-        t7[2] = 0;
-        if (t4 >= t5.length)
-          return H.ioore(t5, t4);
-        t5[t4] = new T.Wall(1, null, null, new T.Sprite(t1, new T.Vector4(t3), new T.Vector4(t6)), null, new T.Vector3(t7));
-        t1 = this.objs;
-        if (t4 >= t1.length)
-          return H.ioore(t1, t4);
-        t4 = t1[t4];
-        t1 = new Float32Array(3);
-        t1[0] = t2;
-        t1[1] = -2;
-        t1[2] = 80;
-        t2 = new Float32Array(2);
-        t2[0] = 4;
-        t2[1] = 4;
-        t3 = new Float32Array(3);
-        t3[0] = 0;
-        t3[1] = -1.5707963267948966;
-        t3[2] = 0;
-        t4.$set$3(new T.Vector3(t1), new T.Vector2(t2), new T.Vector3(t3));
-      }
-      for (i = 0; i < 20000; ++i) {
-        t1 = this.objs;
-        C.JSArray_methods.set$length(t1, t1.length + 1);
-        t1 = this.objs;
-        t2 = t1.length - 1;
-        t3 = $.get$tex();
-        t4 = new Float32Array(4);
-        t4[3] = 16;
-        t4[2] = 16;
-        t4[1] = 18;
-        t4[0] = 36;
-        t5 = new Float32Array(4);
-        t5[3] = 1;
-        t5[2] = 1;
-        t5[1] = 1;
-        t5[0] = 1;
-        t6 = new Float32Array(4);
-        t6[3] = 0;
-        t6[2] = 0;
-        t6[1] = 0;
-        t6[0] = 0;
-        t6 = new Float32Array(4);
-        t6[3] = 1;
-        t6[2] = 1;
-        t6[1] = 1;
-        t6[0] = 1;
-        t6 = new Float32Array(3);
-        t6[0] = 0;
-        t6[1] = 0;
-        t6[2] = 0;
-        t6 = new Float32Array(2);
-        t6[0] = 0;
-        t6[1] = 0;
-        t6 = new Float32Array(3);
-        t6[0] = 0;
-        t6[1] = 0;
-        t6[2] = 0;
-        t6 = new Float32Array(3);
-        t6[0] = 0;
-        t6[1] = 0;
-        t6[2] = 0;
-        if (t2 < 0 || t2 >= t1.length)
-          return H.ioore(t1, t2);
-        t1[t2] = new T.Obj(1, null, null, new T.Sprite(t3, new T.Vector4(t4), new T.Vector4(t5)), null, new T.Vector3(t6));
-        t1 = this.objs;
-        t2 = t1.length;
-        t3 = t2 - 1;
-        if (t3 < 0)
-          return H.ioore(t1, t3);
-        t3 = t1[t3];
-        t1 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
-        t2 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
-        t4 = new Float32Array(3);
-        t4[0] = t1 / 4;
-        t4[1] = 1;
-        t4[2] = -t2 / 4;
-        t1 = new Float32Array(2);
-        t1[0] = 1;
-        t1[1] = 1;
-        t2 = new Float32Array(3);
-        t2[0] = 0;
-        t2[1] = 0;
-        t2[2] = 0;
-        t3.$set$3(new T.Vector3(t4), new T.Vector2(t1), new T.Vector3(t2));
-      }
-    },
-    static: {Map$: function(path) {
-        var t1 = new T.Map(path, []);
-        t1.Map$1(path);
-        return t1;
-      }}
-  },
-  Map_load_closure: {
-    "^": "Closure:2;_webglrender$_box_0,_captured_req_1",
-    call$1: function(e) {
-      var map = this._captured_req_1.responseText;
-      this._webglrender$_box_0._captured_map_0 = map;
-      return map;
-    }
-  },
-  Obj: {
-    "^": "Object;id,pos<,s,sprite,rot,rot_c",
-    draw$3: ["super$Obj$draw$3", function(newPos, newS, newRot) {
-      var t1, t2, t3, t4, t5, t6;
-      t1 = newPos != null && newS != null && newRot != null;
-      t2 = this.sprite;
-      t3 = $.game;
-      t4 = this.rot_c;
-      if (t1) {
-        t1 = t3.renderer;
-        t1.toString;
-        t1._batch$7(t2.tex, newPos, newS, t2.sprite, newRot, t4, t2.col);
-        ++t1.quadnum;
-      } else {
-        t1 = t3.renderer;
-        t3 = this.pos;
-        t5 = this.s;
-        t6 = this.rot;
-        t1.toString;
-        t1._batch$7(t2.tex, t3, t5, t2.sprite, t6, t4, t2.col);
-        ++t1.quadnum;
-      }
-    }, function() {
-      return this.draw$3(null, null, null);
-    }, "draw$0", null, null, "get$draw", 0, 6, null, 0, 0, 0],
-    load$0: function(_) {
-      var t1, req, t2, i, returns, tex_path, sprite_sprite, sprite_col;
-      t1 = {};
-      t1._captured_objs_0 = null;
-      req = new XMLHttpRequest();
-      t2 = H.setRuntimeTypeInfo(new W._EventStream(req, "load", false), [null]);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new T.Obj_load_closure(t1, req)), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)])._tryResume$0();
-      C.HttpRequest_methods.open$3$async(req, "GET", "Game/Objects.o", false);
-      req.send();
-      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
-      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
-      t2 = this.id;
-      i = T.parseId(t1._captured_objs_0, t2);
-      if (i !== -1) {
-        returns = T.parseString(t1._captured_objs_0, i + 1);
-        tex_path = returns.s;
-        returns = T.parseString(t1._captured_objs_0, returns.i + 1);
-        sprite_sprite = T.parseVec4(returns.s);
-        sprite_col = T.parseVec4(T.parseString(t1._captured_objs_0, returns.i + 1).s);
-        t1 = T.Txtr$(tex_path);
-        new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
-        new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
-        this.sprite = new T.Sprite(t1, sprite_sprite, sprite_col);
-      } else
-        throw H.wrapException("id " + C.JSNumber_methods.toString$0(t2) + " not found!");
-    },
-    $set$3: function(newPos, newS, newRot) {
-      this.pos = newPos;
-      this.s = newS;
-      this.rot = newRot;
-    }
-  },
-  Obj_load_closure: {
-    "^": "Closure:2;_webglrender$_box_0,_captured_req_1",
-    call$1: function(e) {
-      var objs = this._captured_req_1.responseText;
-      this._webglrender$_box_0._captured_objs_0 = objs;
-      return objs;
-    }
-  },
-  Player: {
-    "^": "Object;pos<,rot,phys,spd,jumping,flying"
-  },
-  Wall: {
-    "^": "Obj;id,pos,s,sprite,rot,rot_c",
-    draw$0: function() {
-      this.super$Obj$draw$3(null, null, null);
-    }
-  },
-  Input: {
-    "^": "Object;keydown,keyDown,x_input,y_input,z_input",
-    keys$0: function() {
-      var t1 = H.setRuntimeTypeInfo(new W._EventStream(window, "keydown", false), [null]);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new T.Input_keys_closure(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
-      t1 = H.setRuntimeTypeInfo(new W._EventStream(window, "keyup", false), [null]);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new T.Input_keys_closure0(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
-    }
-  },
-  Input_keys_closure: {
-    "^": "Closure:17;_webglrender$_captured_this_0",
-    call$1: function(e) {
-      var t1, t2, i;
-      if (J.get$keyCode$x(e) === 8)
-        e.preventDefault();
-      for (t1 = this._webglrender$_captured_this_0, t2 = t1.keydown, i = 0; i < 256; ++i)
-        if (e.keyCode === i) {
-          t2[i] = true;
-          t1.keyDown = true;
-        }
-    }
-  },
-  Input_keys_closure0: {
-    "^": "Closure:17;_captured_this_1",
-    call$1: function(e) {
-      var t1, t2, i;
-      if (J.get$keyCode$x(e) === 8)
-        e.preventDefault();
-      for (t1 = this._captured_this_1, t2 = t1.keydown, i = 0; i < 256; ++i)
-        if (e.keyCode === i) {
-          t2[i] = false;
-          t1.keyDown = false;
-        }
-    }
-  },
-  Phys: {
-    "^": "Object;pos<,pos_old,x_mov,y_mov,z_mov,rot,v,v_old,a,m"
-  },
-  Render: {
-    "^": "Object;vertexBuffer,indexBuffer,texBuffer,colBuffer,posBuffer,indexData,vertexData,posData,texData,u_camMatrix,u_objMatrix,u_viewMatrix,u_fov,u_col,u_a,objMatrix,camMatrix,viewMatrix,pos<,s,position,shader,batch_size,batches,flush,fov,batchespercycle,render_time,render_ticks,render_count,oldtex,oldrot,oldcol,b_col,quads,quadnum",
-    _batch$7: function(tex, pos, s, sprite, rot, rot_c, col) {
-      var t1, t2, t3, cosAngle, sinAngle, t4, t5, t6, t7, t8, t9, t10, t11;
-      ++this.render_count;
-      if (this.batches < this.batch_size) {
-        t1 = rot.storage;
-        t2 = t1[0];
-        t3 = this.oldrot.storage;
-        if (!(t2 !== t3[0] || t1[1] !== t3[1] || t1[2] !== t3[2])) {
-          t1 = col.storage;
-          t2 = t1[0];
-          t3 = this.oldcol.storage;
-          t1 = t2 !== t3[0] || t1[1] !== t3[1] || t1[2] !== t3[2] || t1[3] !== t3[3];
-        } else
-          t1 = true;
-      } else
-        t1 = true;
-      if (t1 || this.flush) {
-        J.activeTexture$1$x($.gl, 33984);
-        J.bindTexture$2$x($.gl, 3553, tex.Tex);
-        J.enable$1$x($.gl, 3042);
-        J.disable$1$x($.gl, 2929);
-        J.depthFunc$1$x($.gl, 513);
-        J.blendFunc$2$x($.gl, 770, 771);
-        this.flushBatch$0();
-        ++this.batchespercycle;
-        this.batches = 0;
-        this.flush = false;
-        this.oldrot = rot;
-        this.oldcol = col;
-        this.b_col = col;
-        t1 = new T.Matrix4(new Float32Array(H._checkLength(16)));
-        t1.setIdentity$0();
-        this.objMatrix = t1;
-        t2 = rot_c.storage;
-        t1.translate$3(0, t2[0], t2[1], t2[2]);
-        t2 = this.objMatrix;
-        t1 = rot.storage;
-        t3 = t1[0];
-        cosAngle = Math.cos(H.checkNum(t3));
-        sinAngle = Math.sin(H.checkNum(t3));
-        t2 = t2.storage;
-        t3 = t2[4];
-        t4 = t2[8];
-        t5 = t2[5];
-        t6 = t2[9];
-        t7 = t2[6];
-        t8 = t2[10];
-        t9 = t2[7];
-        t10 = t2[11];
-        t11 = -sinAngle;
-        t2[4] = t3 * cosAngle + t4 * sinAngle;
-        t2[5] = t5 * cosAngle + t6 * sinAngle;
-        t2[6] = t7 * cosAngle + t8 * sinAngle;
-        t2[7] = t9 * cosAngle + t10 * sinAngle;
-        t2[8] = t3 * t11 + t4 * cosAngle;
-        t2[9] = t5 * t11 + t6 * cosAngle;
-        t2[10] = t7 * t11 + t8 * cosAngle;
-        t2[11] = t9 * t11 + t10 * cosAngle;
-        this.objMatrix.rotateY$1(t1[1]);
-        t10 = this.objMatrix;
-        t1 = t1[2];
-        cosAngle = Math.cos(H.checkNum(t1));
-        sinAngle = Math.sin(H.checkNum(t1));
-        t10 = t10.storage;
-        t1 = t10[0];
-        t11 = t10[4];
-        t9 = t10[1];
-        t2 = t10[5];
-        t8 = t10[2];
-        t7 = t10[6];
-        t6 = t10[3];
-        t5 = t10[7];
-        t4 = -sinAngle;
-        t10[0] = t1 * cosAngle + t11 * sinAngle;
-        t10[1] = t9 * cosAngle + t2 * sinAngle;
-        t10[2] = t8 * cosAngle + t7 * sinAngle;
-        t10[3] = t6 * cosAngle + t5 * sinAngle;
-        t10[4] = t1 * t4 + t11 * cosAngle;
-        t10[5] = t9 * t4 + t2 * cosAngle;
-        t10[6] = t8 * t4 + t7 * cosAngle;
-        t10[7] = t6 * t4 + t5 * cosAngle;
-      }
-      t1 = this.vertexData;
-      t2 = 12 * this.batches;
-      t3 = pos.storage;
-      t4 = t3[0];
-      t5 = t3[1];
-      t6 = s.storage;
-      t7 = t6[1];
-      t5 = -(t5 + t7);
-      t7 = t5 + t7;
-      t8 = t3[2];
-      t9 = t4 + t6[0];
-      (t1 && C.NativeFloat32List_methods).setRange$3(t1, t2, 12 + t2, [t4, t7, t8, t9, t7, t8, t9, t5, t8, t4, t5, t8]);
-      t8 = this.texData;
-      t5 = 16 * this.batches;
-      t4 = t3[0];
-      t9 = sprite.storage;
-      t7 = t9[0];
-      t2 = tex.w;
-      t1 = t9[2] / t2 / t6[0];
-      t2 = t4 - t7 / t2 / t1;
-      t7 = t9[1];
-      t4 = tex.h;
-      t6 = t9[3] / t4 / t6[1];
-      t3 = t7 / t4 / t6 - t3[1];
-      (t8 && C.NativeFloat32List_methods).setRange$3(t8, t5, 16 + t5, [t2, t3, t1, t6, t2, t3, t1, t6, t2, t3, t1, t6, t2, t3, t1, t6]);
-      ++this.batches;
-    },
-    flushBatch$0: function() {
-      var t1, t2, t3, t4, r, z, x, y, temp, t5, rotatedEye, m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33, n00, n01, n02, n03, n10, n11, n12, n13, n20, n21, n22, n23, n30, n31, n32, n33;
-      t1 = $.game.screen.camPos;
-      t2 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t2.setValues$3(0, 0, 1);
-      t3 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t3.setValues$3(0, 1, 0);
-      t4 = new Float32Array(H._checkLength(16));
-      r = new T.Matrix4(t4);
-      z = t1.$sub(0, t2);
-      z.normalize$0();
-      x = t3.cross$1(z);
-      x.normalize$0();
-      y = z.cross$1(x);
-      y.normalize$0();
-      t4[0] = 0;
-      t4[1] = 0;
-      t4[2] = 0;
-      t4[3] = 0;
-      t4[4] = 0;
-      t4[5] = 0;
-      t4[6] = 0;
-      t4[7] = 0;
-      t4[8] = 0;
-      t4[9] = 0;
-      t4[10] = 0;
-      t4[11] = 0;
-      t4[12] = 0;
-      t4[13] = 0;
-      t4[14] = 0;
-      t4[15] = 0;
-      t4[15] = 1;
-      t3 = x.storage;
-      t4[0] = t3[0];
-      t4[1] = t3[1];
-      t4[2] = t3[2];
-      t3 = y.storage;
-      t4[4] = t3[0];
-      t4[5] = t3[1];
-      t4[6] = t3[2];
-      t3 = z.storage;
-      t4[8] = t3[0];
-      t4[9] = t3[1];
-      t4[10] = t3[2];
-      temp = t4[4];
-      t4[4] = t4[1];
-      t4[1] = temp;
-      temp = t4[8];
-      t4[8] = t4[2];
-      t4[2] = temp;
-      temp = t4[12];
-      t4[12] = t4[3];
-      t4[3] = temp;
-      temp = t4[9];
-      t4[9] = t4[6];
-      t4[6] = temp;
-      temp = t4[13];
-      t4[13] = t4[7];
-      t4[7] = temp;
-      temp = t4[14];
-      t4[14] = t4[11];
-      t4[11] = temp;
-      t1 = t1.storage;
-      t3 = t1[0];
-      t2 = t1[1];
-      t1 = t1[2];
-      t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t5.setValues$3(-t3, -t2, -t1);
-      rotatedEye = r.$mul(0, t5);
-      t4[12] = rotatedEye.get$x(rotatedEye);
-      t4[13] = rotatedEye.get$y(rotatedEye);
-      t4[14] = rotatedEye.get$z(rotatedEye);
-      this.viewMatrix = r;
-      t5 = J.get$width$x($.game.canvas);
-      t1 = J.get$height$x($.game.canvas);
-      if (typeof t5 !== "number")
-        return t5.$div();
-      if (typeof t1 !== "number")
-        return H.iae(t1);
-      t1 = t5 / t1;
-      t4[0] = t4[0];
-      t4[1] = t4[1];
-      t4[2] = t4[2];
-      t4[3] = t4[3];
-      t4[4] = t4[4] * t1;
-      t4[5] = t4[5] * t1;
-      t4[6] = t4[6] * t1;
-      t4[7] = t4[7] * t1;
-      t4[8] = t4[8];
-      t4[9] = t4[9];
-      t4[10] = t4[10];
-      t4[11] = t4[11];
-      t4[12] = t4[12];
-      t4[13] = t4[13];
-      t4[14] = t4[14];
-      t4[15] = t4[15];
-      this.viewMatrix.rotateY$1($.game.player.rot.storage[1]);
-      this.viewMatrix.translate$1(0, $.game.player.pos);
-      t1 = this.viewMatrix;
-      t2 = this.objMatrix;
-      t1 = t1.storage;
-      m00 = t1[0];
-      m01 = t1[4];
-      m02 = t1[8];
-      m03 = t1[12];
-      m10 = t1[1];
-      m11 = t1[5];
-      m12 = t1[9];
-      m13 = t1[13];
-      m20 = t1[2];
-      m21 = t1[6];
-      m22 = t1[10];
-      m23 = t1[14];
-      m30 = t1[3];
-      m31 = t1[7];
-      m32 = t1[11];
-      m33 = t1[15];
-      t2 = t2.storage;
-      n00 = t2[0];
-      n01 = t2[4];
-      n02 = t2[8];
-      n03 = t2[12];
-      n10 = t2[1];
-      n11 = t2[5];
-      n12 = t2[9];
-      n13 = t2[13];
-      n20 = t2[2];
-      n21 = t2[6];
-      n22 = t2[10];
-      n23 = t2[14];
-      n30 = t2[3];
-      n31 = t2[7];
-      n32 = t2[11];
-      n33 = t2[15];
-      t1[0] = m00 * n00 + m01 * n10 + m02 * n20 + m03 * n30;
-      t1[4] = m00 * n01 + m01 * n11 + m02 * n21 + m03 * n31;
-      t1[8] = m00 * n02 + m01 * n12 + m02 * n22 + m03 * n32;
-      t1[12] = m00 * n03 + m01 * n13 + m02 * n23 + m03 * n33;
-      t1[1] = m10 * n00 + m11 * n10 + m12 * n20 + m13 * n30;
-      t1[5] = m10 * n01 + m11 * n11 + m12 * n21 + m13 * n31;
-      t1[9] = m10 * n02 + m11 * n12 + m12 * n22 + m13 * n32;
-      t1[13] = m10 * n03 + m11 * n13 + m12 * n23 + m13 * n33;
-      t1[2] = m20 * n00 + m21 * n10 + m22 * n20 + m23 * n30;
-      t1[6] = m20 * n01 + m21 * n11 + m22 * n21 + m23 * n31;
-      t1[10] = m20 * n02 + m21 * n12 + m22 * n22 + m23 * n32;
-      t1[14] = m20 * n03 + m21 * n13 + m22 * n23 + m23 * n33;
-      t1[3] = m30 * n00 + m31 * n10 + m32 * n20 + m33 * n30;
-      t1[7] = m30 * n01 + m31 * n11 + m32 * n21 + m33 * n31;
-      t1[11] = m30 * n02 + m31 * n12 + m32 * n22 + m33 * n32;
-      t1[15] = m30 * n03 + m31 * n13 + m32 * n23 + m33 * n33;
-      J.uniformMatrix4fv$3$x($.gl, this.u_viewMatrix, false, t1);
-      J.uniform1f$2$x($.gl, this.u_fov, this.fov);
-      t1 = $.gl;
-      t2 = this.u_col;
-      t3 = this.b_col.storage;
-      J.uniform4f$5$x(t1, t2, t3[0], t3[1], t3[2], t3[3]);
-      J.bindBuffer$2$x($.gl, 34962, this.vertexBuffer);
-      J.bufferDataTyped$3$x($.gl, 34962, this.vertexData, 35048);
-      J.bindBuffer$2$x($.gl, 34962, this.texBuffer);
-      J.bufferDataTyped$3$x($.gl, 34962, this.texData, 35048);
-      J.drawElements$4$x($.gl, 4, 6 * this.batches, 5123, 0);
-    },
-    initQuad$0: function() {
-      var t1, t2, i, t3, t4, t5, t6, t7;
-      t1 = this.shader;
-      J.useProgram$1$x($.gl, t1.program);
-      this.u_viewMatrix = J.getUniformLocation$2$x($.gl, this.shader.program, "u_matrix");
-      this.u_col = J.getUniformLocation$2$x($.gl, this.shader.program, "u_col");
-      this.u_fov = J.getUniformLocation$2$x($.gl, this.shader.program, "fov");
-      this.u_a = J.getUniformLocation$2$x($.gl, this.shader.program, "u_a");
-      this.pos = J.getAttribLocation$2$x($.gl, this.shader.program, "a_pos");
-      this.s = J.getAttribLocation$2$x($.gl, this.shader.program, "a_sprite");
-      J.enableVertexAttribArray$1$x($.gl, this.pos);
-      J.enableVertexAttribArray$1$x($.gl, this.s);
-      this.vertexBuffer = J.createBuffer$0$x($.gl);
-      this.texBuffer = J.createBuffer$0$x($.gl);
-      this.indexBuffer = J.createBuffer$0$x($.gl);
-      t1 = this.batch_size;
-      this.indexData = new Int16Array(H._checkLength(t1 * 6));
-      this.vertexData = new Float32Array(H._checkLength(12 * t1));
-      this.texData = new Float32Array(H._checkLength(16 * t1));
-      for (t2 = this.indexData, i = 0; i < t1; ++i) {
-        t3 = i * 6;
-        t4 = 4 * i;
-        t5 = t2.length;
-        if (t3 >= t5)
-          return H.ioore(t2, t3);
-        t2[t3] = t4;
-        t6 = t3 + 1;
-        t7 = 2 + t4;
-        if (t6 >= t5)
-          return H.ioore(t2, t6);
-        t2[t6] = t7;
-        t6 = t3 + 2;
-        if (t6 >= t5)
-          return H.ioore(t2, t6);
-        t2[t6] = 3 + t4;
-        t6 = t3 + 3;
-        if (t6 >= t5)
-          return H.ioore(t2, t6);
-        t2[t6] = t4;
-        t6 = t3 + 4;
-        if (t6 >= t5)
-          return H.ioore(t2, t6);
-        t2[t6] = 1 + t4;
-        t3 += 5;
-        if (t3 >= t5)
-          return H.ioore(t2, t3);
-        t2[t3] = t7;
-      }
-      J.bindBuffer$2$x($.gl, 34963, this.indexBuffer);
-      J.bufferDataTyped$3$x($.gl, 34963, this.indexData, 35044);
-      J.bindBuffer$2$x($.gl, 34962, this.vertexBuffer);
-      J.bufferDataTyped$3$x($.gl, 34962, this.vertexData, 35048);
-      J.vertexAttribPointer$6$x($.gl, this.pos, 3, 5126, false, 0, 0);
-      J.bindBuffer$2$x($.gl, 34962, this.texBuffer);
-      J.bufferDataTyped$3$x($.gl, 34962, this.texData, 35048);
-      J.vertexAttribPointer$6$x($.gl, this.s, 4, 5126, false, 0, 0);
-      C.JSArray_methods.set$length(this.quads, 1);
-    }
-  },
-  Screen: {
-    "^": "Object;camPos,w,h"
-  },
-  GameShader: {
-    "^": "Object;program",
-    ShaderFromFile$2: function(vertexShaderPath, fragmentShaderPath) {
-      var t1, req, t2, vertexShader, fragmentShader, program;
-      t1 = {};
-      t1._captured_vsrc_0 = null;
-      t1._captured_fsrc_1 = null;
-      req = new XMLHttpRequest();
-      t1._captured_req_2 = req;
-      t2 = H.setRuntimeTypeInfo(new W._EventStream(req, "load", false), [null]);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new T.GameShader_ShaderFromFile_closure(t1)), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)])._tryResume$0();
-      C.HttpRequest_methods.open$3$async(t1._captured_req_2, "GET", vertexShaderPath, false);
-      t1._captured_req_2.send();
-      req = new XMLHttpRequest();
-      t1._captured_req_2 = req;
-      t2 = H.setRuntimeTypeInfo(new W._EventStream(req, "load", false), [null]);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new T.GameShader_ShaderFromFile_closure0(t1)), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)])._tryResume$0();
-      C.HttpRequest_methods.open$3$async(t1._captured_req_2, "GET", fragmentShaderPath, false);
-      t1._captured_req_2.send();
-      vertexShader = this.compile$2(t1._captured_vsrc_0, 35633);
-      fragmentShader = this.compile$2(t1._captured_fsrc_1, 35632);
-      program = J.createProgram$0$x($.gl);
-      J.attachShader$2$x($.gl, program, vertexShader);
-      J.attachShader$2$x($.gl, program, fragmentShader);
-      J.linkProgram$1$x($.gl, program);
-      if (J.getProgramParameter$2$x($.gl, program, 35714) !== true)
-        H.throwExpression(J.getProgramInfoLog$1$x($.gl, program));
-      this.program = program;
-    },
-    compile$2: function(source, type) {
-      var shader = J.createShader$1$x($.gl, type);
-      J.shaderSource$2$x($.gl, shader, source);
-      J.compileShader$1$x($.gl, shader);
-      if (J.getShaderParameter$2$x($.gl, shader, 35713) !== true)
-        throw H.wrapException(J.getShaderInfoLog$1$x($.gl, shader));
-      return shader;
-    }
-  },
-  GameShader_ShaderFromFile_closure: {
-    "^": "Closure:2;_webglrender$_box_0",
-    call$1: function(e) {
-      var t1, vsrc;
-      t1 = this._webglrender$_box_0;
-      vsrc = t1._captured_req_2.responseText;
-      t1._captured_vsrc_0 = vsrc;
-      return vsrc;
-    }
-  },
-  GameShader_ShaderFromFile_closure0: {
-    "^": "Closure:2;_webglrender$_box_0",
-    call$1: function(e) {
-      var t1, fsrc;
-      t1 = this._webglrender$_box_0;
-      fsrc = t1._captured_req_2.responseText;
-      t1._captured_fsrc_1 = fsrc;
-      return fsrc;
-    }
-  },
-  Sprite: {
-    "^": "Object;tex,sprite,col"
-  },
-  Txtr: {
-    "^": "Object;Tex,w,h,path",
-    Txtr$1: function(path) {
-      var e, t1;
-      e = document.createElement("img", null);
-      this.Tex = J.createTexture$0$x($.gl);
-      this.path = path;
-      t1 = J.getInterceptor$x(e);
-      t1.set$src(e, path);
-      t1 = t1.get$onLoad(e);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new T.Txtr_closure(this, e)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
-    },
-    static: {Txtr$: function(path) {
-        var t1 = new T.Txtr(null, 0, 0, null);
-        t1.Txtr$1(path);
-        return t1;
-      }}
-  },
-  Txtr_closure: {
-    "^": "Closure:2;_webglrender$_captured_this_0,_captured_img_1",
-    call$1: function(e) {
-      var t1, t2, t3;
-      t1 = this._webglrender$_captured_this_0;
-      J.bindTexture$2$x($.gl, 3553, t1.Tex);
-      J.pixelStorei$2$x($.gl, 37440, 1);
-      t2 = this._captured_img_1;
-      J.texImage2DImage$6$x($.gl, 3553, 0, 6408, 6408, 5121, t2);
-      J.texParameteri$3$x($.gl, 3553, 10240, 9728);
-      J.texParameteri$3$x($.gl, 3553, 10241, 9728);
-      t3 = J.getInterceptor$x(t2);
-      t1.w = J.toDouble$0$n(t3.get$width(t2));
-      t1.h = J.toDouble$0$n(t3.get$height(t2));
-      J.bindTexture$2$x($.gl, 3553, null);
-    }
-  },
-  ParseReturn: {
-    "^": "Object;i,s"
-  }
-},
-1],
 ];
 setupProgram(dart);
 // getInterceptor methods
@@ -9278,11 +10530,6 @@ J.$eq = function(receiver, a0) {
     return a0 != null && receiver === a0;
   return J.getInterceptor(receiver).$eq(receiver, a0);
 };
-J.$gt$n = function(receiver, a0) {
-  if (typeof receiver == "number" && typeof a0 == "number")
-    return receiver > a0;
-  return J.getInterceptor$n(receiver).$gt(receiver, a0);
-};
 J.$index$asx = function(receiver, a0) {
   if (receiver.constructor == Array || typeof receiver == "string" || H.isJsIndexable(receiver, receiver[init.dispatchPropertyName]))
     if (a0 >>> 0 === a0 && a0 < receiver.length)
@@ -9324,14 +10571,14 @@ J.clear$1$ax = function(receiver, a0) {
 J.clearColor$4$x = function(receiver, a0, a1, a2, a3) {
   return J.getInterceptor$x(receiver).clearColor$4(receiver, a0, a1, a2, a3);
 };
-J.compareTo$1$ns = function(receiver, a0) {
-  return J.getInterceptor$ns(receiver).compareTo$1(receiver, a0);
-};
 J.compileShader$1$x = function(receiver, a0) {
   return J.getInterceptor$x(receiver).compileShader$1(receiver, a0);
 };
 J.createBuffer$0$x = function(receiver) {
   return J.getInterceptor$x(receiver).createBuffer$0(receiver);
+};
+J.createGain$0$x = function(receiver) {
+  return J.getInterceptor$x(receiver).createGain$0(receiver);
 };
 J.createProgram$0$x = function(receiver) {
   return J.getInterceptor$x(receiver).createProgram$0(receiver);
@@ -9342,11 +10589,17 @@ J.createShader$1$x = function(receiver, a0) {
 J.createTexture$0$x = function(receiver) {
   return J.getInterceptor$x(receiver).createTexture$0(receiver);
 };
+J.decodeAudioData$1$x = function(receiver, a0) {
+  return J.getInterceptor$x(receiver).decodeAudioData$1(receiver, a0);
+};
 J.depthFunc$1$x = function(receiver, a0) {
   return J.getInterceptor$x(receiver).depthFunc$1(receiver, a0);
 };
-J.disable$1$x = function(receiver, a0) {
-  return J.getInterceptor$x(receiver).disable$1(receiver, a0);
+J.depthMask$1$x = function(receiver, a0) {
+  return J.getInterceptor$x(receiver).depthMask$1(receiver, a0);
+};
+J.depthRange$2$x = function(receiver, a0, a1) {
+  return J.getInterceptor$x(receiver).depthRange$2(receiver, a0, a1);
 };
 J.drawElements$4$x = function(receiver, a0, a1, a2, a3) {
   return J.getInterceptor$x(receiver).drawElements$4(receiver, a0, a1, a2, a3);
@@ -9383,9 +10636,6 @@ J.get$length$asx = function(receiver) {
 };
 J.get$width$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$width(receiver);
-};
-J.get$z$x = function(receiver) {
-  return J.getInterceptor$x(receiver).get$z(receiver);
 };
 J.getAttribLocation$2$x = function(receiver, a0, a1) {
   return J.getInterceptor$x(receiver).getAttribLocation$2(receiver, a0, a1);
@@ -9437,9 +10687,6 @@ J.toList$0$ax = function(receiver) {
 };
 J.toString$0 = function(receiver) {
   return J.getInterceptor(receiver).toString$0(receiver);
-};
-J.uniform1f$2$x = function(receiver, a0, a1) {
-  return J.getInterceptor$x(receiver).uniform1f$2(receiver, a0, a1);
 };
 J.uniform4f$5$x = function(receiver, a0, a1, a2, a3, a4) {
   return J.getInterceptor$x(receiver).uniform4f$5(receiver, a0, a1, a2, a3, a4);
@@ -9619,6 +10866,10 @@ C.JS_CONST_rr7 = function(hooks) {
 }
 init.deferredLibraryUris = {};
 init.deferredLibraryHashes = {};
+$.Sound_aud_cntxt = null;
+$.Sound_gn = null;
+$.gl = null;
+$.game = null;
 $.IsolateNatives_enableSpawnWorker = null;
 $.RawReceivePortImpl__nextFreeId = 1;
 $.Primitives_mirrorFunctionCacheName = "$cachedFunction";
@@ -9642,8 +10893,6 @@ $.Zone__current = C.C__RootZone;
 $.Expando__keyCount = 0;
 $.Device__isOpera = null;
 $.Device__isWebKit = null;
-$.gl = null;
-$.game = null;
 (function(lazies) {
   var descriptorLength = 4;
   for (var i = 0; i < lazies.length; i += descriptorLength) {
@@ -9653,7 +10902,9 @@ $.game = null;
     var staticName = lazies[i + 3];
     Isolate.$lazy(fieldName, getterName, lazyValue, staticName);
   }
-})(["IsolateNatives_thisScript", "get$IsolateNatives_thisScript", function() {
+})(["tex", "get$tex", function() {
+  return M.Txtr$("../Gfx/Sprites.png");
+}, "tex", "IsolateNatives_thisScript", "get$IsolateNatives_thisScript", function() {
   return H.IsolateNatives_computeThisScript();
 }, "thisScript", "IsolateNatives_workerIds", "get$IsolateNatives_workerIds", function() {
   return new P.Expando(null);
@@ -9711,16 +10962,17 @@ $.game = null;
   return P._AsyncRun__initializeScheduleImmediate();
 }, "scheduleImmediateClosure", "IterableBase__toStringVisiting", "get$IterableBase__toStringVisiting", function() {
   return [];
-}, "_toStringVisiting", "tex", "get$tex", function() {
-  return T.Txtr$("../Gfx/Sprites.png");
-}, "tex"]);
+}, "_toStringVisiting"]);
 ;
 
 init.metadata = [,
 ];
-init.types = [{func: ""},
-{func: "", void: true},
+init.types = [{func: "", void: true, args: [W.ProgressEvent]},
 {func: "", args: [,]},
+{func: "", args: [P.$double]},
+{func: "", args: [W.KeyboardEvent]},
+{func: ""},
+{func: "", void: true},
 {func: "", args: [, P.String]},
 {func: "", args: [P.String]},
 {func: "", args: [{func: "", void: true}]},
@@ -9733,17 +10985,15 @@ init.types = [{func: ""},
 {func: "", args: [P.Symbol,,]},
 {func: "", ret: P.String, args: [P.$int]},
 {func: "", args: [P.String,,]},
-{func: "", args: [P.$double]},
-{func: "", args: [T.Obj, T.Obj]},
-{func: "", args: [W.KeyboardEvent]},
+{func: "", ret: P.$int, args: [,]},
+{func: "", args: [P.$int]},
+{func: "", args: [P.$int,,]},
+{func: "", ret: P.$int},
 {func: "", void: true, args: [{func: "", void: true}]},
 {func: "", void: true, args: [,]},
 {func: "", ret: P.bool, args: [,,]},
-{func: "", ret: P.$int, args: [,]},
-{func: "", ret: P.$int, args: [P.Comparable, P.Comparable]},
 {func: "", ret: P.bool, args: [P.Object, P.Object]},
 {func: "", ret: P.$int, args: [P.Object]},
-{func: "", ret: P.$int},
 ];
 $ = null;
 Isolate = Isolate.$finishIsolateConstructor(Isolate);
@@ -9897,11 +11147,11 @@ function init() {
   init.currentScript = currentScript;
   if (typeof dartMainRunner === "function")
     dartMainRunner(function(a) {
-      H.startRootIsolate(T.main$closure(), a);
+      H.startRootIsolate(M.main$closure(), a);
     }, []);
   else
     (function(a) {
-      H.startRootIsolate(T.main$closure(), a);
+      H.startRootIsolate(M.main$closure(), a);
     })([]);
 });
 ;

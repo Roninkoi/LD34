@@ -1,0 +1,12 @@
+TODO:
+
+- text rendering
+- GUI
+- optimize
+    - matrices
+    - shaders
+    - objs
+
+- puddle hitbox too big?
+
+- enemies

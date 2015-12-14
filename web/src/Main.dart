@@ -19,6 +19,7 @@ part "Input.dart";
 part "Phys.dart";
 part "Screen.dart";
 part "Text.dart";
+part "Audio.dart";
 
 part "game/Obj.dart";
 part "game/Player.dart";
@@ -26,6 +27,7 @@ part "game/Wall.dart";
 part "game/Floor.dart";
 part "game/Map.dart";
 part "game/GUI.dart";
+part "game/Entity.dart";
 
 part "util/Parsers.dart";
 part "util/Random.dart";

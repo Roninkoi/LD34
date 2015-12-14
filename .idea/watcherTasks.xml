@@ -18,7 +18,7 @@
       <option name="program" value="$PROJECT_DIR$/../dartsdk-windows-ia32-release/dart-sdk/bin/dart2js.bat" />
       <option name="scopeName" value="Project Files" />
       <option name="trackOnlyRoot" value="true" />
-      <option name="workingDir" value="C:\Users\Roni A. Koitermaa\Documents\Projects\webgl renderer\web\Src" />
+      <option name="workingDir" value="C:\Users\Roni A. Koitermaa\Documents\Projects\LD34\web\src" />
       <envs />
     </TaskOptions>
   </component>

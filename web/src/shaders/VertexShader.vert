@@ -24,5 +24,5 @@ void main()
 
     v_texpos = vec2((a_pos.x-a_sprite.x)*a_sprite.z, (a_pos.y-a_sprite.y)*a_sprite.w);
 
-    v_col = /*a_col*/u_col*vec4(vec3(min(1.0, -sqrt(pos.z)/3.8 + 1.4)), 1.0);
+    v_col = /*a_col*/u_col*vec4(vec3(pos.z/128.0 + 1.3, pos.z/128.0 + 1.3, pos.z/128.0 + 1.3), 1.0);
 }

@@ -6,7 +6,7 @@ class Sprite {
   Vector4 col = new Vector4(1.0, 1.0, 1.0, 1.0);
 
   void draw(Vector3 pos, Vector2 s, Vector3 rot) {
-    game.renderer.draw(this, pos, s, rot, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
+    game.renderer.draw(this, pos, s, rot, new Vector3(0.0, 0.0, 0.0));
   }
 
   Sprite(this.tex, this.sprite, this.col);

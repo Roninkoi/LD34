@@ -1,6 +1,8 @@
 part of LD34;
 
 class Wall extends Obj {
+  bool collidable = true;
+
   void draw() {
     draw0();
     draw1();
@@ -15,14 +17,14 @@ class Wall extends Obj {
   }
   void draw1() {
 
-    super.draw(new Vector3(pos.x, pos.y, pos.z + 4.0), new Vector2(s.x, s.y), rot);
+    super.draw(new Vector3(pos.x, pos.y, pos.z + s.x), new Vector2(s.x, s.y), rot);
   }
   void draw2() {
 
     super.draw(new Vector3(pos.z, pos.y, -pos.x), new Vector2(s.x, s.y), new Vector3(rot.x, rot.y + PI/2.0, rot.z));
   }
   void draw3() {
-    super.draw(new Vector3(pos.z, pos.y, -pos.x - 4.0), new Vector2(s.x, s.y), new Vector3(rot.x, rot.y + PI/2.0, rot.z));
+    super.draw(new Vector3(pos.z, pos.y, -pos.x - s.x), new Vector2(s.x, s.y), new Vector3(rot.x, rot.y + PI/2.0, rot.z));
   }
 
   int collision(Vector3 char_pos, Vector3 char_pos_old) {
@@ -47,12 +49,12 @@ class Wall extends Obj {
       returns = 2;
     }*/
 
-    if (collision2d(new Vector4(-pos.x - 4.4, pos.z - 0.4, 5.2, 5.2), new Vector4(char_pos.x, char_pos.z, 0.5, 0.5)) && !collision2d(new Vector4(-pos.x - 4.4, pos.z - 0.4, 5.2, 5.2), new Vector4(char_pos_old.x, char_pos.z, 0.5, 0.5))) {
+    if (collision2d(new Vector4(-pos.x - 0.4 - s.x, pos.z - 0.4, s.x + 1.2, s.x + 1.2), new Vector4(char_pos.x, char_pos.z, 0.5, 0.5)) && !collision2d(new Vector4(-pos.x - 0.4 - s.x, pos.z - 0.4, s.x + 1.2, s.x + 1.2), new Vector4(char_pos_old.x, char_pos.z, 0.5, 0.5))) {
       returns = 0;
       game.player.phys.pos.x = game.player.phys.pos_old.x;
       game.player.phys.v.x = 0.0;
     }
-    if (collision2d(new Vector4(-pos.x - 4.4, pos.z - 0.4, 5.2, 5.2), new Vector4(char_pos.x, char_pos.z, 0.5, 0.5)) && !collision2d(new Vector4(-pos.x - 4.4, pos.z - 0.4, 5.2, 5.2), new Vector4(char_pos.x, char_pos_old.z, 0.5, 0.5))) {
+    if (collision2d(new Vector4(-pos.x - 0.4 - s.x, pos.z - 0.4, s.x + 1.2, s.x + 1.2), new Vector4(char_pos.x, char_pos.z, 0.5, 0.5)) && !collision2d(new Vector4(-pos.x - 0.4 - s.x, pos.z - 0.4, s.x + 1.2, s.x + 1.2), new Vector4(char_pos.x, char_pos_old.z, 0.5, 0.5))) {
       returns = 1;
       game.player.phys.pos.z = game.player.phys.pos_old.z;
       game.player.phys.v.z = 0.0;

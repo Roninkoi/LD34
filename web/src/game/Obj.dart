@@ -26,6 +26,21 @@ class Obj {
 
   }
 
+  void draw0() {
+    draw();
+  }
+  void draw1() {
+
+    draw(new Vector3(pos.x, pos.y, pos.z + s.x), new Vector2(s.x, s.y), rot);
+  }
+  void draw2() {
+
+    draw(new Vector3(pos.z, pos.y, -pos.x), new Vector2(s.x, s.y), new Vector3(rot.x, rot.y + PI/2.0, rot.z));
+  }
+  void draw3() {
+    draw(new Vector3(pos.z, pos.y, -pos.x - s.x), new Vector2(s.x, s.y), new Vector3(rot.x, rot.y + PI/2.0, rot.z));
+  }
+
   void load()
   {
     String objs;

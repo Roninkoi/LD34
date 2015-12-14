@@ -52,11 +52,52 @@ class Render {
 
   Vector4 b_col = new Vector4(0.0, 0.0, 0.0, 0.0);
 
+  double screenshake = 0.0;
+
+  Vector2 screenshakevec = new Vector2(0.0, 0.0);
+
   void draw(Sprite sprite, Vector3 pos, Vector2 s, Vector3 rot, Vector3 rot_c)
   {
     _batch(sprite.tex, pos, s, sprite.sprite, rot, rot_c, sprite.col);
   }
+  void drawSingle(Sprite sprite, Vector3 pos, Vector2 s, Vector3 rot, Vector3 rot_c)
+  {
+    gl.enable(BLEND);
+    gl.enable(DEPTH_TEST);
+
+    gl.depthMask(true);
+    gl.depthFunc(LESS);
+
+
+    gl.activeTexture(TEXTURE0);
+    gl.bindTexture(TEXTURE_2D, tex.Tex);
+
+    //gl.enable(CULL_FACE);
+
+    gl.blendFunc(SRC_ALPHA, ONE_MINUS_SRC_ALPHA);
+
+    flushBatch();
+
+    _batch(sprite.tex, pos, s, sprite.sprite, rot, rot_c, sprite.col);
+
+    gl.enable(BLEND);
+    gl.enable(DEPTH_TEST);
+
+    gl.depthMask(true);
+    gl.depthFunc(LESS);
+
+
+    gl.activeTexture(TEXTURE0);
+    gl.bindTexture(TEXTURE_2D, tex.Tex);
+
+    //gl.enable(CULL_FACE);
+
+    gl.blendFunc(SRC_ALPHA, ONE_MINUS_SRC_ALPHA);
+
+    flushBatch();
+  }
   //add to batch
+  bool disableViewTrans = false;
 
 
   void _batch(Txtr tex, Vector3 pos, Vector2 s, Vector4 sprite, Vector3 rot, Vector3 rot_c, Vector4 col)
@@ -67,21 +108,6 @@ class Render {
     (rot.x != oldrot.x || rot.y != oldrot.y || rot.z != oldrot.z) ||
     (col.r != oldcol.r || col.g != oldcol.g || col.b != oldcol.b || col.a != oldcol.a))
     || flush)) {
-
-        gl.enable(BLEND);
-        gl.enable(DEPTH_TEST);
-
-      gl.depthMask(true);
-      gl.depthFunc(LESS);
-
-
-      gl.activeTexture(TEXTURE0);
-      gl.bindTexture(TEXTURE_2D, tex.Tex);
-
-      //gl.enable(CULL_FACE);
-
-      gl.blendFunc(SRC_ALPHA, ONE_MINUS_SRC_ALPHA);
-
       flushBatch();
       batchespercycle += 1;
 
@@ -134,25 +160,43 @@ class Render {
 
   void flushBatch()
   {
-    //viewMatrix = new Matrix4.identity();
+    gl.enable(BLEND);
+    gl.enable(DEPTH_TEST);
 
-    viewMatrix = makeViewMatrix(game.screen.camPos, new Vector3(0.0, 0.0, 1.0), new Vector3(0.0, 1.0, 0.0));
+    gl.depthMask(true);
+    gl.depthFunc(LESS);
+
+
+    gl.activeTexture(TEXTURE0);
+    gl.bindTexture(TEXTURE_2D, tex.Tex);
+
+    //gl.enable(CULL_FACE);
+
+    gl.blendFunc(SRC_ALPHA, ONE_MINUS_SRC_ALPHA);
+
+    viewMatrix = new Matrix4.identity();
+
+    if (!disableViewTrans) {
+      viewMatrix = makeViewMatrix(game.screen.camPos, new Vector3(0.0, 0.0, 1.0), new Vector3(0.0, 1.0, 0.0));
 
 //    viewMatrix.scale(1.0, game.canvas.width / game.canvas.height);
-    viewMatrix.rotateY(-game.player.rot.y);
-    // viewMatrix.rotateX(cos(game.player.rot.y) * game.player.rot.x);
-    //viewMatrix.rotateZ(-sin(game.player.rot.y) * game.player.rot.x);
+      viewMatrix.rotateY(-game.player.rot.y);
+      viewMatrix.rotateX(-cos(game.player.rot.y) * game.player.rot.x);
+      viewMatrix.rotateZ(-sin(game.player.rot.y) * game.player.rot.x);
 
-    viewMatrix.translate(game.player.pos.x, game.player.pos.y, -game.player.pos.z);
+      screenshakevec.x = (random_interval(0, 100)/100.0)*screenshake;
+      screenshakevec.y = (random_interval(0, 100)/100.0)*screenshake;
 
+      viewMatrix.translate(game.player.pos.x + screenshakevec.x, game.player.pos.y + game.screen.walkerbop*2.0 + screenshakevec.y, -game.player.pos.z);
+    }
     //quads.getRange(0, batches).toList().sort((a, b) => b.z.compareTo(a.z));
 
     //gl.depthRange(1.0, 100.0);
 
     Matrix4 perspectiveMatrix = new Matrix4.identity();
 
-    setPerspectiveMatrix(perspectiveMatrix, PI/3.0,game.canvas.width / game.canvas.height, 0.5, 100.0 );
-    gl.depthRange(0.2, 100.0);
+    setPerspectiveMatrix(perspectiveMatrix, PI/3.0,game.canvas.width / game.canvas.height, 0.5, 130.0 );
+    gl.depthRange(0.2, 130.0);
 
     gl.uniformMatrix4fv(u_pMatrix, false, perspectiveMatrix.storage);
     gl.uniformMatrix4fv(u_objMatrix, false, objMatrix.storage);
@@ -248,6 +292,9 @@ class Render {
    // gl.vertexAttribPointer(col, 4, FLOAT, false, 0, 0);
 
     gl.drawElements(TRIANGLES, 6 * batches, UNSIGNED_SHORT, 0);
+
+
+    batches = 0;
   }
 
   void initQuad()
