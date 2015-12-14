@@ -78,7 +78,6 @@ class Screen {
 
     game.renderer.draw(gui.target, new Vector3(0.0, 0.0, -1.0), new Vector2(0.01, 0.01), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
     game.renderer.draw(gui.walker, new Vector3(-1.0 + walkerswing.x, 0.7 + walkerbop + walkerswing.y, -2.0), new Vector2(2.0, 1.0), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
-   //  game.renderer.draw(new Sprite(tex, new Vector4(0.0, 0.0, 16.0, 16.0), new Vector4(4.0, 1.0, 1.0, 1.0)), new Vector3(0.0, 0.0 , -2.0), new Vector2(2.0, 2.0), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
 
     if (game.input.keydown[KeyCode.RIGHT] && barOffs > -(PI/2.0))  {
       barOffs -= 0.1;
@@ -105,8 +104,6 @@ class Screen {
 
     game.renderer.draw(gui.healthometer, new Vector3(0.7+ sin(barOffs)*0.05, -0.5, -1.0), new Vector2(0.2, 1.0), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
     game.renderer.draw(gui.healthbar, new Vector3(0.7 + 0.06+ sin(barOffs)*0.05, -0.5 + 0.01 + (1.0 - 0.01), -1.0), new Vector2(0.09, (max(0.0, 1.0 - 0.01)*(-game.player.health/100.0))), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
-   // game.renderer.draw(gui.staminabar, new Vector3(-0.5 + 0.028571429*2.0, -0.5 + 0.021428571*2.0, -1.0), new Vector2(0.885714299*(game.player.swingcharge/1.0), 0.0642857), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
-
 
     game.renderer.draw(gui.heart, new Vector3(-0.3 + sin(barOffs)*0.05 - beat.toDouble()*0.01, -0.5 - beat.toDouble()*0.01, -1.0), new Vector2(0.11*1.2 + beat.toDouble()*0.02, 0.1*1.2 + beat.toDouble()*0.02), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
 

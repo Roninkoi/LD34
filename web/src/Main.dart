@@ -29,7 +29,6 @@ part "game/Map.dart";
 part "game/GUI.dart";
 part "game/Entity.dart";
 
-part "util/Parsers.dart";
 part "util/Random.dart";
 part "util/Collisions.dart";
 

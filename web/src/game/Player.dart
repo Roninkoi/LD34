@@ -23,8 +23,6 @@ class Player {
 
   void update()
   {
-    //health = -(sin(game.ticks/100.0)*100.0).abs();
-    //stamina = -(cos(game.ticks/100.0)*100.0).abs();
     collisions();
 
     bpm = 60.0/max(0.1, stamina/100.0);
@@ -45,7 +43,6 @@ class Player {
     if (health < 100.0 && !game.gameOver) health += 0.05;
 
     phys.v.x = spd * (phys.v.x)*max(0.8, stamina/100.0);
-    //phys.v.y = spd * (phys.v.y);
     phys.v.z = spd * (phys.v.z)*max(0.8, stamina/100.0);
 
     phys.update();
@@ -53,8 +50,6 @@ class Player {
 
     health = max(0.0, health);
     stamina = max(0.0, stamina);
-    //if (game.ticks%30 == 0) print(pos);
-    //if (game.ticks%30 == 0) print(bpm);
   }
 
   void collisions()
@@ -66,14 +61,6 @@ class Player {
       phys.v.y = 0.0;
       flying = false;
     }
-    /*if (collides == 0 || collides == 2) {//some simple collisions for testing
-        phys.pos.x = phys.pos_old.x;
-        phys.v.x = 0.0;
-      }
-      if (collides == 1 || collides == 2) {
-        phys.pos.z = phys.pos_old.z;
-        phys.v.z = 0.0;
-      }*/
     if (phys.pos.y > 0.1) {
       jumping = false;
     }

@@ -15,7 +15,7 @@ class Obj {
 
   void draw([Vector3 newPos=null, Vector2 newS=null, Vector3 newRot=null])
   {
-    if(newPos!=null&&newS!=null&&newRot!=null)
+    if (newPos != null && newS != null && newRot != null)
       game.renderer.draw(sprite, newPos, newS, newRot, rot_c);
     else
       game.renderer.draw(sprite, pos, s, rot, rot_c);
@@ -26,67 +26,26 @@ class Obj {
 
   }
 
-  void draw0() {
+  void draw0()
+  {
     draw();
   }
-  void draw1() {
+
+  void draw1()
+  {
 
     draw(new Vector3(pos.x, pos.y, pos.z + s.x), new Vector2(s.x, s.y), rot);
   }
-  void draw2() {
 
-    draw(new Vector3(pos.z, pos.y, -pos.x), new Vector2(s.x, s.y), new Vector3(rot.x, rot.y + PI/2.0, rot.z));
-  }
-  void draw3() {
-    draw(new Vector3(pos.z, pos.y, -pos.x - s.x), new Vector2(s.x, s.y), new Vector3(rot.x, rot.y + PI/2.0, rot.z));
-  }
-
-  void load()
+  void draw2()
   {
-    String objs;
 
-    var req = new HttpRequest();
-    req.onLoad.listen((e)
-    => objs = req.responseText);
-    req.open('GET', "game/Objects.o", async: false);
-    req.send();
+    draw(new Vector3(pos.z, pos.y, -pos.x), new Vector2(s.x, s.y), new Vector3(rot.x, rot.y + PI / 2.0, rot.z));
+  }
 
-    String tex_path = "";
-    Vector4 sprite_sprite = new Vector4(0.0, 0.0, 0.0, 0.0);
-    Vector4 sprite_col = new Vector4(0.0, 0.0, 0.0, 0.0);
-
-    int i = 0;
-
-    i = parseId(objs, this.id);
-
-    if (i != -1) {
-      ParseReturn returns = new ParseReturn(0, "");
-
-      ++i;
-      returns = parseString(objs, i);
-      i = returns.i;
-      tex_path = returns.s;
-
-      ++i;
-
-      returns = parseString(objs, i);
-
-      i = returns.i;
-
-      sprite_sprite = parseVec4(returns.s);
-
-      ++i;
-
-      returns = parseString(objs, i);
-      i = returns.i;
-      sprite_col = parseVec4(returns.s);
-
-      this.sprite = new Sprite(new Txtr(tex_path), sprite_sprite, sprite_col);
-    }
-    else {
-      throw "id " + this.id.toString() + " not found!";
-    }
-
+  void draw3()
+  {
+    draw(new Vector3(pos.z, pos.y, -pos.x - s.x), new Vector2(s.x, s.y), new Vector3(rot.x, rot.y + PI / 2.0, rot.z));
   }
 
   void set([Vector3 newPos = null, Vector2 newS = null, Vector3 newRot = null])
@@ -116,7 +75,42 @@ class Obj {
   Obj(this.id, [this.sprite, this.pos, this.s, this.rot])
   {
     if (sprite == null) {
-      load();
+      //load();
+      switch (id) {
+        case 0:
+          sprite = new Sprite(new Txtr("../gfx/Sprites.png"), new Vector4(0.0, 0.0, 16.0, 16.0), new Vector4(1.0, 1.0, 1.0, 1.0));
+          break;
+        case 1:
+          sprite = new Sprite(new Txtr("../gfx/Sprites.png"), new Vector4(36.0, 0.0, 16.0, 16.0), new Vector4(1.0, 1.0, 1.0, 1.0));
+          break;
+        case 2:
+          sprite = new Sprite(new Txtr("../gfx/Sprites.png"), new Vector4(18.0, 0.0, 16.0, 16.0), new Vector4(1.0, 1.0, 1.0, 1.0));
+          break;
+        case 3:
+          sprite = new Sprite(new Txtr("../gfx/Sprites.png"), new Vector4(36.0, 0.0, 16.0, 16.0), new Vector4(0.5, 0.3, 0.2, 1.0));
+          break;
+        case 4:
+          sprite = new Sprite(new Txtr("../gfx/Sprites.png"), new Vector4(18.0, 18.0, 16.0, 16.0), new Vector4(1.0, 1.0, 1.0, 1.0));
+          break;
+        case 5:
+          sprite = new Sprite(new Txtr("../gfx/Sprites.png"), new Vector4(0.0, 18.0, 16.0, 16.0), new Vector4(1.0, 1.0, 1.0, 1.0));
+          break;
+        case 6:
+          sprite = new Sprite(new Txtr("../gfx/Sprites.png"), new Vector4(54.0, 18.0, 16.0, 16.0), new Vector4(1.0, 1.0, 1.0, 1.0));
+          break;
+        case 7:
+          sprite = new Sprite(new Txtr("../gfx/Sprites.png"), new Vector4(54.0, 0.0, 16.0, 16.0), new Vector4(1.0, 1.0, 1.0, 1.0));
+          break;
+        case 8:
+          sprite = new Sprite(new Txtr("../gfx/Sprites.png"), new Vector4(72.0, 0.0, 16.0, 16.0), new Vector4(1.0, 1.0, 1.0, 1.0));
+          break;
+        case 9:
+          sprite = new Sprite(new Txtr("../gfx/Sprites.png"), new Vector4(72.0, 18.0, 16.0, 16.0), new Vector4(1.0, 1.0, 1.0, 1.0));
+          break;
+        case 10:
+          sprite = new Sprite(new Txtr("../gfx/Sprites.png"), new Vector4(93.0, 0.0, 23.0, 34.0), new Vector4(1.0, 1.0, 1.0, 1.0));
+          break;
+      }
     }
   }
 }

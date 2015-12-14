@@ -105,11 +105,9 @@ class Sfx {
   Sound beat = new Sound("../sfx/beat.wav");
   Sound swing = new Sound("../sfx/swing.wav");
   Sound damage = new Sound("../sfx/damage.wav");
-
-  Sound funk;
+  Sound funk = new Sound("../sfx/funky_chunk.ogg");
 
   Sfx()
   {
-    funk = new Sound("../sfx/funky_chunk.ogg");
   }
 }

@@ -28,7 +28,6 @@ class Entity {
       attacking = true;
       if (game.player.attacking) {
         health -= 50.0;
-       // print("damage");
         damageticks = 100.0;
         game.aud.damage.PlaySound();
       }
@@ -73,18 +72,12 @@ class Entity {
   void draw() {
     game.renderer.flushBatch();
     if (anim_cycle[anim] == 0) {
-      //ducksprite1.draw(pos, s, rot);
-      //game.renderer.draw(ducksprite1, pos, s, rot, new Vector3(0.0, 0.0, 0.0));
       game.renderer.draw(ducksprite1, new Vector3(-s.x/2.0,  pos.y, 0.0), s, rot, new Vector3(pos.x, 0.0, pos.z));
     }
     else if (anim_cycle[anim] == 1) {
-      //ducksprite2.draw(pos, s, rot);
-      //game.renderer.draw(ducksprite2, pos, s, rot, new Vector3(0.0, 0.0, 0.0));
       game.renderer.draw(ducksprite2, new Vector3(-s.x/2.0,  pos.y, 0.0), s, rot, new Vector3(pos.x, 0.0, pos.z));
     }
     else if (anim_cycle[anim] == 2) {
-     // ducksprite3.draw(pos, s, rot);
-      //game.renderer.draw(ducksprite3, pos, s, rot, new Vector3(0.0, 0.0, 0.0));
       game.renderer.draw(ducksprite3, new Vector3(-s.x/2.0,  pos.y, 0.0), s, rot, new Vector3(pos.x,0.0, pos.z));
     }
     game.renderer.flushBatch();
@@ -122,7 +115,6 @@ class Entity {
       anim_ticks = 0;
       ++anim;
     }
-
 
     if (anim > 1) anim = 0;
   }

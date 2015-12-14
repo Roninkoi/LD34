@@ -25,8 +25,6 @@ class Txtr {
 
       w = img.width.toDouble();
       h = img.height.toDouble();
-      //gl.generateMipmap(TEXTURE_2D);
-
 
       gl.bindTexture(TEXTURE_2D, null);
     });

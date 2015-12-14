@@ -12,11 +12,9 @@ class Floor extends Obj {
 
     if (collision2d(new Vector4(-pos.x - 0.4 - s.x + 0.8, pos.z - 0.4 + 0.8, s.x + 1.2 - 1.6, s.x + 1.2 - 1.6), new Vector4(char_pos.x, -char_pos.z, 0.5, 0.5)) && !collision2d(new Vector4(-pos.x - 0.4 - s.x + 0.8, pos.z - 0.4 + 0.8, s.x + 1.2 - 1.6, s.x + 1.2 - 1.6), new Vector4(char_pos_old.x, -char_pos.z, 0.5, 0.5))) {
       returns = 0;
-      //print("collision");
     }
     if (collision2d(new Vector4(-pos.x - 0.4 - s.x + 0.8, pos.z - 0.4 + 0.8, s.x + 1.2 - 1.6, s.x + 1.2 - 1.6), new Vector4(char_pos.x, -char_pos.z, 0.5, 0.5)) && !collision2d(new Vector4(-pos.x - 0.4 - s.x + 0.8, pos.z - 0.4 + 0.8, s.x + 1.2 - 1.6, s.x + 1.2 - 1.6), new Vector4(char_pos.x, -char_pos_old.z, 0.5, 0.5))) {
       returns = 1;
-      //print("collision");
     }
 
     return returns;

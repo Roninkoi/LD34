@@ -581,155 +581,6 @@ var dart = [
     else
       return false;
   },
-  parseId: function(s, id) {
-    var t1, b, r, done, i, t2;
-    t1 = s.length;
-    b = "";
-    r = false;
-    done = false;
-    i = 0;
-    while (true) {
-      if (!(i < t1 && !done))
-        break;
-      if (i >= t1)
-        return H.ioore(s, i);
-      t2 = s[i];
-      if (t2 === ">")
-        r = false;
-      if (r)
-        b += t2;
-      if (t2 === "<")
-        r = true;
-      if (M.stringToInt(b) === id)
-        done = true;
-      else if (!r)
-        b = "";
-      ++i;
-    }
-    return done ? i : -1;
-  },
-  parseString: function(s, i) {
-    var t1, done, r, b, t2;
-    t1 = s.length;
-    done = false;
-    r = false;
-    b = "";
-    while (true) {
-      if (!(i < t1 && !done))
-        break;
-      if (i < 0 || i >= t1)
-        return H.ioore(s, i);
-      t2 = s[i];
-      if (t2 === "]") {
-        done = true;
-        r = false;
-      }
-      if (r)
-        b += t2;
-      if (t2 === "[")
-        r = true;
-      ++i;
-    }
-    return new M.ParseReturn(i, b);
-  },
-  parseVec4: function(s) {
-    var t1, returns, t2, t3, i, r, done, b, vec_i, t4, t5;
-    t1 = new Float32Array(H._checkLength(4));
-    returns = new T.Vector4(t1);
-    returns.setValues$4(0, 0, 0, 0);
-    for (t2 = s.length, t3 = t2 - 1, i = 0, r = false, done = false, b = "", vec_i = 0; i < t2; ++i) {
-      t4 = s[i];
-      t5 = t4 !== " ";
-      if ((!t5 || t4 === ",") && r) {
-        r = false;
-        done = true;
-      }
-      if (t5 && t4 !== ",")
-        r = true;
-      if (r)
-        b += t4;
-      t4 = !r;
-      if (t4 && done || t3 === i) {
-        t5 = M.parseDouble(b);
-        if (vec_i >= 4)
-          return H.ioore(t1, vec_i);
-        t1[vec_i] = t5;
-        ++vec_i;
-      }
-      if (t4) {
-        done = false;
-        b = "";
-      }
-    }
-    return returns;
-  },
-  parseDouble: function(s) {
-    var t1, d, num, neg, j, t2, n, end;
-    for (t1 = s.length, d = 0, num = "", neg = false, j = 0; j < t1; ++j) {
-      if (j < 0)
-        return H.ioore(s, j);
-      t2 = s[j];
-      if (t2 === "-")
-        neg = true;
-      if (t2 !== ".")
-        num += t2;
-      d = M.stringToInt(num);
-      if (s[j] === ".") {
-        d = M.stringToInt(num);
-        ++j;
-        for (num = "", n = 0, end = false; j < t1; ++j) {
-          t2 = s[j];
-          end = t2 !== "0" || end;
-          num += t2;
-          ++n;
-        }
-        t2 = M.stringToInt(num);
-        d += t2 / Math.pow(10, n);
-      }
-    }
-    return neg ? -d : d;
-  },
-  stringToInt: function(s) {
-    var t1, t2, returns, n, number;
-    for (t1 = s.length, t2 = t1 - 1, returns = 0, n = 0; n < t1; ++n) {
-      switch (s[n]) {
-        case "0":
-          number = 0;
-          break;
-        case "1":
-          number = 1;
-          break;
-        case "2":
-          number = 2;
-          break;
-        case "3":
-          number = 3;
-          break;
-        case "4":
-          number = 4;
-          break;
-        case "5":
-          number = 5;
-          break;
-        case "6":
-          number = 6;
-          break;
-        case "7":
-          number = 7;
-          break;
-        case "8":
-          number = 8;
-          break;
-        case "9":
-          number = 9;
-          break;
-        default:
-          number = 0;
-      }
-      returns += Math.pow(10, t2 - n) * number;
-    }
-    return returns;
-  },
   random_interval: function(min, max) {
     return C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), max - min + 1) + min);
   },
@@ -845,12 +696,10 @@ var dart = [
         t6 = new M.Sound("../sfx/damage.wav", null, null, false, false, null);
         t6.InitAudio$0();
         t6.LoadSound$0();
-        t6 = new M.Sfx(false, t9, t8, t7, t6, null);
-        t7 = new M.Sound("../sfx/funky_chunk.ogg", null, null, false, false, null);
-        t7.InitAudio$0();
-        t7.LoadSound$0();
-        t6.funk = t7;
-        this.aud = t6;
+        t5 = new M.Sound("../sfx/funky_chunk.ogg", null, null, false, false, null);
+        t5.InitAudio$0();
+        t5.LoadSound$0();
+        this.aud = new M.Sfx(false, t9, t8, t7, t6, t5);
         this.music_playing = false;
       }
       t2 = new T.Vector3(new Float32Array(H._checkLength(3)));
@@ -870,7 +719,7 @@ var dart = [
       t8.setValues$3(0, 0, 0);
       t9 = new T.Vector3(new Float32Array(H._checkLength(3)));
       t9.setValues$3(0, 0, 0);
-      t9 = new M.Phys(t4, t5, false, false, false, t6, t7, t8, t9, 1);
+      t9 = new M.Phys(t4, t5, t6, t7, t8, t9, 1);
       t3 = new M.Player(t2, new T.Vector2(t3), t9, 0.9, false, false, false, false, 0, 100, 100, 60);
       t2 = new T.Vector3(new Float32Array(H._checkLength(3)));
       t2.setValues$3(-6, 0, -2);
@@ -970,7 +819,7 @@ var dart = [
       t39[0] = 0;
       t39[1] = 0;
       this.screen = new M.Screen(t3, 1024, 600, new M.GUI(new M.Sprite(t2, t9, t8), new M.Sprite(t7, t6, t5), new M.Sprite(t4, t10, t11), new M.Sprite(t12, t13, t14), new M.Sprite(t15, t16, t17), new M.Sprite(t18, t19, t20), new M.Sprite(t21, t22, t23), new M.Sprite(t24, t25, t26), new M.Sprite(t27, t28, t29), new M.Sprite(t30, t31, t32), new M.Sprite(t33, t34, t35), new M.Sprite(t36, t37, t38), new M.Text()), 0, new T.Vector2(t39), false, 0, 0, false, false, 0, 0, 0, 0, 0, 60, false, -1.5707963267948966, 0);
-      this.map = M.Map$("Map" + C.JSInt_methods.toString$0(this.currentMap) + ".m");
+      this.map = M.Map$();
       this.start_time = Date.now();
       if (t1) {
         t1 = window;
@@ -992,7 +841,7 @@ var dart = [
         this.fps_time = Date.now();
         P.print("FPS: " + C.JSInt_methods.toString$0(this.fps) + ", render count: " + C.JSInt_methods.toString$0(this.renderer.render_count) + ", batches: " + C.JSInt_methods.toString$0(this.renderer.batchespercycle) + ", batch size: " + C.JSInt_methods.toString$0(this.renderer.batch_size) + ", render time: " + C.JSInt_methods.toString$0(this.renderer.render_time) + " ms");
       }
-      if (!this.music_playing && $.game.ticks > 100) {
+      if (!this.music_playing && $.game.ticks > 120) {
         this.aud.funk.PlaySound$0();
         this.music_playing = true;
       }
@@ -1029,11 +878,6 @@ var dart = [
       t4 = t3.gameStarted;
       if (t4 && !t3.gameOver) {
         t2 = t2.keydown;
-        if (t2[32] === true)
-          if (!t1.jumping) {
-            t1.jumping = true;
-            t1.phys.v.storage[1] = -0.14;
-          }
         t4 = t2[39] === true;
         if (!(t4 && t2[37] === true)) {
           if (t4) {
@@ -1085,90 +929,6 @@ var dart = [
           t2.swing = true;
           t1.player.swingcharge = 0;
         }
-        t2 = t1.input.keydown;
-        if (t2[38] === true && t1.player.rot.storage[0] > -0.5235987755982988) {
-          t3 = t1.player.rot.storage;
-          t3[0] = t3[0] - 0.05;
-        }
-        if (t2[40] === true && t1.player.rot.storage[0] < 0.5235987755982988) {
-          t3 = t1.player.rot.storage;
-          t3[0] = t3[0] + 0.05;
-        }
-        if (t2[68] === true) {
-          t1 = t1.player;
-          t1.moving = true;
-          t2 = t1.phys.v.storage;
-          t3 = t2[2];
-          t1 = Math.cos(H.checkNum(t1.rot.storage[1] + 1.5707963267948966));
-          t4 = $.game.player;
-          t2[2] = t3 + 0.03 * t1 * (1 + M.boolToInt(t4.jumping));
-          t1 = t4.phys.v.storage;
-          t3 = t1[0];
-          t4 = Math.sin(H.checkNum(t4.rot.storage[1] + 1.5707963267948966));
-          t2 = $.game;
-          t1[0] = t3 + 0.03 * t4 * (1 + M.boolToInt(t2.player.jumping));
-          t1 = t2;
-        }
-        if (t1.input.keydown[65] === true) {
-          t1 = t1.player;
-          t1.moving = true;
-          t2 = t1.phys.v.storage;
-          t3 = t2[2];
-          t1 = Math.cos(H.checkNum(t1.rot.storage[1] + 1.5707963267948966));
-          t4 = $.game.player;
-          t2[2] = t3 + -0.03 * t1 * (1 + M.boolToInt(t4.jumping));
-          t1 = t4.phys.v.storage;
-          t3 = t1[0];
-          t4 = Math.sin(H.checkNum(t4.rot.storage[1] + 1.5707963267948966));
-          t2 = $.game;
-          t1[0] = t3 + -0.03 * t4 * (1 + M.boolToInt(t2.player.jumping));
-          t1 = t2;
-        }
-        if (t1.input.keydown[87] === true) {
-          t1 = t1.player;
-          t1.moving = true;
-          t2 = t1.phys.v.storage;
-          t3 = t2[2];
-          t1 = Math.cos(H.checkNum(t1.rot.storage[1]));
-          t4 = $.game.player;
-          t2[2] = t3 + 0.03 * t1 * (1 + M.boolToInt(t4.jumping));
-          t1 = t4.phys.v.storage;
-          t3 = t1[0];
-          t4 = Math.sin(H.checkNum(t4.rot.storage[1]));
-          t2 = $.game;
-          t1[0] = t3 + 0.03 * t4 * (1 + M.boolToInt(t2.player.jumping));
-          t1 = t2;
-        }
-        if (t1.input.keydown[83] === true) {
-          t1 = t1.player;
-          t1.moving = true;
-          t2 = t1.phys.v.storage;
-          t3 = t2[2];
-          t1 = Math.cos(H.checkNum(t1.rot.storage[1]));
-          t4 = $.game.player;
-          t2[2] = t3 + -0.03 * t1 * (1 + M.boolToInt(t4.jumping));
-          t1 = t4.phys.v.storage;
-          t3 = t1[0];
-          t4 = Math.sin(H.checkNum(t4.rot.storage[1]));
-          t2 = $.game;
-          t1[0] = t3 + -0.03 * t4 * (1 + M.boolToInt(t2.player.jumping));
-          t1 = t2;
-        }
-        t2 = t1.input.keydown;
-        if (t2[16] === true) {
-          t3 = t1.player;
-          t4 = t3.phys.v.storage;
-          t4[1] = t4[1] - 0.02;
-          t3.flying = true;
-        }
-        if (t2[17] === true) {
-          t3 = t1.player;
-          t4 = t3.phys.pos.storage;
-          t4[1] = t4[1] + 0.05;
-          t3.flying = true;
-        }
-        if (t2[82] === true)
-          t1.start$1(0, true);
       } else {
         t1 = t2.keydown;
         if (t1[39] === true || t1[37] === true) {
@@ -1215,36 +975,26 @@ var dart = [
       t4 = t2.v.storage;
       t4[0] = t3 * t4[0] * P.max(0.8, t1.stamina / 100);
       t4[2] = t3 * t4[2] * P.max(0.8, t1.stamina / 100);
-      t2.x_mov = false;
-      t2.y_mov = false;
-      t2.z_mov = false;
       t3 = t2.pos.storage;
       t5 = t3[0];
       t6 = t3[1];
       t3 = t3[2];
-      t7 = new Float32Array(H._checkLength(3));
-      t8 = new T.Vector3(t7);
-      t8.setValues$3(t5, t6, t3);
-      t2.pos_old = t8;
-      t8 = t2.a.storage;
-      t4[0] = t4[0] + t8[0];
-      t4[1] = t4[1] + t8[1];
-      t4[2] = t4[2] + t8[2];
-      t8 = t2.pos.storage;
-      t8[0] = t8[0] + t4[0];
-      t8[1] = t8[1] + t4[1];
-      t8[2] = t8[2] + t4[2];
-      if (t8[0] !== t7[0])
-        t2.x_mov = true;
-      if (t8[1] !== t7[1])
-        t2.y_mov = true;
-      if (t8[2] !== t7[2])
-        t2.z_mov = true;
-      t3 = t4[0];
-      t5 = t4[1];
+      t7 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t7.setValues$3(t5, t6, t3);
+      t2.pos_old = t7;
+      t7 = t2.a.storage;
+      t4[0] = t4[0] + t7[0];
+      t4[1] = t4[1] + t7[1];
+      t4[2] = t4[2] + t7[2];
+      t7 = t2.pos.storage;
+      t7[0] = t7[0] + t4[0];
+      t7[1] = t7[1] + t4[1];
+      t7[2] = t7[2] + t4[2];
+      t7 = t4[0];
+      t3 = t4[1];
       t4 = t4[2];
       t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t6.setValues$3(t3, t5, t4);
+      t6.setValues$3(t7, t3, t4);
       t2.v_old = t6;
       t1.pos = t2.pos_old;
       t1.health = P.max(0, t1.health);
@@ -1710,7 +1460,7 @@ var dart = [
     }
   },
   Phys: {
-    "^": "Object;pos,pos_old,x_mov,y_mov,z_mov,rot,v,v_old,a,m"
+    "^": "Object;pos,pos_old,rot,v,v_old,a,m"
   },
   Render: {
     "^": "Object;vertexBuffer,indexBuffer,texBuffer,colBuffer,posBuffer,indexData,vertexData,posData,texData,u_camMatrix,u_objMatrix,u_viewMatrix,u_fov,u_col,u_a,u_pMatrix,objMatrix,camMatrix,viewMatrix,pos,s,position,shader,batch_size,batches,flush,fov,batchespercycle,render_time,render_ticks,render_count,oldtex,oldrot,oldcol,b_col,screenshake,screenshakevec,disableViewTrans",
@@ -2121,7 +1871,7 @@ var dart = [
     }
   },
   Floor: {
-    "^": "Obj;collidable@,id,pos,s,sprite,rot,rot_c",
+    "^": "Obj;collidable<,id,pos,s,sprite,rot,rot_c",
     draw$0: function() {
       var t1, t2, t3, t4;
       t1 = this.pos.storage;
@@ -2386,14 +2136,23 @@ var dart = [
       }
     },
     drawFloors$0: function() {
-      var t1, i, t2;
+      var t1, i, t2, t3, t4, t5, t6;
       for (t1 = this.floors, i = 0; i < t1.length; ++i) {
         t2 = t1[i];
-        if (t2 != null)
-          t2.draw$0();
+        if (t2 != null) {
+          t3 = t2.pos.storage;
+          t4 = t3[0];
+          t5 = t3[2];
+          t3 = t3[1];
+          t6 = new Float32Array(3);
+          t6[0] = t4;
+          t6[1] = t5;
+          t6[2] = t3;
+          t2.super$Obj$draw$3(new T.Vector3(t6), t2.s, t2.rot);
+        }
       }
     },
-    Map$1: function(path) {
+    Map$0: function() {
       var t1, i, t2, j, rand, floorsprite, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15;
       for (t1 = this.floors, i = 0; i < 20; ++i)
         for (t2 = i * 3.95, j = 0; j < 20; ++j) {
@@ -2423,7 +2182,7 @@ var dart = [
           t4[1] = 0;
           t4[2] = 0;
           t4 = new M.Floor(false, floorsprite, null, null, null, null, new T.Vector3(t4));
-          t4.load$0(0);
+          t4.Obj$5(floorsprite, null, null, null, null);
           t5 = t1.length;
           if (t3 < 0 || t3 >= t5)
             return H.ioore(t1, t3);
@@ -2432,17 +2191,16 @@ var dart = [
             t3 = t5 - 1;
             if (t3 < 0)
               return H.ioore(t1, t3);
-            t1[t3].set$collidable(true);
+            t1[t3].collidable = true;
           }
-          t3 = t1.length;
-          t4 = t3 - 1;
-          if (t4 < 0)
-            return H.ioore(t1, t4);
-          t4 = t1[t4];
-          t3 = new Float32Array(3);
-          t3[0] = t2;
-          t3[1] = 2;
-          t3[2] = j * 3.95;
+          t3 = t5 - 1;
+          if (t3 < 0)
+            return H.ioore(t1, t3);
+          t3 = t1[t3];
+          t4 = new Float32Array(3);
+          t4[0] = t2;
+          t4[1] = 2;
+          t4[2] = j * 3.95;
           t5 = new Float32Array(2);
           t5[0] = 4;
           t5[1] = 4;
@@ -2450,7 +2208,9 @@ var dart = [
           t6[0] = 1.5707963267948966;
           t6[1] = 0;
           t6[2] = 0;
-          t4.$set$3(new T.Vector3(t3), new T.Vector2(t5), new T.Vector3(t6));
+          t3.pos = new T.Vector3(t4);
+          t3.s = new T.Vector2(t5);
+          t3.rot = new T.Vector3(t6);
         }
       for (t1 = this.walls, i = 0; i < 20; ++i) {
         C.JSArray_methods.set$length(t1, t1.length + 1);
@@ -2471,7 +2231,7 @@ var dart = [
         t3[1] = 0;
         t3[2] = 0;
         t3 = new M.Wall(true, 1, null, null, null, null, new T.Vector3(t3));
-        t3.load$0(0);
+        t3.Obj$5(1, null, null, null, null);
         t4 = t1.length;
         if (t2 < 0 || t2 >= t4)
           return H.ioore(t1, t2);
@@ -2512,7 +2272,7 @@ var dart = [
         t3[1] = 0;
         t3[2] = 0;
         t3 = new M.Wall(true, 1, null, null, null, null, new T.Vector3(t3));
-        t3.load$0(0);
+        t3.Obj$5(1, null, null, null, null);
         t4 = t1.length;
         if (t2 < 0 || t2 >= t4)
           return H.ioore(t1, t2);
@@ -2553,7 +2313,7 @@ var dart = [
         t3[1] = 0;
         t3[2] = 0;
         t3 = new M.Wall(true, 1, null, null, null, null, new T.Vector3(t3));
-        t3.load$0(0);
+        t3.Obj$5(1, null, null, null, null);
         t4 = t1.length;
         if (t2 < 0 || t2 >= t4)
           return H.ioore(t1, t2);
@@ -2594,7 +2354,7 @@ var dart = [
         t3[1] = 0;
         t3[2] = 0;
         t3 = new M.Wall(true, 1, null, null, null, null, new T.Vector3(t3));
-        t3.load$0(0);
+        t3.Obj$5(1, null, null, null, null);
         t4 = t1.length;
         if (t2 < 0 || t2 >= t4)
           return H.ioore(t1, t2);
@@ -2635,7 +2395,7 @@ var dart = [
         t3[1] = 0;
         t3[2] = 0;
         t3 = new M.Wall(true, 8, null, null, null, null, new T.Vector3(t3));
-        t3.load$0(0);
+        t3.Obj$5(8, null, null, null, null);
         t4 = t1.length;
         if (t2 < 0 || t2 >= t4)
           return H.ioore(t1, t2);
@@ -2678,7 +2438,7 @@ var dart = [
         t3[1] = 0;
         t3[2] = 0;
         t3 = new M.Wall(true, 6, null, null, null, null, new T.Vector3(t3));
-        t3.load$0(0);
+        t3.Obj$5(6, null, null, null, null);
         t4 = t1.length;
         if (t2 < 0 || t2 >= t4)
           return H.ioore(t1, t2);
@@ -2721,7 +2481,7 @@ var dart = [
         t3[1] = 0;
         t3[2] = 0;
         t3 = new M.Wall(true, 4, null, null, null, null, new T.Vector3(t3));
-        t3.load$0(0);
+        t3.Obj$5(4, null, null, null, null);
         t4 = t1.length;
         if (t2 < 0 || t2 >= t4)
           return H.ioore(t1, t2);
@@ -2769,29 +2529,15 @@ var dart = [
         t6[2] = 1;
         t6[1] = 1;
         t6[0] = 1;
-        t6 = new Float32Array(3);
-        t6[0] = 0;
-        t6[1] = 0;
-        t6[2] = 0;
-        t6 = new Float32Array(2);
-        t6[0] = 0;
-        t6[1] = 0;
-        t6 = new Float32Array(3);
-        t6[0] = 0;
-        t6[1] = 0;
-        t6[2] = 0;
-        t6 = new Float32Array(3);
-        t6[0] = 0;
-        t6[1] = 0;
-        t6[2] = 0;
-        t7 = t1.length;
-        if (t2 < 0 || t2 >= t7)
+        t5 = M.Obj$(1, new M.Sprite(t3, new T.Vector4(t4), new T.Vector4(t5)), null, null, null);
+        t4 = t1.length;
+        if (t2 < 0 || t2 >= t4)
           return H.ioore(t1, t2);
-        t1[t2] = new M.Obj(1, null, null, new M.Sprite(t3, new T.Vector4(t4), new T.Vector4(t5)), null, new T.Vector3(t6));
-        t6 = t7 - 1;
-        if (t6 < 0)
-          return H.ioore(t1, t6);
-        t6 = t1[t6];
+        t1[t2] = t5;
+        t5 = t4 - 1;
+        if (t5 < 0)
+          return H.ioore(t1, t5);
+        t5 = t1[t5];
         t2 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
         t3 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
         t4 = new Float32Array(3);
@@ -2805,28 +2551,12 @@ var dart = [
         t3[0] = 0;
         t3[1] = 0;
         t3[2] = 0;
-        t6.$set$3(new T.Vector3(t4), new T.Vector2(t2), new T.Vector3(t3));
+        t5.$set$3(new T.Vector3(t4), new T.Vector2(t2), new T.Vector3(t3));
       }
       for (i = 0; i < 100; ++i) {
         C.JSArray_methods.set$length(t1, t1.length + 1);
         t2 = t1.length - 1;
-        t3 = new Float32Array(3);
-        t3[0] = 0;
-        t3[1] = 0;
-        t3[2] = 0;
-        t3 = new Float32Array(2);
-        t3[0] = 0;
-        t3[1] = 0;
-        t3 = new Float32Array(3);
-        t3[0] = 0;
-        t3[1] = 0;
-        t3[2] = 0;
-        t3 = new Float32Array(3);
-        t3[0] = 0;
-        t3[1] = 0;
-        t3[2] = 0;
-        t3 = new M.Obj(9, null, null, null, null, new T.Vector3(t3));
-        t3.load$0(0);
+        t3 = M.Obj$(9, null, null, null, null);
         t4 = t1.length;
         if (t2 < 0 || t2 >= t4)
           return H.ioore(t1, t2);
@@ -2853,23 +2583,7 @@ var dart = [
       for (i = 0; i < 50; ++i) {
         C.JSArray_methods.set$length(t1, t1.length + 1);
         t2 = t1.length - 1;
-        t3 = new Float32Array(3);
-        t3[0] = 0;
-        t3[1] = 0;
-        t3[2] = 0;
-        t3 = new Float32Array(2);
-        t3[0] = 0;
-        t3[1] = 0;
-        t3 = new Float32Array(3);
-        t3[0] = 0;
-        t3[1] = 0;
-        t3[2] = 0;
-        t3 = new Float32Array(3);
-        t3[0] = 0;
-        t3[1] = 0;
-        t3[2] = 0;
-        t3 = new M.Obj(10, null, null, null, null, new T.Vector3(t3));
-        t3.load$0(0);
+        t3 = M.Obj$(10, null, null, null, null);
         t4 = t1.length;
         if (t2 < 0 || t2 >= t4)
           return H.ioore(t1, t2);
@@ -2896,23 +2610,7 @@ var dart = [
       for (i = 0; i < 100; ++i) {
         C.JSArray_methods.set$length(t1, t1.length + 1);
         t2 = t1.length - 1;
-        t3 = new Float32Array(3);
-        t3[0] = 0;
-        t3[1] = 0;
-        t3[2] = 0;
-        t3 = new Float32Array(2);
-        t3[0] = 0;
-        t3[1] = 0;
-        t3 = new Float32Array(3);
-        t3[0] = 0;
-        t3[1] = 0;
-        t3[2] = 0;
-        t3 = new Float32Array(3);
-        t3[0] = 0;
-        t3[1] = 0;
-        t3[2] = 0;
-        t3 = new M.Obj(9, null, null, null, null, new T.Vector3(t3));
-        t3.load$0(0);
+        t3 = M.Obj$(9, null, null, null, null);
         t4 = t1.length;
         if (t2 < 0 || t2 >= t4)
           return H.ioore(t1, t2);
@@ -2939,23 +2637,7 @@ var dart = [
       for (i = 0; i < 50; ++i) {
         C.JSArray_methods.set$length(t1, t1.length + 1);
         t2 = t1.length - 1;
-        t3 = new Float32Array(3);
-        t3[0] = 0;
-        t3[1] = 0;
-        t3[2] = 0;
-        t3 = new Float32Array(2);
-        t3[0] = 0;
-        t3[1] = 0;
-        t3 = new Float32Array(3);
-        t3[0] = 0;
-        t3[1] = 0;
-        t3[2] = 0;
-        t3 = new Float32Array(3);
-        t3[0] = 0;
-        t3[1] = 0;
-        t3[2] = 0;
-        t3 = new M.Obj(10, null, null, null, null, new T.Vector3(t3));
-        t3.load$0(0);
+        t3 = M.Obj$(10, null, null, null, null);
         t4 = t1.length;
         if (t2 < 0 || t2 >= t4)
           return H.ioore(t1, t2);
@@ -3003,29 +2685,15 @@ var dart = [
         t6[2] = 1;
         t6[1] = 1;
         t6[0] = 1;
-        t6 = new Float32Array(3);
-        t6[0] = 0;
-        t6[1] = 0;
-        t6[2] = 0;
-        t6 = new Float32Array(2);
-        t6[0] = 0;
-        t6[1] = 0;
-        t6 = new Float32Array(3);
-        t6[0] = 0;
-        t6[1] = 0;
-        t6[2] = 0;
-        t6 = new Float32Array(3);
-        t6[0] = 0;
-        t6[1] = 0;
-        t6[2] = 0;
-        t7 = t1.length;
-        if (t2 < 0 || t2 >= t7)
+        t5 = M.Obj$(3, new M.Sprite(t3, new T.Vector4(t4), new T.Vector4(t5)), null, null, null);
+        t4 = t1.length;
+        if (t2 < 0 || t2 >= t4)
           return H.ioore(t1, t2);
-        t1[t2] = new M.Obj(3, null, null, new M.Sprite(t3, new T.Vector4(t4), new T.Vector4(t5)), null, new T.Vector3(t6));
-        t6 = t7 - 1;
-        if (t6 < 0)
-          return H.ioore(t1, t6);
-        t6 = t1[t6];
+        t1[t2] = t5;
+        t5 = t4 - 1;
+        if (t5 < 0)
+          return H.ioore(t1, t5);
+        t5 = t1[t5];
         t2 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
         t3 = C.JSInt_methods.toInt$0(C.JSInt_methods.$mod(C.C__JSRandom.nextInt$1(100000), -319));
         t4 = new Float32Array(3);
@@ -3039,7 +2707,7 @@ var dart = [
         t3[0] = 0;
         t3[1] = -1.5707963267948966;
         t3[2] = 0;
-        t6.$set$3(new T.Vector3(t4), new T.Vector2(t2), new T.Vector3(t3));
+        t5.$set$3(new T.Vector3(t4), new T.Vector2(t2), new T.Vector3(t3));
       }
       t1 = $.get$tex();
       t2 = new T.Vector4(new Float32Array(H._checkLength(4)));
@@ -3048,23 +2716,16 @@ var dart = [
       t3.setValues$4(1, 1, 1, 1);
       new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
       new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
-      new T.Vector3(new Float32Array(H._checkLength(3))).setValues$3(0, 0, 0);
-      t4 = new Float32Array(H._checkLength(2));
-      t4[0] = 0;
-      t4[1] = 0;
-      new T.Vector3(new Float32Array(H._checkLength(3))).setValues$3(0, 0, 0);
+      t3 = M.Obj$(0, new M.Sprite(t1, t2, t3), null, null, null);
+      this.sky = t3;
+      t2 = new T.Vector3(new Float32Array(H._checkLength(3)));
+      t2.setValues$3(-10, -23, -85);
+      t1 = new Float32Array(H._checkLength(2));
+      t1[0] = 100;
+      t1[1] = 30;
       t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
       t4.setValues$3(0, 0, 0);
-      t4 = new M.Obj(0, null, null, new M.Sprite(t1, t2, t3), null, t4);
-      this.sky = t4;
-      t1 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t1.setValues$3(-10, -23, -85);
-      t2 = new Float32Array(H._checkLength(2));
-      t2[0] = 100;
-      t2[1] = 30;
-      t3 = new T.Vector3(new Float32Array(H._checkLength(3)));
-      t3.setValues$3(0, 0, 0);
-      t4.$set$3(t1, new T.Vector2(t2), t3);
+      t3.$set$3(t2, new T.Vector2(t1), t4);
       for (t1 = this.ducks, i = 0; i < 40; ++i) {
         C.JSArray_methods.set$length(t1, t1.length + 1);
         t2 = t1.length - 1;
@@ -3168,9 +2829,9 @@ var dart = [
         t14.rot = new T.Vector3(t3);
       }
     },
-    static: {Map$: function(path) {
-        var t1 = new M.Map(path, [], [], [], [], null, true);
-        t1.Map$1(path);
+    static: {Map$: function() {
+        var t1 = new M.Map("", [], [], [], [], null, true);
+        t1.Map$0();
         return t1;
       }}
   },
@@ -3262,45 +2923,140 @@ var dart = [
       t6.setValues$3(t1, t2 + 1.5707963267948966, t4);
       this.draw$3(t5, new T.Vector2(t3), t6);
     },
-    load$0: function(_) {
-      var t1, req, t2, i, returns, tex_path, sprite_sprite, sprite_col;
-      t1 = {};
-      t1._captured_objs_0 = null;
-      req = new XMLHttpRequest();
-      t2 = H.setRuntimeTypeInfo(new W._EventStream(req, "load", false), [null]);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new M.Obj_load_closure(t1, req)), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)])._tryResume$0();
-      C.HttpRequest_methods.open$3$async(req, "GET", "game/Objects.o", false);
-      req.send();
-      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
-      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
-      t2 = this.id;
-      i = M.parseId(t1._captured_objs_0, t2);
-      if (i !== -1) {
-        returns = M.parseString(t1._captured_objs_0, i + 1);
-        tex_path = returns.s;
-        returns = M.parseString(t1._captured_objs_0, returns.i + 1);
-        sprite_sprite = M.parseVec4(returns.s);
-        sprite_col = M.parseVec4(M.parseString(t1._captured_objs_0, returns.i + 1).s);
-        t1 = M.Txtr$(tex_path);
-        new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
-        new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
-        this.sprite = new M.Sprite(t1, sprite_sprite, sprite_col);
-      } else
-        throw H.wrapException("id " + C.JSNumber_methods.toString$0(t2) + " not found!");
-    },
     $set$3: function(newPos, newS, newRot) {
       this.pos = newPos;
       this.s = newS;
       this.rot = newRot;
-    }
-  },
-  Obj_load_closure: {
-    "^": "Closure:1;_LD34$_box_0,_captured_req_1",
-    call$1: function(e) {
-      var objs = this._captured_req_1.responseText;
-      this._LD34$_box_0._captured_objs_0 = objs;
-      return objs;
-    }
+    },
+    Obj$5: function(id, sprite, pos, s, rot) {
+      var t1, t2, t3;
+      if (this.sprite == null)
+        switch (this.id) {
+          case 0:
+            t1 = M.Txtr$("../gfx/Sprites.png");
+            t2 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t2.setValues$4(0, 0, 16, 16);
+            t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t3.setValues$4(1, 1, 1, 1);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+            this.sprite = new M.Sprite(t1, t2, t3);
+            break;
+          case 1:
+            t1 = M.Txtr$("../gfx/Sprites.png");
+            t2 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t2.setValues$4(36, 0, 16, 16);
+            t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t3.setValues$4(1, 1, 1, 1);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+            this.sprite = new M.Sprite(t1, t2, t3);
+            break;
+          case 2:
+            t1 = M.Txtr$("../gfx/Sprites.png");
+            t2 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t2.setValues$4(18, 0, 16, 16);
+            t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t3.setValues$4(1, 1, 1, 1);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+            this.sprite = new M.Sprite(t1, t2, t3);
+            break;
+          case 3:
+            t1 = M.Txtr$("../gfx/Sprites.png");
+            t2 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t2.setValues$4(36, 0, 16, 16);
+            t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t3.setValues$4(0.5, 0.3, 0.2, 1);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+            this.sprite = new M.Sprite(t1, t2, t3);
+            break;
+          case 4:
+            t1 = M.Txtr$("../gfx/Sprites.png");
+            t2 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t2.setValues$4(18, 18, 16, 16);
+            t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t3.setValues$4(1, 1, 1, 1);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+            this.sprite = new M.Sprite(t1, t2, t3);
+            break;
+          case 5:
+            t1 = M.Txtr$("../gfx/Sprites.png");
+            t2 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t2.setValues$4(0, 18, 16, 16);
+            t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t3.setValues$4(1, 1, 1, 1);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+            this.sprite = new M.Sprite(t1, t2, t3);
+            break;
+          case 6:
+            t1 = M.Txtr$("../gfx/Sprites.png");
+            t2 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t2.setValues$4(54, 18, 16, 16);
+            t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t3.setValues$4(1, 1, 1, 1);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+            this.sprite = new M.Sprite(t1, t2, t3);
+            break;
+          case 7:
+            t1 = M.Txtr$("../gfx/Sprites.png");
+            t2 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t2.setValues$4(54, 0, 16, 16);
+            t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t3.setValues$4(1, 1, 1, 1);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+            this.sprite = new M.Sprite(t1, t2, t3);
+            break;
+          case 8:
+            t1 = M.Txtr$("../gfx/Sprites.png");
+            t2 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t2.setValues$4(72, 0, 16, 16);
+            t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t3.setValues$4(1, 1, 1, 1);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+            this.sprite = new M.Sprite(t1, t2, t3);
+            break;
+          case 9:
+            t1 = M.Txtr$("../gfx/Sprites.png");
+            t2 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t2.setValues$4(72, 18, 16, 16);
+            t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t3.setValues$4(1, 1, 1, 1);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+            this.sprite = new M.Sprite(t1, t2, t3);
+            break;
+          case 10:
+            t1 = M.Txtr$("../gfx/Sprites.png");
+            t2 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t2.setValues$4(93, 0, 23, 34);
+            t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+            t3.setValues$4(1, 1, 1, 1);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+            new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+            this.sprite = new M.Sprite(t1, t2, t3);
+            break;
+        }
+    },
+    static: {Obj$: function(id, sprite, pos, s, rot) {
+        var t1;
+        new T.Vector3(new Float32Array(H._checkLength(3))).setValues$3(0, 0, 0);
+        t1 = new Float32Array(H._checkLength(2));
+        t1[0] = 0;
+        t1[1] = 0;
+        new T.Vector3(new Float32Array(H._checkLength(3))).setValues$3(0, 0, 0);
+        t1 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t1.setValues$3(0, 0, 0);
+        t1 = new M.Obj(id, pos, s, sprite, rot, t1);
+        t1.Obj$5(id, sprite, pos, s, rot);
+        return t1;
+      }}
   },
   Player: {
     "^": "Object;pos,rot,phys,spd,jumping,flying,moving,attacking,swingcharge,health,stamina,bpm",
@@ -3343,12 +3099,10 @@ var dart = [
             if (t2)
               collides = 2;
           }
-        for (i = 0; t2 = $.game.map.floors, i < t2.length; ++i)
-          if (t2[i].get$collidable()) {
-            t2 = $.game.map.floors;
-            if (i >= t2.length)
-              return H.ioore(t2, i);
-            if (t2[i].collision$2(t1.pos, t1.pos_old) !== -1) {
+        for (i = 0; t2 = $.game.map.floors, i < t2.length; ++i) {
+          t2 = t2[i];
+          if (t2.collidable)
+            if (t2.collision$2(t1.pos, t1.pos_old) !== -1) {
               this.health -= 10;
               $.game.aud.hurt.PlaySound$0();
               t2 = $.game;
@@ -3357,12 +3111,12 @@ var dart = [
               if (!t2.gameOver)
                 t2.deathCause = "Pneumonia";
             }
-          }
+        }
       }
     }
   },
   Wall: {
-    "^": "Obj;collidable@,id,pos,s,sprite,rot,rot_c",
+    "^": "Obj;collidable<,id,pos,s,sprite,rot,rot_c",
     draw$0: function() {
       this.super$Obj$draw$3(null, null, null);
       this.draw1$0();
@@ -3505,9 +3259,6 @@ var dart = [
       }
       return returns;
     }
-  },
-  ParseReturn: {
-    "^": "Object;i,s"
   }
 },
 1],

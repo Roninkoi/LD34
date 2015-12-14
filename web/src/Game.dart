@@ -63,7 +63,7 @@ class Game {
       player = new Player();
       screen = new Screen();
 
-      loadMap();
+    map = new Map();
 
       start_time = new DateTime.now().millisecondsSinceEpoch;
 
@@ -83,9 +83,8 @@ class Game {
 
       print("FPS: " + fps.toString() + ", render count: " + renderer.render_count.toString() + ", batches: " + renderer.batchespercycle.toString() + ", batch size: " + renderer.batch_size.toString() + ", render time: " + renderer.render_time.toString() + " ms");
     }
-    //screen.gui.fonts.LoadFonts();
 
-    if (!music_playing && game.ticks > 100) {
+    if (!music_playing && game.ticks > 120) {
       aud.funk.PlaySound();
       music_playing = true;
     }
@@ -127,51 +126,16 @@ class Game {
     game.renderer.disableViewTrans = false;
 
     map.draw();
-    /*
-    if(ticks%60==0) {
-    /*  map.objs.sort((Obj a, Obj b)
-      => (a.pos.z).compareTo(b.pos.z));*/
-  /*    map.objs.sort((Obj a, Obj b)
-      => (a.pos.x - player.pos.x).compareTo(b.pos.x - player.pos.x));
-*/
-    /*  map.objs.sort((Obj a, Obj b)
-      => (-a.pos.z).compareTo(-b.pos.z));*/
-/*
-      if (cos(game.player.rot.y) < 0.0)
-        map.objs = map.objs.reversed.toList();*/
-      map.objs.sort((Obj a, Obj b)
-      => (a.getDist()).compareTo(b.getDist()));
 
-      print(game.player.pos);
-    }*/
-/*
-    game.renderer.draw(new Sprite(tex, new Vector4(0.0, 0.0, 16.0, 16.0), new Vector4(1.0, 1.0, 1.0, 1.0)), new Vector3(0.0, 0.0, 0.0), new Vector2(2.0, 2.0), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
-
-
-    game.renderer.draw(new Sprite(tex, new Vector4(0.0, 0.0, 16.0, 16.0), new Vector4(1.0, 1.0, 1.0, 1.0)), new Vector3(0.0, 0.0, -8.0), new Vector2(2.0, 2.0), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
-
-*/
     if (game.ticks%30.0 == 0) {
       game.renderer.screenshake = 0.0;
     }
 
-    //renderer.render();
-
     screen.drawGUI();
-
 
     renderer.flushBatch();
 
     renderer.render_time = new DateTime.now().millisecondsSinceEpoch - renderer.render_ticks;
-  }
-
-  void loadMap([int mapNumber = null]) {
-    if (mapNumber != null) {
-      map = new Map("Map" + mapNumber.toString() + ".m");
-    }
-    else {
-      map = new Map("Map" + currentMap.toString() + ".m");
-    }
   }
 
   void gameRestart()
