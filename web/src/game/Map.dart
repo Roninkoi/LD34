@@ -90,9 +90,12 @@ class Map {
     }
   }
 
+  bool ducksAlive = true;
+
   void draw()
   {
-    drawDucks();
+    ducksAlive = false;
+    if (game.gameStarted) drawDucks();
 
     drawObjs();
     drawWalls();

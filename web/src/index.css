@@ -3,10 +3,8 @@ body {
 }
 
 #game {
-    margin-left = 0px;
-    margin-top = 0px;
-    width:1024px;
-    height:600px;
+    width:1366px;
+    height:768px;
 }
 
 p {

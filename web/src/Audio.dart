@@ -103,6 +103,8 @@ class Sfx {
 
   Sound hurt = new Sound("../sfx/hurt.wav");
   Sound beat = new Sound("../sfx/beat.wav");
+  Sound swing = new Sound("../sfx/swing.wav");
+  Sound damage = new Sound("../sfx/damage.wav");
 
   Sfx()
   {

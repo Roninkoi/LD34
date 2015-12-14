@@ -28,6 +28,12 @@ class Screen {
 
   double bpm = 60.0;
 
+  bool heartattack = false;
+
+  double titlescroll = -PI/2.0;
+
+  int gameTime = 0;
+
   void drawGUI()
   {
     game.renderer.flushBatch();
@@ -105,7 +111,7 @@ class Screen {
     game.renderer.draw(gui.heart, new Vector3(-0.3 + sin(barOffs)*0.05 - beat.toDouble()*0.01, -0.5 - beat.toDouble()*0.01, -1.0), new Vector2(0.11*1.2 + beat.toDouble()*0.02, 0.1*1.2 + beat.toDouble()*0.02), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
 
     if (titlebg) {
-      game.renderer.draw(gui.titlebg, new Vector3(-2.0, -2.0, -0.5), new Vector2(10.0, 10.0), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
+      game.renderer.draw(gui.titlebg, new Vector3(-2.0, -2.0, -0.6), new Vector2(10.0, 10.0), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
     }
     if (game.ticks%180 == 0) bpm = game.player.bpm;
     ++beats;
@@ -116,12 +122,57 @@ class Screen {
       beat = 0;
     }
 
+    if (game.gameOver || !game.gameStarted) {
+      titlebg = true;
+    }
+    else {
+      titlebg = false;
+    }
 
+    if (!game.gameOver) {
+      gameTime = new DateTime.now().millisecondsSinceEpoch;
+    }
+
+    if (!game.gameStarted) {
+      if (titlescroll < 0.0) titlescroll += 0.02;
+      game.renderer.draw(gui.titleScreen, new Vector3(-0.25 + cos(titlescroll) - 1.0, -0.25, -0.5), new Vector2(0.5, 0.3), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
+
+      renderText("by Ronin748 (@Ronin748)", new Vector3(0.0 - textLength("by Ronin748 (@Ronin748)", (0.05) / 2.0 + sin(barOffs) * 0.05)/5.0 - 0.25 + cos(titlescroll) - 1.0 + 0.1, 0.1 - 0.02, -0.5), 0.025, new Vector4(0.333, 0.6745, 0.9333, 1.0));
+
+      if (game.ticks%30.0 >= 15.0) renderText("Press right or left arrow to start.", new Vector3(0.0 - textLength("You're having a heart attack!", (0.05) / 2.0 + sin(barOffs) * 0.05)/5.0 - 0.25, 0.1 + 0.08, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
+    }
+
+    if (game.gameOver) {
+      if (game.gameWin) {
+        renderText("Lovely!", new Vector3(0.0 - textLength("Lovely.asdasd", (0.05) / 2.0)/5.0 - 0.25 + 0.2, 0.1 + 0.08 - 0.45, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
+        renderText("You wiped the floor with those ducks, dear.", new Vector3(0.0 - textLength("You wiped the floor with those ducks, dear.asdasd", (0.05) / 2.0 )/5.0 - 0.25, 0.1 + 0.08 - 0.35, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
+      }
+      else {
+        renderText("Oh dear!", new Vector3(0.0 - textLength("Oh dear.asdasd", (0.05) / 2.0)/5.0 - 0.25 + 0.2, 0.1 + 0.08 - 0.45, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
+        renderText("Cause of death: " + game.deathCause, new Vector3(0.0 - textLength("Cause of death: as" + game.deathCause, (0.05) / 2.0 )/5.0 - 0.25, 0.1 + 0.08 - 0.35, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
+      }
+
+      renderText("You did it in: " + (gameTime - game.start_time).toString() +" milliseconds", new Vector3(0.0 - textLength("You did it in: millisec" + (gameTime - game.start_time).toString() +" se", (0.05) / 2.0)/5.0 - 0.25, 0.1 + 0.08 - 0.22, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
+
+      renderText("Heart attacks: " + (game.heart_attacks).toString(), new Vector3(0.0 - textLength("Heart attack" + (game.heart_attacks).toString(), (0.05) / 2.0)/5.0 - 0.15, 0.1 + 0.08 - 0.13, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
+
+      if (game.ticks%30.0 >= 15.0) renderText("Press right or left arrow to restart.", new Vector3(0.0 - textLength("You're having a heart attack!asdasd  ", (0.05) / 2.0 + sin(barOffs) * 0.05)/5.0 - 0.25, 0.1 + 0.08, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
+    }
 
     renderText(game.player.bpm.floor().toString() + " BPM", new Vector3(-0.1  + sin(barOffs)*0.05 , -0.5 + 0.02, -1.0), 0.06, new Vector4(0.5, 0.0, 0.0, 1.0));
 
-    if (game.player.bpm >= 150.0 && game.ticks%30.0 <= 20) renderText("You're having a heart attack!", new Vector3(0.0 - textLength("You're having a heart attack!", 0.05)/2.0 + sin(barOffs)*0.05, 0.1, -1.0), 0.05, new Vector4(1.0, 0.7, 0.0, 1.0));
-
+    if (game.player.bpm >= 150.0) {
+      if (game.ticks%30.0 <= 20) {
+      renderText("You're having a heart attack!", new Vector3(0.0 - textLength("You're having a heart attack", 0.05) / 2.0 + sin(barOffs) * 0.05, 0.1, -1.0), 0.05, new Vector4(1.0, 0.7, 0.0, 1.0));
+      if (heartattack) {
+        ++game.heart_attacks;
+        heartattack = false;
+      }
+    }
+    }
+    else {
+      heartattack = true;
+    }
     if (coldticks > 0.0 && game.ticks%30.0 <= 20) renderText("You're going to get a cold!", new Vector3(0.0 - textLength("You're going to get a cold!", 0.05)/2.0 + sin(barOffs)*0.05, 0.1, -1.0), 0.05, new Vector4(1.0, 0.7, 0.0, 1.0));
     if (coldticks >= 0.0) {
       coldticks -= 1.0;
@@ -130,6 +181,10 @@ class Screen {
     if (attackticks > 0.0 && game.ticks%30.0 <= 20) renderText("Don't break your hip!", new Vector3(0.0 - textLength("Don't break your hip!", 0.05)/2.0 + sin(barOffs)*0.05, 0.1, -1.0), 0.05, new Vector4(1.0, 0.7, 0.0, 1.0));
     if (attackticks >= 0.0) {
       attackticks -= 1.0;
+    }
+
+    if (game.player.bpm > game.max_heartRate) {
+      game.max_heartRate = game.player.bpm;
     }
 
     renderText(game.player.stamina.floor().toString() +"%", new Vector3(-0.7 + sin(barOffs)*0.05, -0.03, -1.0), 0.05, new Vector4(1.0, 1.0, 1.0, 0.5));
@@ -141,8 +196,8 @@ class Screen {
     game.renderer.disableViewTrans = false;
   }
 
-  void Resize() {
-
+  void center() {
+      querySelector("body").setAttribute("style", "margin-left:" + ((document.documentElement.clientWidth - game.canvas.width) / 2.0).toString() + "px");
   }
 
   Screen() {

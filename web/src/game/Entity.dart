@@ -21,6 +21,8 @@ class Entity {
 
   void update()
   {
+    game.map.ducksAlive = true;
+
     if (sqrt(pow(
         game.player.pos.x + pos.x, 2) + pow(game.player.pos.z - pos.z, 2)) < 8.0) {
       attacking = true;
@@ -28,6 +30,7 @@ class Entity {
         health -= 50.0;
         print("damage");
         damageticks = 100.0;
+        game.aud.damage.PlaySound();
       }
     }
     else {
@@ -55,6 +58,8 @@ class Entity {
 
     if (sqrt(pow(game.player.pos.x + pos.x, 2) + pow(game.player.pos.z - pos.z, 2)) < 2.0) {
       game.player.health -= 0.1;
+      game.screen.attackticks = 50.0;
+      if (!game.gameOver) game.deathCause = "Multiple injuries";
       if (game.ticks%30.0 == 0.0) {
         game.aud.hurt.PlaySound();
       }

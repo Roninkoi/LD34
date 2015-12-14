@@ -19,6 +19,8 @@ class GUI {
 
   Sprite heart = new Sprite(tex, new Vector4(42.0, 41.0, 9.0, 8.0), new Vector4(1.0, 1.0, 1.0, 1.0));
 
+  Sprite titleScreen = new Sprite(tex, new Vector4(56.0, 37.0, 63.0, 40.0), new Vector4(1.0, 1.0, 1.0, 1.0));
+
   Text fonts = new Text();
 
   GUI()

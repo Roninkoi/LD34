@@ -26,6 +26,18 @@ class Game {
 
   bool audio_inited = false;
 
+  int start_time = 0;
+
+  double max_heartRate = 0.0;
+
+  int heart_attacks = 0;
+
+  String deathCause = "null";
+
+  bool gameOver = false;
+  bool gameStarted = false;
+  bool gameWin = false;
+
   void start([bool restarting = false])
   {
     if (!restarting) {
@@ -39,14 +51,16 @@ class Game {
       renderer = new Render();
       input = new Input();
       input.keys();
+
+      aud = new Sfx();
     }
 
       player = new Player();
       screen = new Screen();
 
-      aud = new Sfx();
-
       loadMap();
+
+      start_time = new DateTime.now().millisecondsSinceEpoch;
 
       if (!restarting) window.requestAnimationFrame(gameLoop);
   }
@@ -69,6 +83,21 @@ class Game {
     if (screen.beat == 2) {
       game.aud.beat.PlaySound();
     }
+
+    if (game.player.health <= 0.0 && !gameOver) {
+      gameOver = true;
+      input.endPress = false;
+    }
+
+    if (!game.gameOver) game.deathCause = "A massive heart attack";
+
+    if (!map.ducksAlive && game.gameStarted && !game.gameOver) {
+      game.gameWin = true;
+      game.gameOver = true;
+      input.endPress = false;
+    }
+
+    screen.center();
 
     getInput();
 
@@ -147,22 +176,5 @@ class Game {
   Game()
   {
     start();
-  }
-}
-
-int quadCompare(Quads a, Quads b) {
-  if (a!=null&&b!=null) {
-  if (a.pos.z==b.pos.z){
-    return 0;
-  }
-  else if(a.pos.z>b.pos.z){
-    return 1;
-  }
-  else {
-    return -1;
-  }
-  }
-  else {
-    return 0;
   }
 }

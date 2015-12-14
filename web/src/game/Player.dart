@@ -35,10 +35,14 @@ class Player {
 
     if (moving) stamina -= 0.15;
 
-    if (attacking) stamina -= 14.0;
+    if (attacking) {
+      stamina -= 14.0;
+
+      game.aud.swing.PlaySound();
+    }
 
     health -= max(0.0, bpm/200.0 - 1.0);
-    if (health < 100.0) health += 0.05;
+    if (health < 100.0 && !game.gameOver) health += 0.05;
 
     phys.v.x = spd * (phys.v.x)*max(0.8, stamina/100.0);
     //phys.v.y = spd * (phys.v.y);
@@ -97,6 +101,8 @@ class Player {
             game.aud.hurt.PlaySound();
             game.renderer.screenshake = 0.40;
             game.screen.coldticks = 100.0;
+
+            if (!game.gameOver) game.deathCause = "Pneumonia";
           }
         }
       }

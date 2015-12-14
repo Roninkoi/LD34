@@ -299,8 +299,6 @@ class Render {
 
   void initQuad()
   {
-
-
     u_pMatrix = gl.getUniformLocation(shader.program, "perspectiveMatrix");
     u_objMatrix = gl.getUniformLocation(shader.program, "objectMatrix");
     //u_camMatrix = gl.getUniformLocation(shader.program, "cameraMatrix");

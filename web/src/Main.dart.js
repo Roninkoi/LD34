@@ -510,7 +510,7 @@ var dart = [
   main: [function() {
     var e, t1, exception;
     try {
-      t1 = new M.Game(null, null, null, null, null, null, null, 1, 0, 0, 0, 0, false);
+      t1 = new M.Game(null, null, null, null, null, null, null, 1, 0, 0, 0, 0, false, 0, 0, 0, "null", false, false, false);
       t1.start$0(0);
       $.game = t1;
     } catch (exception) {
@@ -793,12 +793,12 @@ var dart = [
     }
   },
   Sfx: {
-    "^": "Object;muted,hurt,beat"
+    "^": "Object;muted,hurt,beat,swing,damage"
   },
   Game: {
-    "^": "Object;canvas,renderer,input,player,screen,aud,map,currentMap,fps,fps_ticks,fps_time,ticks,audio_inited",
+    "^": "Object;canvas,renderer,input,player,screen,aud,map,currentMap,fps,fps_ticks,fps_time,ticks,audio_inited,start_time,max_heartRate,heart_attacks,deathCause,gameOver,gameStarted,gameWin",
     start$1: function(_, restarting) {
-      var t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36;
+      var t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39;
       t1 = !restarting;
       if (t1) {
         t2 = document.querySelector("#game");
@@ -830,9 +830,22 @@ var dart = [
         t9.shader = t8;
         t9.initQuad$0();
         this.renderer = t9;
-        t9 = new M.Input(P.List_List$filled(256, false, null), P.List_List$filled(256, false, null), false, false, false, false, false, false);
+        t9 = new M.Input(P.List_List$filled(256, false, null), P.List_List$filled(256, false, null), false, false, false, false, false, false, true);
         this.input = t9;
         t9.keys$0();
+        t9 = new M.Sound("../sfx/hurt.wav", null, null, false, false, null);
+        t9.InitAudio$0();
+        t9.LoadSound$0();
+        t8 = new M.Sound("../sfx/beat.wav", null, null, false, false, null);
+        t8.InitAudio$0();
+        t8.LoadSound$0();
+        t7 = new M.Sound("../sfx/swing.wav", null, null, false, false, null);
+        t7.InitAudio$0();
+        t7.LoadSound$0();
+        t6 = new M.Sound("../sfx/damage.wav", null, null, false, false, null);
+        t6.InitAudio$0();
+        t6.LoadSound$0();
+        this.aud = new M.Sfx(false, t9, t8, t7, t6);
       }
       t2 = new T.Vector3(new Float32Array(H._checkLength(3)));
       t2.setValues$3(0, 0, -1);
@@ -940,18 +953,19 @@ var dart = [
       t35.setValues$4(1, 1, 1, 1);
       new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
       new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
-      t36 = new Float32Array(H._checkLength(2));
-      t36[0] = 0;
-      t36[1] = 0;
-      this.screen = new M.Screen(t3, 1024, 600, new M.GUI(new M.Sprite(t2, t9, t8), new M.Sprite(t7, t6, t5), new M.Sprite(t4, t10, t11), new M.Sprite(t12, t13, t14), new M.Sprite(t15, t16, t17), new M.Sprite(t18, t19, t20), new M.Sprite(t21, t22, t23), new M.Sprite(t24, t25, t26), new M.Sprite(t27, t28, t29), new M.Sprite(t30, t31, t32), new M.Sprite(t33, t34, t35), new M.Text()), 0, new T.Vector2(t36), false, 0, 0, false, false, 0, 0, 0, 0, 0, 60);
-      t36 = new M.Sound("../sfx/hurt.wav", null, null, false, false, null);
-      t36.InitAudio$0();
-      t36.LoadSound$0();
-      t35 = new M.Sound("../sfx/beat.wav", null, null, false, false, null);
-      t35.InitAudio$0();
-      t35.LoadSound$0();
-      this.aud = new M.Sfx(false, t36, t35);
+      t36 = $.get$tex();
+      t37 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t37.setValues$4(56, 37, 63, 40);
+      t38 = new T.Vector4(new Float32Array(H._checkLength(4)));
+      t38.setValues$4(1, 1, 1, 1);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(0, 0, 0, 0);
+      new T.Vector4(new Float32Array(H._checkLength(4))).setValues$4(1, 1, 1, 1);
+      t39 = new Float32Array(H._checkLength(2));
+      t39[0] = 0;
+      t39[1] = 0;
+      this.screen = new M.Screen(t3, 1024, 600, new M.GUI(new M.Sprite(t2, t9, t8), new M.Sprite(t7, t6, t5), new M.Sprite(t4, t10, t11), new M.Sprite(t12, t13, t14), new M.Sprite(t15, t16, t17), new M.Sprite(t18, t19, t20), new M.Sprite(t21, t22, t23), new M.Sprite(t24, t25, t26), new M.Sprite(t27, t28, t29), new M.Sprite(t30, t31, t32), new M.Sprite(t33, t34, t35), new M.Sprite(t36, t37, t38), new M.Text()), 0, new T.Vector2(t39), false, 0, 0, false, false, 0, 0, 0, 0, 0, 60, false, -1.5707963267948966, 0);
       this.map = M.Map$("Map" + C.JSInt_methods.toString$0(this.currentMap) + ".m");
+      this.start_time = Date.now();
       if (t1) {
         t1 = window;
         t2 = this.get$gameLoop();
@@ -975,173 +989,215 @@ var dart = [
       if (this.screen.beat === 2)
         $.game.aud.beat.PlaySound$0();
       t1 = $.game;
-      t2 = t1.input;
+      if (t1.player.health <= 0 && !this.gameOver) {
+        this.gameOver = true;
+        this.input.endPress = false;
+      }
+      t2 = t1.gameOver;
+      if (!t2)
+        t1.deathCause = "A massive heart attack";
+      if (!this.map.ducksAlive && t1.gameStarted && !t2) {
+        t1.gameWin = true;
+        t1.gameOver = true;
+        this.input.endPress = false;
+      }
+      this.screen.toString;
+      t1 = document.querySelector("body");
+      t2 = C.JSNumber_methods.round$0(document.documentElement.clientWidth);
+      t3 = J.get$width$x($.game.canvas);
+      if (typeof t3 !== "number")
+        return H.iae(t3);
+      t1.setAttribute("style", "margin-left:" + C.JSDouble_methods.toString$0((t2 - t3) / 2) + "px");
+      t3 = $.game;
+      t2 = t3.input;
       t2.x_input = false;
       t2.y_input = false;
       t2.z_input = false;
-      t3 = t1.player;
-      t3.moving = false;
-      t3.attacking = false;
-      t2 = t2.keydown;
-      if (t2[32] === true)
-        if (!t3.jumping) {
-          t3.jumping = true;
-          t3.phys.v.storage[1] = -0.14;
-        }
-      t4 = t2[39] === true;
-      if (!(t4 && t2[37] === true)) {
-        if (t4) {
-          t1 = t3.rot.storage;
-          t1[1] = t1[1] + 0.01;
-          t3.moving = true;
-          t3 = t3.phys.v.storage;
-          t2 = t3[2];
-          t1 = Math.cos(H.checkNum(t1[1]));
-          t4 = $.game.player;
-          t3[2] = t2 + 0.03 * t1 * (1 + M.boolToInt(t4.jumping));
-          t1 = t4.phys.v.storage;
-          t2 = t1[0];
-          t4 = Math.sin(H.checkNum(t4.rot.storage[1]));
-          t3 = $.game;
-          t1[0] = t2 + 0.03 * t4 * (1 + M.boolToInt(t3.player.jumping));
+      t1 = t3.player;
+      t1.moving = false;
+      t1.attacking = false;
+      t4 = t3.gameStarted;
+      if (t4 && !t3.gameOver) {
+        t2 = t2.keydown;
+        if (t2[32] === true)
+          if (!t1.jumping) {
+            t1.jumping = true;
+            t1.phys.v.storage[1] = -0.14;
+          }
+        t4 = t2[39] === true;
+        if (!(t4 && t2[37] === true)) {
+          if (t4) {
+            t2 = t1.rot.storage;
+            t2[1] = t2[1] + 0.01;
+            t1.moving = true;
+            t1 = t1.phys.v.storage;
+            t3 = t1[2];
+            t2 = Math.cos(H.checkNum(t2[1]));
+            t4 = $.game.player;
+            t1[2] = t3 + 0.03 * t2 * (1 + M.boolToInt(t4.jumping));
+            t2 = t4.phys.v.storage;
+            t3 = t2[0];
+            t4 = Math.sin(H.checkNum(t4.rot.storage[1]));
+            t1 = $.game;
+            t2[0] = t3 + 0.03 * t4 * (1 + M.boolToInt(t1.player.jumping));
+          } else
+            t1 = t3;
+          if (t1.input.keydown[37] === true) {
+            t1 = t1.player;
+            t2 = t1.rot.storage;
+            t2[1] = t2[1] - 0.01;
+            t1.moving = true;
+            t1 = t1.phys.v.storage;
+            t3 = t1[2];
+            t2 = Math.cos(H.checkNum(t2[1]));
+            t4 = $.game.player;
+            t1[2] = t3 + 0.03 * t2 * (1 + M.boolToInt(t4.jumping));
+            t2 = t4.phys.v.storage;
+            t3 = t2[0];
+            t4 = Math.sin(H.checkNum(t4.rot.storage[1]));
+            t1 = $.game;
+            t2[0] = t3 + 0.03 * t4 * (1 + M.boolToInt(t1.player.jumping));
+          }
+        } else
           t1 = t3;
-        }
-        if (t1.input.keydown[37] === true) {
-          t1 = t1.player;
-          t2 = t1.rot.storage;
-          t2[1] = t2[1] - 0.01;
-          t1.moving = true;
-          t1 = t1.phys.v.storage;
-          t3 = t1[2];
-          t2 = Math.cos(H.checkNum(t2[1]));
-          t4 = $.game.player;
-          t1[2] = t3 + 0.03 * t2 * (1 + M.boolToInt(t4.jumping));
-          t2 = t4.phys.v.storage;
-          t3 = t2[0];
-          t4 = Math.sin(H.checkNum(t4.rot.storage[1]));
-          t1 = $.game;
-          t2[0] = t3 + 0.03 * t4 * (1 + M.boolToInt(t1.player.jumping));
-        }
-      }
-      t2 = t1.input;
-      t3 = t2.keydown;
-      if (t3[39] === true && t3[37] === true) {
-        t1 = t1.player;
-        t1.swingcharge = P.min(t1.swingcharge + 0.02, 1);
-        t1 = $.game;
         t2 = t1.input;
-        if (t2.swing && t1.player.swingcharge === 1) {
-          t2.swing = false;
-          t1.player.attacking = true;
+        t3 = t2.keydown;
+        if (t3[39] === true && t3[37] === true) {
+          t1 = t1.player;
+          t1.swingcharge = P.min(t1.swingcharge + 0.02, 1);
+          t1 = $.game;
+          t2 = t1.input;
+          if (t2.swing && t1.player.swingcharge === 1) {
+            t2.swing = false;
+            t1.player.attacking = true;
+          }
+        } else {
+          t2.swing = true;
+          t1.player.swingcharge = 0;
         }
+        t2 = t1.input.keydown;
+        if (t2[38] === true && t1.player.rot.storage[0] > -0.5235987755982988) {
+          t3 = t1.player.rot.storage;
+          t3[0] = t3[0] - 0.05;
+        }
+        if (t2[40] === true && t1.player.rot.storage[0] < 0.5235987755982988) {
+          t3 = t1.player.rot.storage;
+          t3[0] = t3[0] + 0.05;
+        }
+        if (t2[68] === true) {
+          t1 = t1.player;
+          t1.moving = true;
+          t2 = t1.phys.v.storage;
+          t3 = t2[2];
+          t1 = Math.cos(H.checkNum(t1.rot.storage[1] + 1.5707963267948966));
+          t4 = $.game.player;
+          t2[2] = t3 + 0.03 * t1 * (1 + M.boolToInt(t4.jumping));
+          t1 = t4.phys.v.storage;
+          t3 = t1[0];
+          t4 = Math.sin(H.checkNum(t4.rot.storage[1] + 1.5707963267948966));
+          t2 = $.game;
+          t1[0] = t3 + 0.03 * t4 * (1 + M.boolToInt(t2.player.jumping));
+          t1 = t2;
+        }
+        if (t1.input.keydown[65] === true) {
+          t1 = t1.player;
+          t1.moving = true;
+          t2 = t1.phys.v.storage;
+          t3 = t2[2];
+          t1 = Math.cos(H.checkNum(t1.rot.storage[1] + 1.5707963267948966));
+          t4 = $.game.player;
+          t2[2] = t3 + -0.03 * t1 * (1 + M.boolToInt(t4.jumping));
+          t1 = t4.phys.v.storage;
+          t3 = t1[0];
+          t4 = Math.sin(H.checkNum(t4.rot.storage[1] + 1.5707963267948966));
+          t2 = $.game;
+          t1[0] = t3 + -0.03 * t4 * (1 + M.boolToInt(t2.player.jumping));
+          t1 = t2;
+        }
+        if (t1.input.keydown[87] === true) {
+          t1 = t1.player;
+          t1.moving = true;
+          t2 = t1.phys.v.storage;
+          t3 = t2[2];
+          t1 = Math.cos(H.checkNum(t1.rot.storage[1]));
+          t4 = $.game.player;
+          t2[2] = t3 + 0.03 * t1 * (1 + M.boolToInt(t4.jumping));
+          t1 = t4.phys.v.storage;
+          t3 = t1[0];
+          t4 = Math.sin(H.checkNum(t4.rot.storage[1]));
+          t2 = $.game;
+          t1[0] = t3 + 0.03 * t4 * (1 + M.boolToInt(t2.player.jumping));
+          t1 = t2;
+        }
+        if (t1.input.keydown[83] === true) {
+          t1 = t1.player;
+          t1.moving = true;
+          t2 = t1.phys.v.storage;
+          t3 = t2[2];
+          t1 = Math.cos(H.checkNum(t1.rot.storage[1]));
+          t4 = $.game.player;
+          t2[2] = t3 + -0.03 * t1 * (1 + M.boolToInt(t4.jumping));
+          t1 = t4.phys.v.storage;
+          t3 = t1[0];
+          t4 = Math.sin(H.checkNum(t4.rot.storage[1]));
+          t2 = $.game;
+          t1[0] = t3 + -0.03 * t4 * (1 + M.boolToInt(t2.player.jumping));
+          t1 = t2;
+        }
+        t2 = t1.input.keydown;
+        if (t2[16] === true) {
+          t3 = t1.player;
+          t4 = t3.phys.v.storage;
+          t4[1] = t4[1] - 0.02;
+          t3.flying = true;
+        }
+        if (t2[17] === true) {
+          t3 = t1.player;
+          t4 = t3.phys.pos.storage;
+          t4[1] = t4[1] + 0.05;
+          t3.flying = true;
+        }
+        if (t2[82] === true)
+          t1.start$1(0, true);
       } else {
-        t2.swing = true;
-        t1.player.swingcharge = 0;
+        t1 = t2.keydown;
+        if (t1[39] === true || t1[37] === true) {
+          if (t2.endPress) {
+            if (!t4)
+              t3.gameStarted = true;
+            if (t3.gameOver) {
+              t3.gameOver = false;
+              t3.gameWin = false;
+              t3.heart_attacks = 0;
+              t3.start_time = Date.now();
+              $.game.start$1(0, true);
+            }
+          }
+        } else
+          t2.endPress = true;
       }
-      t2 = t1.input.keydown;
-      if (t2[38] === true && t1.player.rot.storage[0] > -0.5235987755982988) {
-        t3 = t1.player.rot.storage;
-        t3[0] = t3[0] - 0.05;
-      }
-      if (t2[40] === true && t1.player.rot.storage[0] < 0.5235987755982988) {
-        t3 = t1.player.rot.storage;
-        t3[0] = t3[0] + 0.05;
-      }
-      if (t2[68] === true) {
-        t1 = t1.player;
-        t1.moving = true;
-        t2 = t1.phys.v.storage;
-        t3 = t2[2];
-        t1 = Math.cos(H.checkNum(t1.rot.storage[1] + 1.5707963267948966));
-        t4 = $.game.player;
-        t2[2] = t3 + 0.03 * t1 * (1 + M.boolToInt(t4.jumping));
-        t1 = t4.phys.v.storage;
-        t3 = t1[0];
-        t4 = Math.sin(H.checkNum(t4.rot.storage[1] + 1.5707963267948966));
-        t2 = $.game;
-        t1[0] = t3 + 0.03 * t4 * (1 + M.boolToInt(t2.player.jumping));
-        t1 = t2;
-      }
-      if (t1.input.keydown[65] === true) {
-        t1 = t1.player;
-        t1.moving = true;
-        t2 = t1.phys.v.storage;
-        t3 = t2[2];
-        t1 = Math.cos(H.checkNum(t1.rot.storage[1] + 1.5707963267948966));
-        t4 = $.game.player;
-        t2[2] = t3 + -0.03 * t1 * (1 + M.boolToInt(t4.jumping));
-        t1 = t4.phys.v.storage;
-        t3 = t1[0];
-        t4 = Math.sin(H.checkNum(t4.rot.storage[1] + 1.5707963267948966));
-        t2 = $.game;
-        t1[0] = t3 + -0.03 * t4 * (1 + M.boolToInt(t2.player.jumping));
-        t1 = t2;
-      }
-      if (t1.input.keydown[87] === true) {
-        t1 = t1.player;
-        t1.moving = true;
-        t2 = t1.phys.v.storage;
-        t3 = t2[2];
-        t1 = Math.cos(H.checkNum(t1.rot.storage[1]));
-        t4 = $.game.player;
-        t2[2] = t3 + 0.03 * t1 * (1 + M.boolToInt(t4.jumping));
-        t1 = t4.phys.v.storage;
-        t3 = t1[0];
-        t4 = Math.sin(H.checkNum(t4.rot.storage[1]));
-        t2 = $.game;
-        t1[0] = t3 + 0.03 * t4 * (1 + M.boolToInt(t2.player.jumping));
-        t1 = t2;
-      }
-      if (t1.input.keydown[83] === true) {
-        t1 = t1.player;
-        t1.moving = true;
-        t2 = t1.phys.v.storage;
-        t3 = t2[2];
-        t1 = Math.cos(H.checkNum(t1.rot.storage[1]));
-        t4 = $.game.player;
-        t2[2] = t3 + -0.03 * t1 * (1 + M.boolToInt(t4.jumping));
-        t1 = t4.phys.v.storage;
-        t3 = t1[0];
-        t4 = Math.sin(H.checkNum(t4.rot.storage[1]));
-        t2 = $.game;
-        t1[0] = t3 + -0.03 * t4 * (1 + M.boolToInt(t2.player.jumping));
-        t1 = t2;
-      }
-      t2 = t1.input.keydown;
-      if (t2[16] === true) {
-        t3 = t1.player;
-        t4 = t3.phys.v.storage;
-        t4[1] = t4[1] - 0.02;
-        t3.flying = true;
-      }
-      if (t2[17] === true) {
-        t3 = t1.player;
-        t4 = t3.phys.pos.storage;
-        t4[1] = t4[1] + 0.05;
-        t3.flying = true;
-      }
-      if (t2[82] === true)
-        t1.start$1(0, true);
       t1 = $.game.player;
       t1.collisions$0();
       t2 = 60 / P.max(0.1, t1.stamina / 100);
       t1.bpm = t2;
       if (t2 > 200)
         $.game.renderer.screenshake = 0.2;
-      t3 = t1.stamina;
-      if (t3 < 100) {
-        t3 += 0.1;
-        t1.stamina = t3;
+      t2 = t1.stamina;
+      if (t2 < 100) {
+        t2 += 0.1;
+        t1.stamina = t2;
       }
       if (t1.moving) {
-        t3 -= 0.15;
-        t1.stamina = t3;
+        t2 -= 0.15;
+        t1.stamina = t2;
       }
-      if (t1.attacking)
-        t1.stamina = t3 - 14;
-      t2 = t1.health - P.max(0, t2 / 200 - 1);
+      if (t1.attacking) {
+        t1.stamina = t2 - 14;
+        $.game.aud.swing.PlaySound$0();
+      }
+      t2 = t1.health - P.max(0, t1.bpm / 200 - 1);
       t1.health = t2;
-      if (t2 < 100)
+      if (t2 < 100 && !$.game.gameOver)
         t1.health = t2 + 0.05;
       t2 = t1.phys;
       t3 = t1.spd;
@@ -1399,17 +1455,17 @@ var dart = [
       t4._batch$7(t5.tex, t7, new T.Vector2(t6), t5.sprite, t8, t1, t5.col);
       if (t2.titlebg) {
         t1 = $.game.renderer;
-        t3 = t3.titlebg;
-        t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
-        t4.setValues$3(-2, -2, -0.5);
-        t5 = new Float32Array(H._checkLength(2));
-        t5[0] = 10;
-        t5[1] = 10;
-        t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
-        t6.setValues$3(0, 0, 0);
+        t4 = t3.titlebg;
+        t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t5.setValues$3(-2, -2, -0.6);
+        t6 = new Float32Array(H._checkLength(2));
+        t6[0] = 10;
+        t6[1] = 10;
         t7 = new T.Vector3(new Float32Array(H._checkLength(3)));
         t7.setValues$3(0, 0, 0);
-        t1._batch$7(t3.tex, t4, new T.Vector2(t5), t3.sprite, t6, t7, t3.col);
+        t8 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t8.setValues$3(0, 0, 0);
+        t1._batch$7(t4.tex, t5, new T.Vector2(t6), t4.sprite, t7, t8, t4.col);
       }
       t1 = $.game;
       if (C.JSInt_methods.$mod(t1.ticks, 180) === 0)
@@ -1418,6 +1474,101 @@ var dart = [
         t2.beat = 2;
       else
         t2.beat = 0;
+      t1 = $.game;
+      t4 = t1.gameOver;
+      if (t4 || !t1.gameStarted)
+        t2.titlebg = true;
+      else
+        t2.titlebg = false;
+      if (!t4)
+        t2.gameTime = Date.now();
+      t1 = $.game;
+      if (!t1.gameStarted) {
+        t4 = t2.titlescroll;
+        if (t4 < 0) {
+          t4 += 0.02;
+          t2.titlescroll = t4;
+        }
+        t1 = t1.renderer;
+        t3 = t3.titleScreen;
+        t4 = Math.cos(H.checkNum(t4));
+        t5 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t5.setValues$3(-0.25 + t4 - 1, -0.25, -0.5);
+        t4 = new Float32Array(H._checkLength(2));
+        t4[0] = 0.5;
+        t4[1] = 0.3;
+        t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t6.setValues$3(0, 0, 0);
+        t7 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t7.setValues$3(0, 0, 0);
+        t1._batch$7(t3.tex, t5, new T.Vector2(t4), t3.sprite, t6, t7, t3.col);
+        t3 = Math.sin(H.checkNum(t2.barOffs));
+        t7 = Math.cos(H.checkNum(t2.titlescroll));
+        t6 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t6.setValues$3(0 - 23 * ((0.025 + t3 * 0.05) / 1.2) / 5 - 0.25 + t7 - 1 + 0.1, 0.08, -0.5);
+        t7 = new T.Vector4(new Float32Array(H._checkLength(4)));
+        t7.setValues$4(0.333, 0.6745, 0.9333, 1);
+        M.renderText("by Ronin748 (@Ronin748)", t6, 0.025, t7);
+        if (C.JSInt_methods.$mod($.game.ticks, 30) >= 15) {
+          t1 = Math.sin(H.checkNum(t2.barOffs));
+          t3 = new T.Vector3(new Float32Array(H._checkLength(3)));
+          t3.setValues$3(0 - 29 * ((0.025 + t1 * 0.05) / 1.2) / 5 - 0.25, 0.18, -0.5);
+          t1 = new T.Vector4(new Float32Array(H._checkLength(4)));
+          t1.setValues$4(1, 1, 1, 1);
+          M.renderText("Press right or left arrow to start.", t3, 0.025, t1);
+        }
+      }
+      t1 = $.game;
+      if (t1.gameOver) {
+        if (t1.gameWin) {
+          t1 = new T.Vector3(new Float32Array(H._checkLength(3)));
+          t1.setValues$3(-0.10416666666666669, -0.27, -0.5);
+          t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+          t3.setValues$4(1, 1, 1, 1);
+          M.renderText("Lovely!", t1, 0.025, t3);
+          t3 = new T.Vector3(new Float32Array(H._checkLength(3)));
+          t3.setValues$3(-0.4541666666666667, -0.16999999999999998, -0.5);
+          t1 = new T.Vector4(new Float32Array(H._checkLength(4)));
+          t1.setValues$4(1, 1, 1, 1);
+          M.renderText("You wiped the floor with those ducks, dear.", t3, 0.025, t1);
+        } else {
+          t1 = new T.Vector3(new Float32Array(H._checkLength(3)));
+          t1.setValues$3(-0.10833333333333334, -0.27, -0.5);
+          t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+          t3.setValues$4(1, 1, 1, 1);
+          M.renderText("Oh dear!", t1, 0.025, t3);
+          t3 = $.game.deathCause;
+          t1 = "Cause of death: " + t3;
+          t3 = "Cause of death: as" + t3;
+          t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
+          t4.setValues$3(0 - t3.length * 0.020833333333333336 / 5 - 0.25, -0.16999999999999998, -0.5);
+          t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+          t3.setValues$4(1, 1, 1, 1);
+          M.renderText(t1, t4, 0.025, t3);
+        }
+        t1 = "You did it in: " + C.JSInt_methods.toString$0(t2.gameTime - $.game.start_time) + " milliseconds";
+        t3 = "You did it in: millisec" + C.JSInt_methods.toString$0(t2.gameTime - $.game.start_time) + " se";
+        t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t4.setValues$3(0 - t3.length * 0.020833333333333336 / 5 - 0.25, -0.04000000000000001, -0.5);
+        t3 = new T.Vector4(new Float32Array(H._checkLength(4)));
+        t3.setValues$4(1, 1, 1, 1);
+        M.renderText(t1, t4, 0.025, t3);
+        t3 = "Heart attacks: " + C.JSInt_methods.toString$0($.game.heart_attacks);
+        t4 = "Heart attack" + C.JSInt_methods.toString$0($.game.heart_attacks);
+        t1 = new T.Vector3(new Float32Array(H._checkLength(3)));
+        t1.setValues$3(0 - t4.length * 0.020833333333333336 / 5 - 0.15, 0.04999999999999999, -0.5);
+        t4 = new T.Vector4(new Float32Array(H._checkLength(4)));
+        t4.setValues$4(1, 1, 1, 1);
+        M.renderText(t3, t1, 0.025, t4);
+        if (C.JSInt_methods.$mod($.game.ticks, 30) >= 15) {
+          t1 = Math.sin(H.checkNum(t2.barOffs));
+          t3 = new T.Vector3(new Float32Array(H._checkLength(3)));
+          t3.setValues$3(0 - 37 * ((0.025 + t1 * 0.05) / 1.2) / 5 - 0.25, 0.18, -0.5);
+          t1 = new T.Vector4(new Float32Array(H._checkLength(4)));
+          t1.setValues$4(1, 1, 1, 1);
+          M.renderText("Press right or left arrow to restart.", t3, 0.025, t1);
+        }
+      }
       t1 = C.JSInt_methods.toString$0(C.JSNumber_methods.toInt$0(Math.floor($.game.player.bpm))) + " BPM";
       t3 = Math.sin(H.checkNum(t2.barOffs));
       t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
@@ -1426,14 +1577,21 @@ var dart = [
       t3.setValues$4(0.5, 0, 0, 1);
       M.renderText(t1, t4, 0.06, t3);
       t1 = $.game;
-      if (t1.player.bpm >= 150 && C.JSInt_methods.$mod(t1.ticks, 30) <= 20) {
-        t1 = Math.sin(H.checkNum(t2.barOffs));
-        t3 = new T.Vector3(new Float32Array(H._checkLength(3)));
-        t3.setValues$3(-0.6041666666666667 + t1 * 0.05, 0.1, -1);
-        t1 = new T.Vector4(new Float32Array(H._checkLength(4)));
-        t1.setValues$4(1, 0.7, 0, 1);
-        M.renderText("You're having a heart attack!", t3, 0.05, t1);
-      }
+      if (t1.player.bpm >= 150) {
+        if (C.JSInt_methods.$mod(t1.ticks, 30) <= 20) {
+          t1 = Math.sin(H.checkNum(t2.barOffs));
+          t3 = new T.Vector3(new Float32Array(H._checkLength(3)));
+          t3.setValues$3(-0.5833333333333334 + t1 * 0.05, 0.1, -1);
+          t1 = new T.Vector4(new Float32Array(H._checkLength(4)));
+          t1.setValues$4(1, 0.7, 0, 1);
+          M.renderText("You're having a heart attack!", t3, 0.05, t1);
+          if (t2.heartattack) {
+            ++$.game.heart_attacks;
+            t2.heartattack = false;
+          }
+        }
+      } else
+        t2.heartattack = true;
       if (t2.coldticks > 0 && C.JSInt_methods.$mod($.game.ticks, 30) <= 20) {
         t1 = Math.sin(H.checkNum(t2.barOffs));
         t3 = new T.Vector3(new Float32Array(H._checkLength(3)));
@@ -1456,7 +1614,12 @@ var dart = [
       t1 = t2.attackticks;
       if (t1 >= 0)
         t2.attackticks = t1 - 1;
-      t1 = C.JSInt_methods.toString$0(C.JSNumber_methods.toInt$0(Math.floor($.game.player.stamina))) + "%";
+      t1 = $.game;
+      t3 = t1.player;
+      t4 = t3.bpm;
+      if (t4 > t1.max_heartRate)
+        t1.max_heartRate = t4;
+      t1 = C.JSInt_methods.toString$0(C.JSNumber_methods.toInt$0(Math.floor(t3.stamina))) + "%";
       t3 = Math.sin(H.checkNum(t2.barOffs));
       t4 = new T.Vector3(new Float32Array(H._checkLength(3)));
       t4.setValues$3(-0.7 + t3 * 0.05, -0.03, -1);
@@ -1485,7 +1648,7 @@ var dart = [
     }
   },
   Input: {
-    "^": "Object;keydown,keypress,keyDown,x_input,y_input,z_input,swing,start",
+    "^": "Object;keydown,keypress,keyDown,x_input,y_input,z_input,swing,start,endPress",
     keys$0: function() {
       var t1 = H.setRuntimeTypeInfo(new W._EventStream(window, "keydown", false), [null]);
       H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new M.Input_keys_closure(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
@@ -1764,7 +1927,7 @@ var dart = [
     }
   },
   Screen: {
-    "^": "Object;camPos,w,h,gui,walkerbop,walkerswing,moving,walkerticks,swingticks,swinging,titlebg,barOffs,beat,beats,coldticks,attackticks,bpm"
+    "^": "Object;camPos,w,h,gui,walkerbop,walkerswing,moving,walkerticks,swingticks,swinging,titlebg,barOffs,beat,beats,coldticks,attackticks,bpm,heartattack,titlescroll,gameTime"
   },
   GameShader: {
     "^": "Object;program",
@@ -2003,13 +2166,15 @@ var dart = [
     }
   },
   GUI: {
-    "^": "Object;target,walker,swingometer,swingbar,staminaometer,staminabar,healthometer,healthbar,sky,titlebg,heart,fonts"
+    "^": "Object;target,walker,swingometer,swingbar,staminaometer,staminabar,healthometer,healthbar,sky,titlebg,heart,titleScreen,fonts"
   },
   Map: {
-    "^": "Object;path,objs,walls,floors,ducks,sky",
+    "^": "Object;path,objs,walls,floors,ducks,sky,ducksAlive",
     draw$0: function() {
       var t1, t2, t3, t4, t5, t6, t7, t8;
-      this.drawDucks$0();
+      this.ducksAlive = false;
+      if ($.game.gameStarted)
+        this.drawDucks$0();
       this.drawObjs$0();
       this.drawWalls$0();
       this.drawFloors$0();
@@ -2042,7 +2207,9 @@ var dart = [
         t2 = t1[i];
         if (t2.health > 0) {
           t2.toString;
-          t3 = $.game.player.pos.storage[0];
+          t3 = $.game;
+          t3.map.ducksAlive = true;
+          t3 = t3.player.pos.storage[0];
           t4 = t2.pos.storage[0];
           t3 = Math.pow(t3 + t4, 2);
           t4 = $.game.player.pos.storage[2];
@@ -2054,6 +2221,7 @@ var dart = [
               t2.health -= 50;
               H.printString("damage");
               t2.damageticks = 100;
+              $.game.aud.damage.PlaySound$0();
             }
           } else
             t2.attacking = false;
@@ -2144,6 +2312,9 @@ var dart = [
           if (Math.sqrt(t3 + t4) < 2) {
             t3 = $.game;
             t3.player.health -= 0.1;
+            t3.screen.attackticks = 50;
+            if (!t3.gameOver)
+              t3.deathCause = "Multiple injuries";
             if (C.JSInt_methods.$mod(t3.ticks, 30) === 0)
               t3.aud.hurt.PlaySound$0();
           }
@@ -2971,7 +3142,7 @@ var dart = [
       }
     },
     static: {Map$: function(path) {
-        var t1 = new M.Map(path, [], [], [], [], null);
+        var t1 = new M.Map(path, [], [], [], [], null, true);
         t1.Map$1(path);
         return t1;
       }}
@@ -3156,6 +3327,8 @@ var dart = [
               t2 = $.game;
               t2.renderer.screenshake = 0.4;
               t2.screen.coldticks = 100;
+              if (!t2.gameOver)
+                t2.deathCause = "Pneumonia";
             }
           }
       }
@@ -3574,6 +3747,14 @@ var dart = [
         t1 = receiver < 0 ? Math.ceil(receiver) : Math.floor(receiver);
         return t1 + 0;
       }
+      throw H.wrapException(P.UnsupportedError$("" + receiver));
+    },
+    round$0: function(receiver) {
+      if (receiver > 0) {
+        if (receiver !== 1 / 0)
+          return Math.round(receiver);
+      } else if (receiver > -1 / 0)
+        return 0 - Math.round(0 - receiver);
       throw H.wrapException(P.UnsupportedError$("" + receiver));
     },
     toDouble$0: function(receiver) {
@@ -10705,6 +10886,7 @@ J.viewport$4$x = function(receiver, a0, a1, a2, a3) {
 };
 C.HttpRequest_methods = W.HttpRequest.prototype;
 C.JSArray_methods = J.JSArray.prototype;
+C.JSDouble_methods = J.JSDouble.prototype;
 C.JSInt_methods = J.JSInt.prototype;
 C.JSNumber_methods = J.JSNumber.prototype;
 C.JSString_methods = J.JSString.prototype;
