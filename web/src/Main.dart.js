@@ -846,7 +846,7 @@ var dart = [
         t6.InitAudio$0();
         t6.LoadSound$0();
         t6 = new M.Sfx(false, t9, t8, t7, t6, null);
-        t7 = new M.Sound("../sfx/Funky_Chunk.ogg", null, null, false, false, null);
+        t7 = new M.Sound("../sfx/funky_chunk.ogg", null, null, false, false, null);
         t7.InitAudio$0();
         t7.LoadSound$0();
         t6.funk = t7;

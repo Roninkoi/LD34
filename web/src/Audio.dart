@@ -110,6 +110,6 @@ class Sfx {
 
   Sfx()
   {
-    funk = new Sound("../sfx/Funky_Chunk.ogg");
+    funk = new Sound("../sfx/funky_chunk.ogg");
   }
 }
