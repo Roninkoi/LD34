@@ -48,7 +48,7 @@ class Obj {
     var req = new HttpRequest();
     req.onLoad.listen((e)
     => objs = req.responseText);
-    req.open('GET', "Game/Objects.o", async: false);
+    req.open('GET', "game/Objects.o", async: false);
     req.send();
 
     String tex_path = "";
@@ -86,6 +86,7 @@ class Obj {
     else {
       throw "id " + this.id.toString() + " not found!";
     }
+
   }
 
   void set([Vector3 newPos = null, Vector2 newS = null, Vector3 newRot = null])
