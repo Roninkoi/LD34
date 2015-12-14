@@ -1,6 +1,6 @@
 part of LD34;
 
-Txtr tex = new Txtr("../Gfx/Sprites.png");
+Txtr tex = new Txtr("../gfx/Sprites.png");
 
 class Obj {
   int id = -1;
