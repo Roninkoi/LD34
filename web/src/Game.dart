@@ -46,6 +46,12 @@ class Game {
       canvas = querySelector("#game");
       gl = canvas.getContext("webgl", {"antialias": false, "depth": true});
 
+      if (gl == null) {
+        gl = canvas.getContext("experimental-webgl", {"antialias": false, "depth": true});
+      }
+
+      print(gl);
+
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.clearColor(0.0, 0.0, 0.0, 1.0);
       gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);

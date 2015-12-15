@@ -671,7 +671,12 @@ var dart = [
         this.canvas = t2;
         t2 = J.getContext$2$x(t2, "webgl", P.LinkedHashMap_LinkedHashMap$_literal(["antialias", false, "depth", true], null, null));
         $.gl = t2;
-        J.viewport$4$x(t2, 0, 0, J.get$width$x(this.canvas), J.get$height$x(this.canvas));
+        if (t2 == null) {
+          t2 = J.getContext$2$x(this.canvas, "experimental-webgl", P.LinkedHashMap_LinkedHashMap$_literal(["antialias", false, "depth", true], null, null));
+          $.gl = t2;
+        }
+        P.print(t2);
+        J.viewport$4$x($.gl, 0, 0, J.get$width$x(this.canvas), J.get$height$x(this.canvas));
         J.clearColor$4$x($.gl, 0, 0, 0, 1);
         J.clear$1$ax($.gl, 16640);
         t2 = new T.Matrix4(new Float32Array(H._checkLength(16)));
