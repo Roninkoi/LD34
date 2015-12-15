@@ -10,6 +10,10 @@ Use the left and right arrow keys to "waddle" forwards, and press both simultane
 
 Music by Kevin MacLeod
 
-PLAY HERE:
+PLAY HERE (better browser support):
+
+https://cdn.rawgit.com/Ronin748/LD34/94b603bc0b602bfa16da369de574c6e83ad07d0b/web/src/index.html
+
+ORIGINAL SUBMISSION:
 
 https://cdn.rawgit.com/Ronin748/LD34/5dd625b2a7805da8dedb9f30b6496578489d34e0/web/src/index.html
