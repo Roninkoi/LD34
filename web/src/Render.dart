@@ -5,21 +5,18 @@ class Render {
   Buffer indexBuffer;
   Buffer texBuffer;
   Buffer colBuffer;
-  Buffer posBuffer;
 
   Int16List indexData;
   var vertexData;
 
-  //var colData;
   var posData;
   var texData;
 
-  UniformLocation u_camMatrix;
+  //UniformLocation u_camMatrix;
   UniformLocation u_objMatrix;
   UniformLocation u_viewMatrix;
   UniformLocation u_fov;
   UniformLocation u_col;
-  UniformLocation u_a;
   UniformLocation u_pMatrix;
 
   Matrix4 objMatrix = new Matrix4.identity();
@@ -27,7 +24,6 @@ class Render {
   Matrix4 viewMatrix = new Matrix4.identity();
 
   var pos;
-  //var col;
   var s;
   var position;
 
@@ -109,7 +105,6 @@ class Render {
     gl.depthMask(true);
     gl.depthFunc(LESS);
 
-
     gl.activeTexture(TEXTURE0);
     gl.bindTexture(TEXTURE_2D, tex.Tex);
 
@@ -164,8 +159,6 @@ class Render {
 
     u_viewMatrix = gl.getUniformLocation(shader.program, "viewMatrix");
     u_col = gl.getUniformLocation(shader.program, "u_col");
-
-    u_a = gl.getUniformLocation(shader.program, "u_a");
 
     pos = gl.getAttribLocation(shader.program, "a_pos");
     s = gl.getAttribLocation(shader.program, "a_sprite");

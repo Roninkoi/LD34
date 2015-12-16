@@ -695,7 +695,7 @@ var dart = [
         t9 = new Float32Array(H._checkLength(2));
         t9[0] = 0;
         t9[1] = 0;
-        t9 = new M.Render(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, t2, t3, t4, null, null, null, null, 1024, 0, false, 1.5, 0, 0, 0, 0, t5, t6, t7, t8, 0, new T.Vector2(t9), false);
+        t9 = new M.Render(null, null, null, null, null, null, null, null, null, null, null, null, null, t2, t3, t4, null, null, null, null, 1024, 0, false, 1.5, 0, 0, 0, 0, t5, t6, t7, t8, 0, new T.Vector2(t9), false);
         t8 = new M.GameShader(null);
         t8.ShaderFromFile$2("shaders/VertexShader.vert", "shaders/FragmentShader.frag");
         t9.shader = t8;
@@ -1484,7 +1484,7 @@ var dart = [
     "^": "Object;pos,pos_old,rot,v,v_old,a,m"
   },
   Render: {
-    "^": "Object;vertexBuffer,indexBuffer,texBuffer,colBuffer,posBuffer,indexData,vertexData,posData,texData,u_camMatrix,u_objMatrix,u_viewMatrix,u_fov,u_col,u_a,u_pMatrix,objMatrix,camMatrix,viewMatrix,pos,s,position,shader,batch_size,batches,flush,fov,batchespercycle,render_time,render_ticks,render_count,oldtex,oldrot,oldcol,b_col,screenshake,screenshakevec,disableViewTrans",
+    "^": "Object;vertexBuffer,indexBuffer,texBuffer,colBuffer,indexData,vertexData,posData,texData,u_objMatrix,u_viewMatrix,u_fov,u_col,u_pMatrix,objMatrix,camMatrix,viewMatrix,pos,s,position,shader,batch_size,batches,flush,fov,batchespercycle,render_time,render_ticks,render_count,oldtex,oldrot,oldcol,b_col,screenshake,screenshakevec,disableViewTrans",
     _batch$7: function(tex, pos, s, sprite, rot, rot_c, col) {
       var t1, t2, t3, t4, t5, t6, t7, t8, t9;
       ++this.render_count;
@@ -1673,7 +1673,6 @@ var dart = [
       J.useProgram$1$x($.gl, t1.program);
       this.u_viewMatrix = J.getUniformLocation$2$x($.gl, this.shader.program, "viewMatrix");
       this.u_col = J.getUniformLocation$2$x($.gl, this.shader.program, "u_col");
-      this.u_a = J.getUniformLocation$2$x($.gl, this.shader.program, "u_a");
       this.pos = J.getAttribLocation$2$x($.gl, this.shader.program, "a_pos");
       this.s = J.getAttribLocation$2$x($.gl, this.shader.program, "a_sprite");
       J.enableVertexAttribArray$1$x($.gl, this.pos);

@@ -8,7 +8,7 @@ uniform mat4 objectMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 perspectiveMatrix;
 
-uniform mat4 u_matrix;
+//uniform mat4 u_matrix;
 
 //uniform mat4 cameraMatrix;
 
