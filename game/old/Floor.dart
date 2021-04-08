@@ -3,7 +3,7 @@ part of LD34;
 class Floor extends Obj {
   bool collidable = false;
 
-  void draw() {
+  void draw([Vector3 newPos=null, Vector2 newS=null, Vector3 newRot=null]) {
     super.draw(new Vector3(pos.x, pos.z, pos.y), s, rot);
   }
 

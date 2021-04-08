@@ -8,10 +8,6 @@ uniform mat4 objectMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 perspectiveMatrix;
 
-//uniform mat4 u_matrix;
-
-//uniform mat4 cameraMatrix;
-
 uniform vec4 u_col;
 
 varying vec2 v_texpos;

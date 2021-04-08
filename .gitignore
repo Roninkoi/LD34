@@ -1,3 +1,6 @@
 .idea
 packages
 LD34.iml
+.dart_tool
+.packages
+pubspec.lock

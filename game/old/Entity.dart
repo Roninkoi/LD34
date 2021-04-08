@@ -119,13 +119,11 @@ class Entity {
     if (anim > 1) anim = 0;
   }
 
-  void set([Vector3 newPos = null, Vector2 newS = null, Vector3 newRot = null])
+  void set([Vector3 newPos=null, Vector2 newS=null, Vector3 newRot=null])
   {
     if (newPos != null) pos = newPos;
     if (newS != null) s = newS;
-    if (newRot != null) {
-      setRot(newRot);
-    }
+    if (newRot != null) setRot(newRot);
   }
 
   void setRot(Vector3 newRot)

@@ -99,6 +99,6 @@ class Player {
   Player()
   {
     phys.pos = new Vector3(-6.0, 0.0, -2.0);
-    rot = new Vector2(0.0, PI + PI/4.0);
+    rot = new Vector2(0.0, pi + pi/4.0);
   }
 }

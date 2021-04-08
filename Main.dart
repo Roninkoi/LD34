@@ -17,7 +17,6 @@ part "Texture.dart";
 part "Sprite.dart";
 part "Input.dart";
 part "Phys.dart";
-part "Screen.dart";
 part "Text.dart";
 part "Audio.dart";
 
@@ -27,6 +26,7 @@ part "game/Wall.dart";
 part "game/Floor.dart";
 part "game/Map.dart";
 part "game/GUI.dart";
+part "game/Screen.dart";
 part "game/Entity.dart";
 
 part "util/Random.dart";
@@ -36,15 +36,15 @@ Game game;
 
 int main()
 {
-  try {
-    game = new Game();
-  }
-  catch (e) {
-    throw e;
-  }
+	try {
+		game = new Game();
+	}
+	catch (e) {
+		throw e;
+	}
 }
 
 void reload()
 {
-  game = new Game();
+	game = new Game();
 }

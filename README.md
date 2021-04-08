@@ -1,4 +1,4 @@
-# Revenge of the Ducks, made for the Ludum Dare 34 game jam
+# Revenge of the Ducks, Ludum Dare 34
 
 ![screenshot3](https://user-images.githubusercontent.com/12766039/113905255-9f3ae080-97db-11eb-97b4-5c67c2fa9234.png)
 
@@ -13,4 +13,12 @@ Use the left and right arrow keys to "waddle" forwards, and press both simultane
 Music by Kevin MacLeod
 
 https://roninkoi.itch.io/revenge-of-the-ducks
+
+### Building
+
+The game can be compiled to Javascript using dart2js:
+```
+dart pub get
+dart2js -O2 -o Main.dart.js Main.dart
+```
 
