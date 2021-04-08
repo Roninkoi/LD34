@@ -4,3 +4,6 @@ LD34.iml
 .dart_tool
 .packages
 pubspec.lock
+Main.dart.js
+Main.dart.js.deps
+Main.dart.js.map
