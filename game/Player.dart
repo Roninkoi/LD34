@@ -57,13 +57,13 @@ class Player {
 		/*phys.v.y += 0.008;
 
 		if (phys.pos.y > 0.15 && !jumping) {
-			phys.pos.y = phys.pos_old.y;
-			phys.v.y = 0.0;
-			flying = false;
-		}
+		phys.pos.y = phys.pos_old.y;
+		phys.v.y = 0.0;
+		flying = false;
+	}
 		if (phys.pos.y > 0.1) {
-			jumping = false;
-		}*/
+		jumping = false;
+	}*/
 
 		if (!flying) {
 			int collides = -1;
@@ -76,7 +76,7 @@ class Player {
 						collides = 0;
 					}
 					if (game.map.walls[i].collision(phys.pos, phys.pos_old) != -1 &&
-            collides != game.map.walls[i].collision(phys.pos, phys.pos_old)) {
+						collides != game.map.walls[i].collision(phys.pos, phys.pos_old)) {
 						collides = 2;
 					}
 				}

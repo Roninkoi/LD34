@@ -57,7 +57,7 @@ class Game {
 			renderer = new Render();
 			input = new Input();
 			input.keys();
-		  
+			
 			aud = new Sfx();
 			music_playing = false;
 		}
@@ -117,7 +117,7 @@ class Game {
 	}
 	
 	void gameRender()
-  {
+	{
 		gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
 
 		renderer.flush = true;
@@ -132,7 +132,7 @@ class Game {
 		if (game.ticks%30.0 == 0) {
 			game.renderer.screenshake = 0.0;
 		}
-	  
+		
 		renderer.screenshakevec.x = (random_interval(0, 100)/100.0)*renderer.screenshake;
 		renderer.screenshakevec.y = (random_interval(0, 100)/100.0)*renderer.screenshake;
 
@@ -149,7 +149,7 @@ class Game {
 	}
 
 	void gameReload()
-  {
+	{
 		reload();
 	}
 

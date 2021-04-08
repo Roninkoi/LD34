@@ -57,7 +57,7 @@ class Render {
 	{
 		_batch(sprite.tex, pos, s, sprite.sprite, rot, rot_c, sprite.col);
 	}
-  
+	
 	void _batch(Tex tex, Vector3 pos, Vector2 s, Vector4 sprite, Vector3 rot, Vector3 rot_c, Vector4 col)
 	{
 		++render_count;

@@ -14,7 +14,7 @@ class Entity {
 	Vector2 s = new Vector2(0.0, 0.0);
 	Vector3 rot = new Vector3(0.0, 0.0, 0.0);
 
-  Vector3 rand_v = new Vector3(0.0, 0.0, 0.0);
+	Vector3 rand_v = new Vector3(0.0, 0.0, 0.0);
 
 	double health = 100.0;
 	double damageticks = 0.0;
@@ -70,25 +70,25 @@ class Entity {
 		}
 	}
 
-  double dist()
-  {
-    return sqrt(pow(game.player.pos.x - pos.x, 2) + pow(game.player.pos.z - pos.z, 2));
-  }
+	double dist()
+	{
+		return sqrt(pow(game.player.pos.x - pos.x, 2) + pow(game.player.pos.z - pos.z, 2));
+	}
 
 	void draw()
 	{
 		game.renderer.flushBatch();
 		if (anim_cycle[anim] == 0) {
 			game.renderer.draw(ducksprite1,
-        new Vector3(-s.x/2.0,	pos.y, 0.0), s, rot, new Vector3(pos.x, 0.0, pos.z));
+				new Vector3(-s.x/2.0,	pos.y, 0.0), s, rot, new Vector3(pos.x, 0.0, pos.z));
 		}
 		else if (anim_cycle[anim] == 1) {
 			game.renderer.draw(ducksprite2,
-        new Vector3(-s.x/2.0,	pos.y, 0.0), s, rot, new Vector3(pos.x, 0.0, pos.z));
+				new Vector3(-s.x/2.0,	pos.y, 0.0), s, rot, new Vector3(pos.x, 0.0, pos.z));
 		}
 		else if (anim_cycle[anim] == 2) {
 			game.renderer.draw(ducksprite3,
-        new Vector3(-s.x/2.0,	pos.y, 0.0), s, rot, new Vector3(pos.x, 0.0, pos.z));
+				new Vector3(-s.x/2.0,	pos.y, 0.0), s, rot, new Vector3(pos.x, 0.0, pos.z));
 		}
 		game.renderer.flushBatch();
 		game.renderer.flush = true;
@@ -96,16 +96,16 @@ class Entity {
 
 	void move()
 	{
-    if (dist() <= 4.0)
-    return;
+		if (dist() <= 4.0)
+		return;
 
-    if (game.ticks%60 == 0) {
-      rand_v.x = random_interval(-100, 100) / 100.0 * 0.02;
-      rand_v.z = random_interval(-100, 100) / 100.0 * 0.02;
-    }
-    pos.x += rand_v.x;
-    pos.z += rand_v.z;
-    
+		if (game.ticks%60 == 0) {
+			rand_v.x = random_interval(-100, 100) / 100.0 * 0.02;
+			rand_v.z = random_interval(-100, 100) / 100.0 * 0.02;
+		}
+		pos.x += rand_v.x;
+		pos.z += rand_v.z;
+		
 		if (pos.x < game.player.pos.x) {
 			pos.x += 0.02;
 		}

@@ -76,12 +76,12 @@ class Screen {
 			walkerswing = new Vector2(0.0, 0.0);
 		}
 
-    double screen_z = 0.56;
+		double screen_z = 0.56;
 
 		game.renderer.draw(gui.target, new Vector3(0.0, 0.0, -1.0), new Vector2(0.01, 0.01),
-      new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
+			new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
 		game.renderer.draw(gui.walker, new Vector3(-1.0 + walkerswing.x, 0.7 + walkerbop + walkerswing.y, -2.0) * screen_z,
-      new Vector2(2.0, 1.0) * screen_z, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
+			new Vector2(2.0, 1.0) * screen_z, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
 
 		if (game.input.keydown[KeyCode.RIGHT] && barOffs > -(pi/2.0))	 {
 			barOffs -= 0.1;
@@ -100,23 +100,23 @@ class Screen {
 
 		if (game.player.swingcharge > 0.1) {
 			game.renderer.draw(gui.swingometer, new Vector3(-0.5 + 0.1 + sin(barOffs)*0.05, -0.5 + 0.2, -1.0) * screen_z,
-        new Vector2(1.0 - 0.2, 0.15) * screen_z, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
+				new Vector2(1.0 - 0.2, 0.15) * screen_z, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
 			game.renderer.draw(gui.swingbar, new Vector3(-0.5 + 0.028571429*2.0 + 0.08+ sin(barOffs)*0.05, -0.5 + 0.021428571*2.0 + 0.2, -1.0) * screen_z,
-        new Vector2(max(0.0,0.885714299*(game.player.swingcharge/1.0) - 0.15), 0.0642857) * screen_z, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
+				new Vector2(max(0.0,0.885714299*(game.player.swingcharge/1.0) - 0.15), 0.0642857) * screen_z, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
 		}
 
 		game.renderer.draw(gui.staminaometer, new Vector3(-0.9+ sin(barOffs)*0.05, -0.5, -1.0) * screen_z,
-      new Vector2(0.2, 1.0) * screen_z, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
+			new Vector2(0.2, 1.0) * screen_z, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
 		game.renderer.draw(gui.staminabar, new Vector3(-0.9 + 0.06+ sin(barOffs)*0.05, -0.5 + 0.01 + (1.0 - 0.01), -1.0) * screen_z,
-      new Vector2(0.09, ((1.0 - 0.01)*(-game.player.stamina/100.0))) * screen_z, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
+			new Vector2(0.09, ((1.0 - 0.01)*(-game.player.stamina/100.0))) * screen_z, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
 
 		game.renderer.draw(gui.healthometer, new Vector3(0.7+ sin(barOffs)*0.05, -0.5, -1.0) * screen_z,
-      new Vector2(0.2, 1.0) * screen_z, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
+			new Vector2(0.2, 1.0) * screen_z, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
 		game.renderer.draw(gui.healthbar, new Vector3(0.7 + 0.06+ sin(barOffs)*0.05, -0.5 + 0.01 + (1.0 - 0.01), -1.0) * screen_z,
-      new Vector2(0.09, (max(0.0, 1.0 - 0.01)*(-game.player.health/100.0))) * screen_z, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
+			new Vector2(0.09, (max(0.0, 1.0 - 0.01)*(-game.player.health/100.0))) * screen_z, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
 
 		game.renderer.draw(gui.heart, new Vector3(-0.3 + sin(barOffs)*0.05 - beat.toDouble()*0.01, -0.5 - beat.toDouble()*0.01, -1.0) * screen_z,
-      new Vector2(0.11*1.2 + beat.toDouble()*0.02, 0.1*1.2 + beat.toDouble()*0.02) * screen_z, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
+			new Vector2(0.11*1.2 + beat.toDouble()*0.02, 0.1*1.2 + beat.toDouble()*0.02) * screen_z, new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
 
 		if (titlebg) {
 			game.renderer.draw(gui.titlebg, new Vector3(-2.0, -2.0, -0.55), new Vector2(10.0, 10.0), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
@@ -144,31 +144,31 @@ class Screen {
 		if (!game.gameStarted) {
 			if (titlescroll < 0.0) titlescroll += 0.02;
 			game.renderer.draw(gui.titleScreen, new Vector3(-0.25 + cos(titlescroll) - 1.0, -0.25, -0.5),
-        new Vector2(0.5, 0.3), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
+				new Vector2(0.5, 0.3), new Vector3(0.0, 0.0, 0.0), new Vector3(0.0, 0.0, 0.0));
 
 			renderText("by Roninkoi (@Roninkoi)", new Vector3(-textLength("by Roninkoi (@Roninkoi)",
-            (0.05) / 2.0 + sin(barOffs) * 0.05)/5.0 - 0.25 + cos(titlescroll) - 1.0 + 0.1, 0.1 - 0.02, -0.5), 0.025,
-        new Vector4(0.333, 0.6745, 0.9333, 1.0));
+						(0.05) / 2.0 + sin(barOffs) * 0.05)/5.0 - 0.25 + cos(titlescroll) - 1.0 + 0.1, 0.1 - 0.02, -0.5), 0.025,
+				new Vector4(0.333, 0.6745, 0.9333, 1.0));
 
 			if (game.ticks%30.0 >= 15.0) renderText("Press right or left arrow to start.",
-        new Vector3(0.0 - textLength("You're having a heart attack!", (0.05) / 2.0 + sin(barOffs) * 0.05)/5.0 - 0.25,
-          0.1 + 0.08, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
+				new Vector3(0.0 - textLength("You're having a heart attack!", (0.05) / 2.0 + sin(barOffs) * 0.05)/5.0 - 0.25,
+					0.1 + 0.08, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
 		}
 
 		if (game.gameOver) {
 			if (game.gameWin) {
 				renderText("Lovely!", new Vector3(0.0 - textLength("Lovely.asdasd", (0.05) / 2.0)/5.0 - 0.25 + 0.2, 0.1 + 0.08 - 0.45, -0.5), 0.025,
-          new Vector4(1.0, 1.0, 1.0, 1.0));
+					new Vector4(1.0, 1.0, 1.0, 1.0));
 				renderText("You wiped the floor with those ducks, dear.",
-          new Vector3(0.0 - textLength("You wiped the floor with those ducks, dear.asdasd", (0.05) / 2.0 )/5.0 - 0.25, 0.1 + 0.08 - 0.35, -0.5), 0.025,
-          new Vector4(1.0, 1.0, 1.0, 1.0));
+					new Vector3(0.0 - textLength("You wiped the floor with those ducks, dear.asdasd", (0.05) / 2.0 )/5.0 - 0.25, 0.1 + 0.08 - 0.35, -0.5), 0.025,
+					new Vector4(1.0, 1.0, 1.0, 1.0));
 			}
 			else {
 				renderText("Oh dear!", new Vector3(0.0 - textLength("Oh dear.asdasd",
-              (0.05) / 2.0)/5.0 - 0.25 + 0.2, 0.1 + 0.08 - 0.45, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
+							(0.05) / 2.0)/5.0 - 0.25 + 0.2, 0.1 + 0.08 - 0.45, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
 				renderText("Cause of death: " + game.deathCause,
-          new Vector3(0.0 - textLength("Cause of death: as" + game.deathCause, (0.05) / 2.0 )/5.0 - 0.25, 0.1 + 0.08 - 0.35, -0.5), 0.025,
-          new Vector4(1.0, 1.0, 1.0, 1.0));
+					new Vector3(0.0 - textLength("Cause of death: as" + game.deathCause, (0.05) / 2.0 )/5.0 - 0.25, 0.1 + 0.08 - 0.35, -0.5), 0.025,
+					new Vector4(1.0, 1.0, 1.0, 1.0));
 			}
 
 			renderText("You did it in: " + (gameTime - game.start_time).toString() + " milliseconds", new Vector3(0.0 - textLength("You did it in: millisec" + (gameTime - game.start_time).toString() + " se", (0.05) / 2.0)/5.0 - 0.25, 0.1 + 0.08 - 0.22, -0.5), 0.025, new Vector4(1.0, 1.0, 1.0, 1.0));
@@ -188,21 +188,21 @@ class Screen {
 
 		if (game.player.bpm >= 150.0) {
 			if (game.ticks%30.0 <= 20) {
-			  renderText("You're having a heart attack!", new Vector3(0.0 - textLength("You're having a heart attack", 0.05) / 2.0 + sin(barOffs) * 0.05, 0.1, -1.0), 0.05, new Vector4(1.0, 0.7, 0.0, 1.0));
-			  if (heartattack) {
-				  ++game.heart_attacks;
-				  heartattack = false;
-			  }
-		  }
+				renderText("You're having a heart attack!", new Vector3(0.0 - textLength("You're having a heart attack", 0.05) / 2.0 + sin(barOffs) * 0.05, 0.1, -1.0), 0.05, new Vector4(1.0, 0.7, 0.0, 1.0));
+				if (heartattack) {
+					++game.heart_attacks;
+					heartattack = false;
+				}
+			}
 		}
 		else {
 			heartattack = true;
 		}
-	  
+		
 		if (coldticks > 0.0 && game.ticks%30.0 <= 20) renderText("You're going to get a cold!", new Vector3(0.0 - textLength("You're going to get a cold!", 0.05)/2.0 + sin(barOffs)*0.05, 0.1, -1.0), 0.05, new Vector4(1.0, 0.7, 0.0, 1.0));
-	  
+		
 		if (attackticks > 0.0 && game.ticks%30.0 <= 20) renderText("Don't break your hip!", new Vector3(0.0 - textLength("Don't break your hip!", 0.05)/2.0 + sin(barOffs)*0.05, 0.1, -1.0), 0.05, new Vector4(1.0, 0.7, 0.0, 1.0));
-	  
+		
 		if (coldticks >= 0.0) {
 			coldticks -= 1.0;
 		}
@@ -225,12 +225,12 @@ class Screen {
 	}
 
 	void center()
-  {
+	{
 		querySelector("body").setAttribute("style", "margin-left:" + ((document.documentElement.clientWidth - game.canvas.width) / 2.0).toString() + "px");
 	}
 
 	Screen()
-  {
+	{
 
 	}
 }

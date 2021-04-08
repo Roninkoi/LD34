@@ -16,7 +16,7 @@ class Obj {
 	void draw([Vector3 newPos = null, Vector2 newS = null, Vector3 newRot = null])
 	{
 		if (newPos != null && newS != null && newRot != null)
-      game.renderer.draw(sprite, newPos, newS, newRot, rot_c);
+			game.renderer.draw(sprite, newPos, newS, newRot, rot_c);
 		else
 		  game.renderer.draw(sprite, pos, s, rot, rot_c);
 	}
@@ -39,13 +39,13 @@ class Obj {
 	void draw2()
 	{
 		draw(new Vector3(-pos.z-s.x, pos.y, pos.x), new Vector2(s.x, s.y),
-      new Vector3(rot.x, rot.y + pi / 2.0, rot.z));
+			new Vector3(rot.x, rot.y + pi / 2.0, rot.z));
 	}
 
 	void draw3()
 	{
 		draw(new Vector3(-pos.z-s.x, pos.y, pos.x + s.x), new Vector2(s.x, s.y),
-      new Vector3(rot.x, rot.y + pi / 2.0, rot.z));
+			new Vector3(rot.x, rot.y + pi / 2.0, rot.z));
 	}
 
 	void set([Vector3 newPos = null, Vector2 newS = null, Vector3 newRot = null])

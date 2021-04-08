@@ -34,20 +34,20 @@ class Wall extends Obj {
 	int collision(Vector3 char_pos, Vector3 char_pos_old)
 	{
 		int returns = -1;
-    double char_s = 2.5;
+		double char_s = 2.5;
 
 		if (collision2d(new Vector4(pos.x, pos.z, s.x, s.x),
-        new Vector4(char_pos.x-char_s/2.0, char_pos.z-char_s/2.0, char_s, char_s)) &&
-      !collision2d(new Vector4(pos.x, pos.z, s.x, s.x),
-        new Vector4(char_pos_old.x-char_s/2.0, char_pos.z-char_s/2.0, char_s, char_s))) {
+				new Vector4(char_pos.x-char_s/2.0, char_pos.z-char_s/2.0, char_s, char_s)) &&
+			!collision2d(new Vector4(pos.x, pos.z, s.x, s.x),
+				new Vector4(char_pos_old.x-char_s/2.0, char_pos.z-char_s/2.0, char_s, char_s))) {
 			returns = 0;
 			game.player.phys.pos.x = game.player.phys.pos_old.x;
 			game.player.phys.v.x = 0.0;
 		}
 		if (collision2d(new Vector4(pos.x, pos.z, s.x, s.x),
-        new Vector4(char_pos.x-char_s/2.0, char_pos.z-char_s/2.0, char_s, char_s)) &&
-      !collision2d(new Vector4(pos.x, pos.z, s.x, s.x),
-        new Vector4(char_pos.x-char_s/2.0, char_pos_old.z-char_s/2.0, char_s, char_s))) {
+				new Vector4(char_pos.x-char_s/2.0, char_pos.z-char_s/2.0, char_s, char_s)) &&
+			!collision2d(new Vector4(pos.x, pos.z, s.x, s.x),
+				new Vector4(char_pos.x-char_s/2.0, char_pos_old.z-char_s/2.0, char_s, char_s))) {
 			returns = 1;
 			game.player.phys.pos.z = game.player.phys.pos_old.z;
 			game.player.phys.v.z = 0.0;
