@@ -15,10 +15,12 @@ class Obj {
 
 	void draw([Vector3 newPos = null, Vector2 newS = null, Vector3 newRot = null])
 	{
-		if (newPos != null && newS != null && newRot != null)
+		if (newPos != null && newS != null && newRot != null) {
 			game.renderer.draw(sprite, newPos, newS, newRot, rot_c);
-		else
-		  game.renderer.draw(sprite, pos, s, rot, rot_c);
+    }
+		else {
+			game.renderer.draw(sprite, pos, s, rot, rot_c);
+    }
 	}
 
 	void update()
