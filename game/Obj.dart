@@ -1,6 +1,6 @@
 part of LD34;
 
-Tex tex = new Tex("../gfx/Sprites.png");
+Tex tex = new Tex("gfx/Sprites.png");
 
 class Obj {
 	int id = -1;
